@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.52" />
+
+
+<title>Coordinate Descent - BONBON BLOG</title>
+<meta property="og:title" content="Coordinate Descent - BONBON BLOG">
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.jpg"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="about.html">About</a></li>
+    
+    <li><a href="mailto:ramakstt@gmail.com">Email</a></li>
+    
+    <li><a href="https://github.com/thompsonhu">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Coordinate Descent</h1>
+
+    
+    <span class="article-date">2018/12/20</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="coordinate-descent-framework" class="section level3">
+<h3>Coordinate Descent Framework</h3>
+<p>At the begining of this section, we start to discuss three different types of function.</p>
+<ol style="list-style-type: decimal">
+<li>Given convex, differentiable function <span class="math inline">\(f: \mathbb{R}^n \to \mathbb{R}\)</span>, we know <span class="math inline">\(f(x+\delta \cdot e_i)\geq f(x)\)</span> for all <span class="math inline">\(\delta\)</span> because <span class="math inline">\(\nabla f(x) = (\frac{\partial f}{\partial x_1}(x),\dots,\frac{\partial f}{\partial x_n}(x)) = 0\)</span>. Here, <span class="math inline">\(e_i = (0,\dots,1,\dots,0) \in \mathbb{R}^n\)</span>, the <span class="math inline">\(i\)</span>th standard basis vactor.</li>
+</ol>
+<div align="center">
+<img src="CD1.PNG" width = "200" height = "200" alt="Figure1" />
+<p>
+Figure1. Convex and differential function <span class="math inline">\(f\)</span>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>Given convex but not differentiable function <span class="math inline">\(f\)</span>, we can not found a global minimizer.</li>
+</ol>
+<div align="center">
+<img src="CD2.PNG" width = "400" height = "200" alt="Figure2" />
+<p>
+Figure2. Convex but not differential function <span class="math inline">\(f\)</span>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Given convex <span class="math inline">\(g\)</span> and each convex but not differentiable <span class="math inline">\(h_i\)</span>, so we get <span class="math inline">\(f(x)=g(x)+\sum_{i=1}^n h_i(x_i)\)</span>. In this function, the non-smooth part is called as <strong>separable</strong>.<br />
+For any <span class="math inline">\(y\)</span>, we get
+<span class="math display">\[\begin{align}
+f(y) - f(x) \geq&amp; \nabla g(x)^T (y-x) + \sum_{i=1}^n [h_i(y_i)-h_i(x_i)]\\
+=&amp; \sum\limits_{i=1}^n [\nabla_ig(x)(y_i-x_i)+h_i(y_i)-h_i(x_i)] \geq 0
+\end{align}\]</span>
+Thus, we can get global minimizer.</li>
+</ol>
+<div align="center">
+<img src="CD3.PNG" width = "400" height = "200" alt="Figure3" />
+<p>
+Figure3. Convex, not differential but separable function <span class="math inline">\(f\)</span>
+</div>
+If we get a function with the formula like <span class="math inline">\(f(x) = g(x) + \sum_{i=1}^n h_i(x_i)\)</span>, where the <span class="math inline">\(g\)</span> is convex and differentiable function, each <span class="math inline">\(h_i\)</span> is convex functions, then we can use coordinate descent to find global minimizer. The procedure is following: start with some initial guess <span class="math inline">\(x^{(0)}\)</span>, and repeat
+<span class="math display">\[\begin{align}
+x_1^{(k)} \in&amp; \mathop{\arg\min}_{x_1} f(x_1,x_2^{(k-1)},x_3^{(k-1)},\dots,x_n^{(k-1)})\\
+x_2^{(k)} \in&amp; \mathop{\arg\min}_{x_2} f(x_1^{(k)},x_2,x_3^{(k-1)},\dots,x_n^{(k-1)})\\
+x_3^{(k)} \in&amp; \mathop{\arg\min}_{x_3} f(x_1^{(k)},x_2^{(k)},x_3,\dots,x_n^{(k-1)})\\
+\cdots&amp; \\
+x_n^{(k)} \in&amp; \mathop{\arg\min}_{x_n} f(x_1^{(k)},x_2^{(k)},x_3^{(k)},\dots,x_n)\\
+\end{align}\]</span>
+<p>for <span class="math inline">\(k=1,2,3,\dots,K\)</span></p>
+<p><strong>Note:</strong> after we solve for <span class="math inline">\(x_i^{(k)}\)</span>, we use its new value from then on.</p>
+</div>
+<div id="coordinate-descent-for-linear-regression-with-convex-penalties" class="section level3">
+<h3>Coordinate descent for linear regression with convex penalties</h3>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//thompsonhu.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
