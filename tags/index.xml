@@ -2,48 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on BONBON BLOG</title>
-    <link>/./tags.html</link>
+    <link>/tags.html</link>
     <description>Recent content in Tags on BONBON BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/./tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Algorithm</title>
-      <link>/./tags/algorithm.html</link>
+      <link>/tags/algorithm.html</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/./tags/algorithm.html</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Learning</title>
-      <link>/./tags/machine-learning.html</link>
-      <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/./tags/machine-learning.html</guid>
+      <guid>/tags/algorithm.html</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/./tags/r.html</link>
+      <link>/tags/r.html</link>
       <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/./tags/r.html</guid>
+      <guid>/tags/r.html</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tensorflow</title>
-      <link>/./tags/tensorflow.html</link>
+      <link>/tags/tensorflow.html</link>
       <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/./tags/tensorflow.html</guid>
+      <guid>/tags/tensorflow.html</guid>
       <description></description>
     </item>
     

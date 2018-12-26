@@ -3,74 +3,74 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/./post/tensorflow.html</loc>
+    <loc>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</loc>
     <lastmod>2018-12-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/./post/expectation-maximization.html</loc>
+    <loc>/post/expectation-maximization-algorithm.html</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/./about.html</loc>
+    <loc>/about.html</loc>
     <lastmod>2018-12-20T18:00:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/./post/coordinate-descent.html</loc>
+    <loc>/post/coordinate-descent-algorithm.html</loc>
     <lastmod>2018-12-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/./tags/algorithm.html</loc>
+    <loc>/tags/algorithm.html</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./</loc>
+    <loc>/</loc>
     <lastmod>2018-12-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./categories.html</loc>
+    <loc>/categories.html</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./tags/machine-learning.html</loc>
-    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/./categories/machine-learning.html</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/./post.html</loc>
+    <loc>/categories/deep-learning.html</loc>
     <lastmod>2018-12-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./tags/r.html</loc>
+    <loc>/categories/machine-learning.html</loc>
     <lastmod>2018-12-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./tags.html</loc>
+    <loc>/post.html</loc>
+    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/r.html</loc>
+    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags.html</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/./tags/tensorflow.html</loc>
+    <loc>/tags/tensorflow.html</loc>
     <lastmod>2018-12-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

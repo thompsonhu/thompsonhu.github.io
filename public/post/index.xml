@@ -1,51 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on BONBON BLOG</title>
-    <link>/./post.html</link>
-    <description>Recent content in Posts on BONBON BLOG</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 26 Dec 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/./post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>TensorFlow</title>
-      <link>/./post/tensorflow.html</link>
-      <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/./post/tensorflow.html</guid>
-      <description>迈出TensorFloW世界的第一步查看Windows系统下机器的GPU信息首先打开“运行”对话框并在“运行”对话框中输入“dxdiag”（如图1），此时会打开“DirextX诊断工具”窗口，再通过选择“显示”标签便可查到机器的GPU信息（如图2）。
-图1. 输入dxdiag命令图2. 查看机器GPU信息安装TensorFlow鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 Anaconda，快捷高效，下载引导详见图3。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！
-图3. 下载Anaconda设置水土不服的Anaconda首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
-conda 4.5.12那么，Anaconda安装成功！
-下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/conda config --set show_channel_urls yes通过pip安装我们的主角TensorFlow ٩(๑&amp;gt; ₃ &amp;lt;)۶з接下来就开始用pip安装我们TensorFlow的CPU版本了~ 首先，由于目前TensoFlow官方Only支持python3.5版本，所以我们用下面命令完成我们的需求。
-conda create --name python35 python=3.5安装完成后会提示你
-# To activate this environment, use## $ conda activate python35## To deactivate an active environment, use## $ conda deactivate所以接着我们先激活python3.</description>
-    </item>
-    
-    <item>
-      <title>Expectation-Maximization Algorithm</title>
-      <link>/./post/expectation-maximization.html</link>
-      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/./post/expectation-maximization.html</guid>
-      <description>From some on-line article, it is interesting that we can consider EM algorithm as some Chinese Kungfu manuals and it contains 9 levels of perspectives. With such metaphor, I can feel how this method powerful it is. Now, I want to share my view with you.
-Introduction to the EM algorithmExpectation-Maximization (EM) algorithm is an important method to solve the maximum likelihood problem with latent variables in statistics. It is widely used in Machine Learning because it can simplify many difficult problems.</description>
-    </item>
-    
-    <item>
-      <title>Coordinate Descent</title>
-      <link>/./post/coordinate-descent.html</link>
-      <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/./post/coordinate-descent.html</guid>
-      <description>Coordinate Descent FrameworkAt the begining of this section, we start to discuss three different types of function.
-Given convex, differentiable function \(f: \mathbb{R}^n \to \mathbb{R}\), we know \(f(x+\delta \cdot e_i)\geq f(x)\) for all \(\delta\) because \(\nabla f(x) = (\frac{\partial f}{\partial x_1}(x),\dots,\frac{\partial f}{\partial x_n}(x)) = 0\). Here, \(e_i = (0,\dots,1,\dots,0) \in \mathbb{R}^n\), the \(i\)th standard basis vactor.Figure1. Convex and differential function \(f\)Given convex but not differentiable function \(f\), we can not found a global minimizer.</description>
-    </item>
-    
-  </channel>
-</rss>

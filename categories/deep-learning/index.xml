@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tensorflow on BONBON BLOG</title>
-    <link>/tags/tensorflow.html</link>
-    <description>Recent content in Tensorflow on BONBON BLOG</description>
+    <title>Deep Learning on BONBON BLOG</title>
+    <link>/categories/deep-learning.html</link>
+    <description>Recent content in Deep Learning on BONBON BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 26 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/tensorflow/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -25,6 +25,16 @@ conda 4.5.12 那么，Anaconda安装成功！
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  通过pip安装我们的主角TensorFlow ٩(๑&amp;gt; ₃ &amp;lt;)۶з 接下来就开始用pip安装我们TensorFlow的CPU版本了~ 首先，由于目前TensoFlow官方Only支持python3.5版本，所以我们用下面命令完成我们的需求。
 conda create --name python35 python=3.5 安装完成后会提示你
 # To activate this environment, use # # $ conda activate python35 # # To deactivate an active environment, use # # $ conda deactivate 所以接着我们先激活python3.</description>
+    </item>
+    
+    <item>
+      <title>Expectation-Maximization Algorithm</title>
+      <link>/post/expectation-maximization-algorithm.html</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/expectation-maximization-algorithm.html</guid>
+      <description>From some on-line article, it is interesting that we can consider EM algorithm as some Chinese Kungfu manuals and it contains 9 levels of perspectives. With such metaphor, I can feel how this method powerful it is. Now, I want to share my view with you.
+Introduction to the EM algorithmExpectation-Maximization (EM) algorithm is an important method to solve the maximum likelihood problem with latent variables in statistics. It is widely used in Machine Learning because it can simplify many difficult problems.</description>
     </item>
     
   </channel>
