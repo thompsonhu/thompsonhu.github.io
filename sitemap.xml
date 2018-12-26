@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/./post/tensorflow.html</loc>
+    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/./post/expectation-maximization.html</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/./about.html</loc>
+    <lastmod>2018-12-20T18:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/./post/coordinate-descent.html</loc>
+    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/./tags/algorithm.html</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./</loc>
+    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./categories.html</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./tags/machine-learning.html</loc>
+    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./categories/machine-learning.html</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./post.html</loc>
+    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./tags/r.html</loc>
+    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./tags.html</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/./tags/tensorflow.html</loc>
+    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
