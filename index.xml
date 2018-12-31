@@ -6,10 +6,19 @@
     <description>Recent content on BONBON BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 31 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Variational Auto-Encoder</title>
+      <link>/post/variational-auto-encoder.html</link>
+      <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/variational-auto-encoder.html</guid>
+      <description>IntroductionWe assume the observed variable \(x\) is a random sample from an unknown underlying process, whose true distribution \(p^*(x)\) is unknown. We attempt to approximate this underlying process with a chosen model \(p_{\theta}(x)\), with parameters \(\theta\): \[x\sim p_{\theta}(x)\] We always talk about learning like Deep Learning, and actually the learning is the process of searching for a value of the parameters \(\theta\) in model \(p_{\theta}(x)\), which can approximate the true distribution of the data, denoted by \(p^*(x)\).</description>
+    </item>
     
     <item>
       <title>小菜鸟的入门TensorFlow</title>
