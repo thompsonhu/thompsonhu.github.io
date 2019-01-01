@@ -155,9 +155,15 @@ sess = tf.Session()</code></pre>
 </ul>
 </div>
 </div>
+<div id="jupyterpython3.5" class="section level3">
+<h3>Jupyter下设置python3.5的内核</h3>
+<p>如果不做一些设置操作，默认Jupyter打开还是会以默认Anaconda下的python版本，由于目前已经到了python3.7的版本了，那在Jupyter下使用Tensorflow必定会出问题。</p>
+<p>首先打开Anaconda Prompt并安装<code>ipykernel</code>：</p>
+<pre><code>pip install ipykernel</code></pre>
+<p>安装成功后，执行下面命令就可以了~</p>
+<pre><code>python  -m ipykernel install --user</code></pre>
+<p>打开Jupyter就会发现可以运行Tensorflow了！</p>
 </div>
-<div id="tensorflow" class="section level2">
-<h2>迈出TensorFloW世界的第二步</h2>
 </div>
 
     </div>
