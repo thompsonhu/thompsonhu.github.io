@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</loc>
+    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/variational-auto-encoder.html</loc>
     <lastmod>2018-12-31T00:00:00+00:00</lastmod>
   </url>
@@ -35,7 +40,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-12-31T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -58,13 +63,25 @@
   
   <url>
     <loc>/post.html</loc>
-    <lastmod>2018-12-31T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/r.html</loc>
     <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/rmarkdown.html</loc>
+    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/rmarkdown.html</loc>
+    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
