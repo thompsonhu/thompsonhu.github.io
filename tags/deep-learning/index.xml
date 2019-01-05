@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deep Learning on BONBON BLOG</title>
+    <link>/tags/deep-learning.html</link>
+    <description>Recent content in Deep Learning on BONBON BLOG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>深度神经网络基础</title>
+      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</link>
+      <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</guid>
+      <description>神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
+ 图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
+Sigmoid函数
+\[f(z) = \frac{1}{1+e^{-z}}\] tanh函数
+\[f(z) = \frac{e^z-e^{-z}}{e^z+e^{-z}}\] ReLu函数
+\[f(z) = \max(0,z)\]
+ 神经网络基础认知 我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。  图3. 神经网络基础层级结构  我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 \[ \left [ \begin{matrix} w_{11} &amp;amp; w_{12} &amp;amp; w_{13} \\ w_{21} &amp;amp; w_{22} &amp;amp; w_{23} \\ w_{31} &amp;amp; w_{32} &amp;amp; w_{33} \end{matrix} \right ] \] 其中，第一列的\(w_{11}, w_{21}, w_{31}\)代表的是输入层的点\(x_1\)分别连接隐藏层的三个节点的边的权值；第二列的\(w_{12}, w_{22}, w_{32}\)代表的是输入层的点\(x_2\)分别连接隐藏层的三个节点的边的权值；第三列的\(w_{13}, w_{23}, w_{33}\)代表的是输入层的点\(x_3\)分别连接隐藏层的三个节点的边的权值。
+图中的“+1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： \[ \begin{align} a_1 = w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1\\ a_2 = w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2\\ a_3 = w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3 \end{align} \tag{1} \] 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数\(f(\cdot)\)（前面已提及）。（1）式可以变换为（2）式： \[ \begin{align} a_1 = f(w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1)\\ a_2 = f(w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2)\\ a_3 = f(w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3) \end{align} \tag{2} \] 将（2）式改写为矩阵运算形式（3）式： \[ \begin{align} \boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} + \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x+\boldsymbol{B}) \end{align} \tag{3} \]</description>
+    </item>
+    
+  </channel>
+</rss>
