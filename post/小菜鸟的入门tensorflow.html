@@ -72,32 +72,18 @@
       
 
 
+<div id="tensorflow" class="section level1">
+<h1>迈出TensorFlow世界的第一步</h1>
 <div id="tensorflow" class="section level2">
-<h2>迈出TensorFloW世界的第一步</h2>
-<div id="windowsgpu" class="section level3">
-<h3>查看Windows系统下机器的GPU信息</h3>
-<p>首先打开“运行”对话框并在“运行”对话框中输入“dxdiag”（如图1），此时会打开“DirextX诊断工具”窗口，再通过选择“显示”标签便可查到机器的GPU信息（如图2）。</p>
+<h2>安装TensorFlow</h2>
+<p>鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 <a href="https://www.anaconda.com/">Anaconda</a>，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！</p>
 <div align="center">
-<img src="TS1.PNG" width = "360" height = "230" alt="Figure1" />
+<img src="TS1.PNG" width = "500" height = "300" alt="Figure1" />
 <p>
-图1. 输入dxdiag命令
+图1. 下载Anaconda
 </div>
-<div align="center">
-<img src="TS2.PNG" width = "500" height = "450" alt="Figure2" />
-<p>
-图2. 查看机器GPU信息
-</div>
-</div>
-<div id="tensorflow" class="section level3">
-<h3>安装TensorFlow</h3>
-<p>鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 <a href="https://www.anaconda.com/">Anaconda</a>，快捷高效，下载引导详见图3。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！</p>
-<div align="center">
-<img src="TS3.PNG" width = "400" height = "300" alt="Figure3" />
-<p>
-图3. 下载Anaconda
-</div>
-<div id="anaconda" class="section level4">
-<h4>设置水土不服的Anaconda</h4>
+<div id="anaconda" class="section level3">
+<h3>设置水土不服的Anaconda</h3>
 <p>首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过<code>conda --version</code>看看是否成功安装了Anaconda。一般会得到版本信息，如下所示</p>
 <pre><code>conda 4.5.12</code></pre>
 <p>那么，Anaconda安装成功！</p>
@@ -105,19 +91,40 @@
 <pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --set show_channel_urls yes</code></pre>
 </div>
-<div id="piptensorflow-" class="section level4">
-<h4>通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з</h4>
-<p>接下来就开始用pip安装我们TensorFlow的CPU版本了~ 首先，由于目前TensoFlow官方Only支持python3.5版本，所以我们用下面命令完成我们的需求。</p>
-<pre><code>conda create --name python35 python=3.5</code></pre>
-<p>安装完成后会提示你</p>
-<pre><code># To activate this environment, use
-#
-#     $ conda activate python35
-#
-# To deactivate an active environment, use
-#
-#     $ conda deactivate</code></pre>
-<p>所以接着我们先激活python3.5的环境并用pip安装tensorflow</p>
+<div id="python3.5" class="section level3">
+<h3>创建python3.5环境</h3>
+<p>首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。</p>
+<p>首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：</p>
+<div align="center">
+<img src="TS2.PNG" width = "650" height = "330" alt="Figure2" />
+<p>
+图2. Environments界面
+</div>
+<p>我们命名为<em>tensorflow</em>，并选择python3.5的版本：</p>
+<div align="center">
+<img src="TS3.PNG" width = "350" height = "180" alt="Figure3" />
+<p>
+图3. 创建新环境窗口
+</div>
+<p>安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。</p>
+<div align="center">
+<img src="TS4.PNG" width = "650" height = "330" alt="Figure4" />
+<p>
+图4. 安装成功后的python3.5环境
+</div>
+<p>搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的<strong>jupyter notebook</strong>和<strong>spyder</strong>。先选择Home界面，然后可以看到<strong>jupyter notebook</strong>和<strong>spyder</strong>下方均显示<strong>Install</strong>，当然就点击<strong>Install</strong>，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成<strong>Launch</strong>（如图5所示）。</p>
+<div align="center">
+<img src="TS5.PNG" width = "650" height = "350" alt="Figure5" />
+<p>
+图5. 安装jupyter和spyder成功后的Home界面
+</div>
+<p>如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！</p>
+<pre><code>conda activate tensorflow</code></pre>
+<p>这里的tensorflow其实是我们的python3.5环境的命名~</p>
+</div>
+<div id="piptensorflow-" class="section level3">
+<h3>通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з</h3>
+<p>搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow</p>
 <pre><code>conda activate python35
 pip install tensorflow</code></pre>
 <p>旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入<code>python</code>运行python，然后输入下面的命令。</p>
@@ -132,7 +139,7 @@ print(&quot;1 + 2 = %d&quot; % c)</code></pre>
 <p>如果输出了<br />
 ‘Hello, TensorFlow!’<br />
 1 + 2 = 3<br />
-那么恭喜你，TensorFlow安装成功！</p>
+那么恭喜你，TensorFlow安装成功！！</p>
 <p><strong>Attention!</strong></p>
 <ul>
 <li><p>CPU有个利器(๑•̀_•́๑)<br />
@@ -150,19 +157,23 @@ os.environ[&#39;TF_CPP_MIN_LOG_LEVEL&#39;] = &#39;2&#39;
 sess = tf.Session()</code></pre>
 <p>这样就不会出现警告了~</p></li>
 <li><p>目前觉得不重要的part(๑•̀_•́๑)<br />
-如果你觉得运行的速度不满足你的需求，那么你可以选择用上GPU版本的TensorFlow，那将帮助你火箭般的速度运行！下面简单带过如何安装TensorFlow的GPU版本~由于具体操作复杂，暂且跳过~</p>
-<pre><code>pip install tensorflow-gpu</code></pre></li>
+<strong>查看Windows系统下机器的GPU信息</strong><br />
+首先打开“运行”对话框并在“运行”对话框中输入“dxdiag”（如图6），此时会打开“DirextX诊断工具”窗口，再通过选择“显示”标签便可查到机器的GPU信息（如图7）。</p></li>
 </ul>
+<div align="center">
+<img src="TS6.PNG" width = "360" height = "200" alt="Figure6" />
+<p>
+图6. 输入dxdiag命令
 </div>
+<div align="center">
+<img src="TS7.PNG" width = "650" height = "470" alt="Figure7" />
+<p>
+图7. 查看机器GPU信息
 </div>
-<div id="jupyterpython3.5" class="section level3">
-<h3>Jupyter下设置python3.5的内核</h3>
-<p>如果不做一些设置操作，默认Jupyter打开还是会以默认Anaconda下的python版本，由于目前已经到了python3.7的版本了，那在Jupyter下使用Tensorflow必定会出问题。</p>
-<p>首先打开Anaconda Prompt并安装<code>ipykernel</code>：</p>
-<pre><code>pip install ipykernel</code></pre>
-<p>安装成功后，执行下面命令就可以了~</p>
-<pre><code>python  -m ipykernel install --user</code></pre>
-<p>打开Jupyter就会发现可以运行Tensorflow了！</p>
+<p><strong>简单提及安装GPU版本TensorFlow</strong><br />
+如果你觉得运行的速度不满足你的需求，那么你可以选择用上GPU版本的TensorFlow，那将帮助你火箭般的速度运行！下面简单带过如何安装TensorFlow的GPU版本~由于具体操作复杂，暂且跳过~</p>
+<pre><code>pip install tensorflow-gpu</code></pre>
+</div>
 </div>
 </div>
 
@@ -223,9 +234,6 @@ sess = tf.Session()</code></pre>
 
 
     
-<script src="/js/math-code.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 
     
   </body>
