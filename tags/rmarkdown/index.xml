@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rmarkdown on BONBON BLOG</title>
-    <link>/tags/rmarkdown.html</link>
-    <description>Recent content in Rmarkdown on BONBON BLOG</description>
+    <title>Rmarkdown on Bonbon Blog</title>
+    <link>/tags/rmarkdown/</link>
+    <description>Recent content in Rmarkdown on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Wed, 02 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/rmarkdown/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>关于Rmarkdown生成中文内容pdf的那些事</title>
-      <link>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</link>
+      <link>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</link>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</guid>
+      <guid>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</guid>
       <description> 缘于某人用Rmarkdown搞不出中文内容的pdf而引发一场激战之下，TT只能忍气吞声继续走上帮人帮到底的道路，于是网上搜出一大堆关于Rmarkdown生成中文pdf的麻烦事。无奈，众里寻它千百度，最终发现解决问题的YAML模板及相关的解决方案，怕在接下来的日子可能遭受同样的折磨，并以扩充Blog文章为前提，书写此文。
 首先，让我们先在RStudio菜单栏选择Tools并点击Global Options。选择Sweaver并按图勾选，最后点OK~  Figure1. 可爱的Global Options窗口  然后.Rmd文件中的YAML模板如下设置：
 --- title: &amp;quot;我是一个Test文档的标题&amp;quot; author: &amp;quot;我是一个Test文档的作者名称&amp;quot; date: &amp;quot;我是一个Test文档的写作日期&amp;quot; CJKmainfont: Microsoft YaHei output: pdf_document: includes: header-includes: - \usepackage{xeCJK} keep_tex: yes latex_engine: xelatex --- 注：介个模板用上了大微软的雅黑字体，如若想修改，那请继续摸索摸索。（T.T累了不想改了~）

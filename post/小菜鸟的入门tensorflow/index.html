@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.3.0">
+  <meta name="generator" content="Hugo 0.52" />
+  <meta name="author" content="Thompson Hu">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="迈出TensorFlow世界的第一步 安装TensorFlow 鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 Anaconda，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！
+ 图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
+conda 4.5.12 那么，Anaconda安装成功！
+下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
+首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：
+ 图2. Environments界面  我们命名为tensorflow，并选择python3.5的版本：
+ 图3. 创建新环境窗口  安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。
+ 图4. 安装成功后的python3.5环境  搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的jupyter notebook和spyder。先选择Home界面，然后可以看到jupyter notebook和spyder下方均显示Install，当然就点击Install，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成Launch（如图5所示）。
+ 图5. 安装jupyter和spyder成功后的Home界面  如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！
+conda activate tensorflow 这里的tensorflow其实是我们的python3.5环境的命名~
+ 通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з 搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow
+conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="../../styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bonbon Blog">
+  <meta property="og:url" content="/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/">
+  <meta property="og:title" content="小菜鸟的入门TensorFlow | Bonbon Blog">
+  <meta property="og:description" content="迈出TensorFlow世界的第一步 安装TensorFlow 鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 Anaconda，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！
+ 图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
+conda 4.5.12 那么，Anaconda安装成功！
+下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
+首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：
+ 图2. Environments界面  我们命名为tensorflow，并选择python3.5的版本：
+ 图3. 创建新环境窗口  安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。
+ 图4. 安装成功后的python3.5环境  搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的jupyter notebook和spyder。先选择Home界面，然后可以看到jupyter notebook和spyder下方均显示Install，当然就点击Install，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成Launch（如图5所示）。
+ 图5. 安装jupyter和spyder成功后的Home界面  如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！
+conda activate tensorflow 这里的tensorflow其实是我们的python3.5环境的命名~
+ 通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з 搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow
+conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3."><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-12-26T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-12-26T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>小菜鸟的入门TensorFlow | Bonbon Blog</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">小菜鸟的入门TensorFlow</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2018-12-26 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2018-12-26 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      Dec 26, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    1 min read
+  </span>
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <a href="../../post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/#disqus_thread"></a>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="../../categories/deep-learning/">Deep Learning</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%e5%b0%8f%e8%8f%9c%e9%b8%9f%e7%9a%84%e5%85%a5%e9%97%a8TensorFlow&amp;url=%2fpost%2f%25E5%25B0%258F%25E8%258F%259C%25E9%25B8%259F%25E7%259A%2584%25E5%2585%25A5%25E9%2597%25A8tensorflow%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2f%25E5%25B0%258F%25E8%258F%259C%25E9%25B8%259F%25E7%259A%2584%25E5%2585%25A5%25E9%2597%25A8tensorflow%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2f%25E5%25B0%258F%25E8%258F%259C%25E9%25B8%259F%25E7%259A%2584%25E5%2585%25A5%25E9%2597%25A8tensorflow%2f&amp;title=%e5%b0%8f%e8%8f%9c%e9%b8%9f%e7%9a%84%e5%85%a5%e9%97%a8TensorFlow"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2f%25E5%25B0%258F%25E8%258F%259C%25E9%25B8%259F%25E7%259A%2584%25E5%2585%25A5%25E9%2597%25A8tensorflow%2f&amp;title=%e5%b0%8f%e8%8f%9c%e9%b8%9f%e7%9a%84%e5%85%a5%e9%97%a8TensorFlow"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%e5%b0%8f%e8%8f%9c%e9%b8%9f%e7%9a%84%e5%85%a5%e9%97%a8TensorFlow&amp;body=%2fpost%2f%25E5%25B0%258F%25E8%258F%259C%25E9%25B8%259F%25E7%259A%2584%25E5%2585%25A5%25E9%2597%25A8tensorflow%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<div id="tensorflow" class="section level1">
+<h1>迈出TensorFlow世界的第一步</h1>
+<div id="tensorflow" class="section level2">
+<h2>安装TensorFlow</h2>
+<p>鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 <a href="https://www.anaconda.com/">Anaconda</a>，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！</p>
+<div align="center">
+<img src="TS1.PNG" width = "500" height = "300" alt="Figure1" />
+<p>
+图1. 下载Anaconda
+</div>
+<div id="anaconda" class="section level3">
+<h3>设置水土不服的Anaconda</h3>
+<p>首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过<code>conda --version</code>看看是否成功安装了Anaconda。一般会得到版本信息，如下所示</p>
+<pre><code>conda 4.5.12</code></pre>
+<p>那么，Anaconda安装成功！</p>
+<p>下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。</p>
+<pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --set show_channel_urls yes</code></pre>
+</div>
+<div id="python3.5" class="section level3">
+<h3>创建python3.5环境</h3>
+<p>首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。</p>
+<p>首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：</p>
+<div align="center">
+<img src="TS2.PNG" width = "650" height = "330" alt="Figure2" />
+<p>
+图2. Environments界面
+</div>
+<p>我们命名为<em>tensorflow</em>，并选择python3.5的版本：</p>
+<div align="center">
+<img src="TS3.PNG" width = "350" height = "180" alt="Figure3" />
+<p>
+图3. 创建新环境窗口
+</div>
+<p>安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。</p>
+<div align="center">
+<img src="TS4.PNG" width = "650" height = "330" alt="Figure4" />
+<p>
+图4. 安装成功后的python3.5环境
+</div>
+<p>搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的<strong>jupyter notebook</strong>和<strong>spyder</strong>。先选择Home界面，然后可以看到<strong>jupyter notebook</strong>和<strong>spyder</strong>下方均显示<strong>Install</strong>，当然就点击<strong>Install</strong>，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成<strong>Launch</strong>（如图5所示）。</p>
+<div align="center">
+<img src="TS5.PNG" width = "650" height = "350" alt="Figure5" />
+<p>
+图5. 安装jupyter和spyder成功后的Home界面
+</div>
+<p>如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！</p>
+<pre><code>conda activate tensorflow</code></pre>
+<p>这里的tensorflow其实是我们的python3.5环境的命名~</p>
+</div>
+<div id="piptensorflow-" class="section level3">
+<h3>通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з</h3>
+<p>搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow</p>
+<pre><code>conda activate python35
+pip install tensorflow</code></pre>
+<p>旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入<code>python</code>运行python，然后输入下面的命令。</p>
+<pre class="python"><code>import tensorflow as tf
+hello = tf.constant(&#39;Hello, TensorFlow!&#39;)
+sess = tf.Session()
+print(sess.run(hello))
+a = tf.constant(1)
+b = tf.constant(2)
+c = sess.run(a+b)
+print(&quot;1 + 2 = %d&quot; % c)</code></pre>
+<p>如果输出了<br />
+‘Hello, TensorFlow!’<br />
+1 + 2 = 3<br />
+那么恭喜你，TensorFlow安装成功！！</p>
+<p><strong>Attention!</strong></p>
+<ul>
+<li><p>CPU有个利器(๑•̀_•́๑)<br />
+当我使用<code>sess = tf.Session()</code>的时候，对话框告诉我：<br />
+2018-12-26 15:03:57.708274: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2<br />
+然后一脸懵，杰是个啥？<br />
+感恩必应搜索，感恩维基百科！</p>
+<blockquote>
+<p>高级矢量扩展（AVX）是英特尔在2008年3月提出的英特尔和AMD微处理器的x86指令集体系结构的扩展，英特尔首先通过Sandy Bridge处理器在2011年第一季度推出，随后由AMD推出Bulldozer处理器在2011年第三季度.AVX提供了新功能，新指令和新编码方案。 特别是，AVX引入了融合乘法累加（FMA）操作，加速了线性代数计算，即点积，矩阵乘法，卷积等。几乎所有机器学习训练都涉及大量这些操作，因此将会支持AVX和FMA的CPU（最高达300％）更快。</p>
+</blockquote>
+<p>而对话框想告诉我，我的CPU支持AVX，让我赶紧用上它！</p>
+<pre class="python"><code>import tensorflow as tf
+import os
+os.environ[&#39;TF_CPP_MIN_LOG_LEVEL&#39;] = &#39;2&#39;
+sess = tf.Session()</code></pre>
+<p>这样就不会出现警告了~</p></li>
+<li><p>目前觉得不重要的part(๑•̀_•́๑)<br />
+<strong>查看Windows系统下机器的GPU信息</strong><br />
+首先打开“运行”对话框并在“运行”对话框中输入“dxdiag”（如图6），此时会打开“DirextX诊断工具”窗口，再通过选择“显示”标签便可查到机器的GPU信息（如图7）。</p></li>
+</ul>
+<div align="center">
+<img src="TS6.PNG" width = "360" height = "200" alt="Figure6" />
+<p>
+图6. 输入dxdiag命令
+</div>
+<div align="center">
+<img src="TS7.PNG" width = "650" height = "470" alt="Figure7" />
+<p>
+图7. 查看机器GPU信息
+</div>
+<p><strong>简单提及安装GPU版本TensorFlow</strong><br />
+如果你觉得运行的速度不满足你的需求，那么你可以选择用上GPU版本的TensorFlow，那将帮助你火箭般的速度运行！下面简单带过如何安装TensorFlow的GPU版本~由于具体操作复杂，暂且跳过~</p>
+<pre><code>pip install tensorflow-gpu</code></pre>
+</div>
+</div>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/tensorflow/">TensorFlow</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="../../img/portrait.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="../../">Thompson Hu</a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:ttxinlinhu@qq.com" >
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a itemprop="sameAs" href="https://github.com/thompsonhu" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+<section id="comments">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "thompsonhu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="../../privacy/">Made by Thompson</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    <script id="dsq-count-scr" src="//thompsonhu.disqus.com/count.js" async></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+
+    
+
+  </body>
+</html>
+

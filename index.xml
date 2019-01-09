@@ -1,104 +1,1015 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>BONBON BLOG</title>
+    <title>Bonbon Blog on Bonbon Blog</title>
     <link>/</link>
-    <description>Recent content on BONBON BLOG</description>
+    <description>Recent content in Bonbon Blog on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
-    
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Sun, 15 Oct 2017 00:00:00 +0800</lastBuildDate>
+    <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>深度神经网络基础</title>
-      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</link>
+      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</guid>
-      <description>神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
- 图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
-Sigmoid函数
-\[f(z) = \frac{1}{1+e^{-z}}\] tanh函数
-\[f(z) = \frac{e^z-e^{-z}}{e^z+e^{-z}}\] ReLu函数
-\[f(z) = \max(0,z)\]
- 神经网络基础认知 我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。  图3. 神经网络基础层级结构  我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 \[ \left [ \begin{matrix} w_{11} &amp;amp; w_{12} &amp;amp; w_{13} \\ w_{21} &amp;amp; w_{22} &amp;amp; w_{23} \\ w_{31} &amp;amp; w_{32} &amp;amp; w_{33} \end{matrix} \right ] \] 其中，第一列的\(w_{11}, w_{21}, w_{31}\)代表的是输入层的点\(x_1\)分别连接隐藏层的三个节点的边的权值；第二列的\(w_{12}, w_{22}, w_{32}\)代表的是输入层的点\(x_2\)分别连接隐藏层的三个节点的边的权值；第三列的\(w_{13}, w_{23}, w_{33}\)代表的是输入层的点\(x_3\)分别连接隐藏层的三个节点的边的权值。
-图中的“+1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： \[ \begin{align} a_1 = w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1\\ a_2 = w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2\\ a_3 = w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3 \end{align} \tag{1} \] 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数\(f(\cdot)\)（前面已提及）。（1）式可以变换为（2）式： \[ \begin{align} a_1 = f(w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1)\\ a_2 = f(w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2)\\ a_3 = f(w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3) \end{align} \tag{2} \] 将（2）式改写为矩阵运算形式（3）式： \[ \begin{align} \boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} + \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x+\boldsymbol{B}) \end{align} \tag{3} \]</description>
+      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</guid>
+      <description>
+
+
+&lt;div class=&#34;section level1&#34;&gt;
+&lt;h1&gt;神经元及神经网络基础结构&lt;/h1&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN1.PNG&#34; width = &#34;400&#34; height = &#34;200&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 神经元的组成（源自维基百科）
+&lt;/div&gt;
+&lt;p&gt;神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN2.PNG&#34; width = &#34;400&#34; height = &#34;200&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. 神经网络基础结构
+&lt;/div&gt;
+&lt;p&gt;通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Sigmoid函数&lt;/strong&gt;&lt;br /&gt;
+&lt;span class=&#34;math display&#34;&gt;\[f(z) = \frac{1}{1+e^{-z}}\]&lt;/span&gt; &lt;strong&gt;tanh函数&lt;/strong&gt;&lt;br /&gt;
+&lt;span class=&#34;math display&#34;&gt;\[f(z) = \frac{e^z-e^{-z}}{e^z+e^{-z}}\]&lt;/span&gt; &lt;strong&gt;ReLu函数&lt;/strong&gt;&lt;br /&gt;
+&lt;span class=&#34;math display&#34;&gt;\[f(z) = \max(0,z)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./post/2019-01-05-深度神经网络基础_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level1&#34;&gt;
+&lt;h1&gt;神经网络基础认知&lt;/h1&gt;
+我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN3.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. 神经网络基础层级结构
+&lt;/div&gt;
+&lt;p&gt;我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 &lt;span class=&#34;math display&#34;&gt;\[
+\left [
+\begin{matrix}
+w_{11} &amp;amp; w_{12} &amp;amp; w_{13} \\
+w_{21} &amp;amp; w_{22} &amp;amp; w_{23} \\
+w_{31} &amp;amp; w_{32} &amp;amp; w_{33}
+\end{matrix}
+\right ]
+\]&lt;/span&gt; 其中，第一列的&lt;span class=&#34;math inline&#34;&gt;\(w_{11}, w_{21}, w_{31}\)&lt;/span&gt;代表的是输入层的点&lt;span class=&#34;math inline&#34;&gt;\(x_1\)&lt;/span&gt;分别连接隐藏层的三个节点的边的权值；第二列的&lt;span class=&#34;math inline&#34;&gt;\(w_{12}, w_{22}, w_{32}\)&lt;/span&gt;代表的是输入层的点&lt;span class=&#34;math inline&#34;&gt;\(x_2\)&lt;/span&gt;分别连接隐藏层的三个节点的边的权值；第三列的&lt;span class=&#34;math inline&#34;&gt;\(w_{13}, w_{23}, w_{33}\)&lt;/span&gt;代表的是输入层的点&lt;span class=&#34;math inline&#34;&gt;\(x_3\)&lt;/span&gt;分别连接隐藏层的三个节点的边的权值。&lt;/p&gt;
+&lt;p&gt;图中的“+1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+a_1 = w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1\\
+a_2 = w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2\\
+a_3 = w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3
+\end{align}
+\tag{1}
+\]&lt;/span&gt; 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数&lt;span class=&#34;math inline&#34;&gt;\(f(\cdot)\)&lt;/span&gt;（前面已提及）。（1）式可以变换为（2）式： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+a_1 = f(w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1)\\
+a_2 = f(w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2)\\
+a_3 = f(w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3)
+\end{align}
+\tag{2}
+\]&lt;/span&gt; 将（2）式改写为矩阵运算形式（3）式： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} + \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x+\boldsymbol{B})
+\end{align}
+\tag{3}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN4.PNG&#34; width = &#34;400&#34; height = &#34;400&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 简单全连接网络中层之间的计算方式
+&lt;/div&gt;
+当我们增加隐藏层的层数，便可以构成更复杂的网络，即深度神经网络。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN5.PNG&#34; width = &#34;600&#34; height = &#34;400&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. 深度神经网络示意图
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;loss-function&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;损失函数（Loss Function）&lt;/h1&gt;
+&lt;p&gt;训练数据通常是一系列“输入-输出”数据对组成的集合，我们希望输入一个数据，尽可能与配对的输出数据相同。那么网络的输出结果和实际的真实结果差多少，我们需要一定数学形式进行量化，所以引入了损失函数（Loss Function）。常见的损失函数有以下几种：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;0-1损失函数&lt;/strong&gt;&lt;br /&gt;
+如果预测值和真实值一样，则损失值为0；若不等，则为1；公式表达为： &lt;span class=&#34;math display&#34;&gt;\[
+L(y,f(x)) = \begin{cases}
+1, &amp;amp; y = f(x)\\
+0, &amp;amp; y \neq f(x)
+\end{cases}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;绝对值损失函数（1-范数形式）&lt;/strong&gt;&lt;br /&gt;
+通过预测值和真实值之差的绝对值进行衡量，公式表达为： &lt;span class=&#34;math display&#34;&gt;\[
+L(y,f(x)) = |y-f(x)|
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;均方误差损失函数（2-范数形式）&lt;/strong&gt;&lt;br /&gt;
+通过计算预测值和真实值之差的平方再求均值，可得到均方误差，公式表达为： &lt;span class=&#34;math display&#34;&gt;\[
+L(y,f(x)) = \frac{1}{n}\sum_{i=1}^n(y_i-f(x_i))^2
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level1&#34;&gt;
+&lt;h1&gt;优化算法&lt;/h1&gt;
+&lt;div id=&#34;gradient-descent-method&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;梯度下降法（Gradient Descent Method）&lt;/h2&gt;
+&lt;p&gt;传统的梯度下降法是通过计算损失函数的一阶导数作为方向进行下降计算，计算方法可表示为： &lt;span class=&#34;math display&#34;&gt;\[
+W_{ij} = W_{ij} - \alpha\frac{\partial}{\partial W_{ij}}L(w,b)\\
+b_i = b_i - \alpha\frac{\partial}{\partial b_i}L(w,b)
+\]&lt;/span&gt; 其中&lt;span class=&#34;math inline&#34;&gt;\(W_{ij}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(b_i\)&lt;/span&gt;是需要优化的参数，&lt;span class=&#34;math inline&#34;&gt;\(L(w,b)\)&lt;/span&gt;是损失函数，&lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt;在深度学习中通常称为学习率（learning rate），在机器学习或最优化计算领域中我们通常称为步长（stepsize）。&lt;/p&gt;
+&lt;p&gt;传统的梯度下降法需要计算&lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;个梯度，即样本数量的梯度个数，在数据越来越大的时代，这会大大降低我们需要的计算速度，因此也产生了随机梯度下降（Stochastic gradient descent）这一类的方法。随机梯度下降通常随机选取某个样本并计算其相应导数，作为所有样本相同的导数进行计算，这种方法在实践上有不错的效果。当然，我们可以随机选取一小批样本，样本数量记为batch size，将batch size个样本的导数进行累加后求均值作为所有样本相同的导数，再进一步计算；这种方法我们称为小批量随机梯度下降法（mini-batch stochastic gradient descent）。&lt;/p&gt;
+&lt;p&gt;虽然梯度下降直接快速，但是也有一定的不足，由于我们需要选取stepsize，若stepsize太大，那可能无法达到优化问题的最优点；若stepsize太小，则收敛速度太慢，大大降低了模型训练速度。同时，不变的stepsize可能会使结果无法收敛到全局最优解，并可能停在局部最小值（局部最优解），当然很容易陷入到“鞍点”。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;NN6.PNG&#34; width = &#34;400&#34; height = &#34;400&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. “鞍点”示意图
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;momentummomentum-optimizer&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Momentum优化器（Momentum Optimizer）&lt;/h2&gt;
+&lt;p&gt;Momentum优化器也可称为基于动量的优化算法，其中参数的更新会根据梯度的变化而变化：动量再梯度连续指向同一方向上时会增加，而在梯度方向变化时会减小；这样可以更快地收敛并减少震荡。公式表示为： &lt;span class=&#34;math display&#34;&gt;\[
+v_t^{W} = \gamma \times v_{t-1}^{W} + \alpha \times \frac{\partial}{\partial W_{ij}}L(w,b)\\
+W_{ij} = W_{ij} - v_t^{W}\\
+v_t^{b} = \gamma \times v_{t-1}^{b} + \alpha \times \frac{\partial}{\partial b_i}L(w,b)\\
+b_i = b_i - v_t^{b}
+\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(\gamma\)&lt;/span&gt;是动量更新值，通常取0.9。这样，基于Momentum的随机梯度下降可以更快地收敛，并减少陷入局部最优点的概率。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;adagradadaptive-gradient-optimizer&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Adagrad优化器（Adaptive Gradient Optimizer）&lt;/h2&gt;
+&lt;p&gt;Momentum优化器虽然加速了参数的更新并加速收敛，但存在缺点是没有对不同的参数进行区别对待。Adagrad优化器则基于这样的梯度优化思想：根据参数自适应地更新学习率（也为步长stepsize），对于不频繁更新的参数做较大更新，而对于频繁更新的参数做较小的更新。&lt;/p&gt;
+&lt;p&gt;Adagrad对于每个参数&lt;span class=&#34;math inline&#34;&gt;\(\theta_{t,i}\)&lt;/span&gt;，在每个时间点&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;使用不同的学习率。首先我们先考虑Adagrad的单参数情况，为了公式形式的整洁，我们记各个时间点&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;的参数&lt;span class=&#34;math inline&#34;&gt;\(\theta_{t,i}\)&lt;/span&gt;下的目标函数梯度为&lt;span class=&#34;math inline&#34;&gt;\(g_{t,i}\)&lt;/span&gt;： &lt;span class=&#34;math display&#34;&gt;\[g_{t,i} = \frac{\partial}{\partial \theta_{t,i}}L(\theta_{t,i})\]&lt;/span&gt; 在Adagrad的更新规则中，我们会根据每个时间点&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;对每个参数&lt;span class=&#34;math inline&#34;&gt;\(\theta_{t+1,i}\)&lt;/span&gt;基于上次已经计算过的梯度&lt;span class=&#34;math inline&#34;&gt;\(\theta_{t,i}\)&lt;/span&gt;来修改步长： &lt;span class=&#34;math display&#34;&gt;\[\theta_{t+1,i} = \theta_{t,i} - \frac{\alpha}{\sqrt{G_{t,ii}+\epsilon}}\times g_{t,i}\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(G_{t,ii}\in R^{d\times d}\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(G_{t,ii}\)&lt;/span&gt;是一个对角矩阵，其对角元素&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻参数&lt;span class=&#34;math inline&#34;&gt;\(\theta_{t,i}\)&lt;/span&gt;的梯度平方和，&lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt;是一个光滑项，防止分母为0，通常取1e-8级别的数。另外，&lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt;使用默认值0.01。Adagrad有个缺点就是其分母实际上累积了梯度的平方，会使得步长（学习率）越来越小。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;adadelta&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Adadelta优化器&lt;/h2&gt;
+&lt;p&gt;Adadelta是对Adagrad的改进，通过用过去计算的梯度平方的均值代替单纯的累加梯度平方，可以避免一味地降低步长。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻的梯度平方均值表示为： &lt;span class=&#34;math display&#34;&gt;\[
+E[g^2]_{t,i} = \gamma\times E[g^2]_{t-1,i} + (1-\gamma)\times g_{t,i}^2
+\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(\gamma\)&lt;/span&gt;和前面提到的Momentum优化器中的&lt;span class=&#34;math inline&#34;&gt;\(\gamma\)&lt;/span&gt;类似，通常取0.9。将累积梯度平方更改为梯度平方均值，可得到： &lt;span class=&#34;math display&#34;&gt;\[\theta_{t+1,i} = \theta_{t,i} - \frac{\alpha}{\sqrt{E_t+\epsilon}}\times g_{t,i}\]&lt;/span&gt; 另外，我们还想要变换分子的&lt;span class=&#34;math inline&#34;&gt;\(\gamma\)&lt;/span&gt;，将&lt;span class=&#34;math inline&#34;&gt;\(\gamma\)&lt;/span&gt;改为&lt;span class=&#34;math inline&#34;&gt;\(\sqrt{E[\Delta\theta^2]_t+\epsilon}\)&lt;/span&gt;，便得到Adadelta的计算形式，以上内容可以总结为： &lt;span class=&#34;math display&#34;&gt;\[
+E[g^2]_{t,i} = \gamma\times E[g^2]_{t-1,i} + (1-\gamma)\times g_{t,i}^2\\
+E[\Delta\theta^2]_{t,i} = \gamma\times E[\Delta\theta^2]_{t-1,i} + (1-\gamma)\times \Delta\theta_{t,i}^2\\
+\theta_{t+1,i} = \theta_{t,i} - \frac{\sqrt{E[\Delta\theta^2]_{t-1,i}+\epsilon}}{\sqrt{E[g^2]_{t,i}+\epsilon}}\times g_{t,i}
+\]&lt;/span&gt; 显然，我们不再需要提前设定步长了。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;adamadaptive-moment-estimation-optimizer-adam-optimizer&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Adam优化器（Adaptive Moment Estimation Optimizer, Adam Optimizer）&lt;/h2&gt;
+&lt;p&gt;Adam也是个人名，圣经中说他是世上的第一个人类也是第一个男人，接着和夏娃结为夫妻，过上了幸福的生活…跑远了！回正题！其实Adam的全称中文是自适应矩估计，它不仅像Adadelta一样存储过去梯度平方&lt;span class=&#34;math inline&#34;&gt;\(v_t\)&lt;/span&gt;的平均值之外，还保留了像Momentum一样的保留了过去梯度&lt;span class=&#34;math inline&#34;&gt;\(m_t\)&lt;/span&gt;，其计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+m_t = \beta_1m_{t-1} + (1-\beta_1)g_t\\
+v_t = \beta_2v_{t-1} + (1-\beta_2)g_t^2
+\]&lt;/span&gt; 由于&lt;span class=&#34;math inline&#34;&gt;\(m_t\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(v_t\)&lt;/span&gt;在计算上会存在偏差，所以进行了偏差校正： &lt;span class=&#34;math display&#34;&gt;\[
+\hat{m_t} = \frac{m_t}{1-\beta_1^t}\\
+\hat{v_t} = \frac{v_t}{1-\beta_2^t}
+\]&lt;/span&gt; Adam的更新规则： &lt;span class=&#34;math display&#34;&gt;\[\theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v_t}+\epsilon}}\times \hat{m_t}\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(\beta_1\)&lt;/span&gt;通常取0.9，&lt;span class=&#34;math inline&#34;&gt;\(\beta_2\)&lt;/span&gt;通常取0.999，&lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt;通常取1e-8。大多实验表明，Adam比其他自适应学习算法表现更优。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level2&#34;&gt;
+&lt;h2&gt;算法表现效果&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://ruder.io/content/images/2016/09/saddle_point_evaluation_optimizers.gif&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. 不同优化器的随机梯度下降法在鞍点处的不同表现
+&lt;/div&gt;
+&lt;p&gt;注：动图来源于Sebastian Ruder的文章，由&lt;a href=&#34;https://twitter.com/alecrad&#34;&gt;Alec Radford&lt;/a&gt;制作。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;题外话（跳过这段吧~）&lt;/strong&gt;&lt;br /&gt;
+在整理学习优化算法的时候，发现一件有趣的事。我边看着《Tensorflow入门与实战》的第四章边学习优化算法，同时网上边找找资料帮助理解。然而有趣的是我找到了一位业界大神Sebastian Ruder的主页，并看到了他在2016年1月6日写下了&lt;em&gt;An overview of gradient descent optimization algorithms&lt;/em&gt;。看着看着我发现手中拿的书竟然是电脑屏幕上显示的文章的中文版，我便好奇地寻找手中这本实战书的出版时间 —— 2018年2月17日。怪哉怪哉~再翻翻书，发现并无任何引用。算了，回归主题！（Reference选了日期比较前的S.R.大佬的文章作为引用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;backpropagation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;反向传播算法（Backpropagation）&lt;/h1&gt;
+&lt;p&gt;反向传播算法是目前用来训练人工神经网络（Artificial Neural Network，ANN）的最常用且最有效的算法。首先我们先定义变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(v_i^{(l)}\)&lt;/span&gt;：第&lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt;层的第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个节点的输入值，&lt;span class=&#34;math inline&#34;&gt;\(v_i^{(l)} = \sum_{j=0}^n w_{ij}^{(l)}a_j^{(l-1)} + b_i^{(l)}\)&lt;/span&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(a_i^{(l)}\)&lt;/span&gt;：第&lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt;层的第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个节点的输出值，&lt;span class=&#34;math inline&#34;&gt;\(a_i^{(l)} = f(v_i^{(l)})\)&lt;/span&gt;，其中&lt;span class=&#34;math inline&#34;&gt;\(f(\cdot)\)&lt;/span&gt;是激活函数；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(w_{ij}^{(l)}\)&lt;/span&gt;：第&lt;span class=&#34;math inline&#34;&gt;\(l-1\)&lt;/span&gt;层的第&lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;个节点到第&lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt;层的第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个节点的权值；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(b_i^{(l)}\)&lt;/span&gt;：第&lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt;层计算第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个节点的输入值时的偏置项的值；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;：神经网络的总层数；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(f(\cdot)\)&lt;/span&gt;：激活函数，例如sigmoid函数，tanh函数或者ReLu函数；&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(L(w,b)\)&lt;/span&gt;：整体损失函数，常用的损失函数为&lt;span class=&#34;math inline&#34;&gt;\(\frac{1}{2n}\sum_{i=1}^n(y_i-f(x_i))^2\)&lt;/span&gt;，其中n是样本的个数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;反向传播计算过程的细节如下所示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;参数初始化&lt;/strong&gt;&lt;br /&gt;
+随机初始化网络中的各层的参数&lt;span class=&#34;math inline&#34;&gt;\(w_{ij}^{(l)}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(b_i^{(l)}\)&lt;/span&gt;，且满足&lt;span class=&#34;math inline&#34;&gt;\(N(0,\ 0.01)\)&lt;/span&gt;分布的随机数；&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;前向传播&lt;/strong&gt;&lt;br /&gt;
+
+&lt;div align=&#34;center&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;NN3.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以图3中隐藏层的第一个节点（从上往下数第一个）为例，对于这个节点而言，其输入信号为： &lt;span class=&#34;math display&#34;&gt;\[v_1^{(2)} = a_1^{(1)}\times w_{11}^{(2)} + a_2^{(1)}\times w_{12}^{(2)} + a_3^{(1)}\times w_{13}^{(2)} + b_1^{(2)}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;同理，我们可以得到该层的其他节点的计算： &lt;span class=&#34;math display&#34;&gt;\[
+v_2^{(2)} = a_1^{(1)}\times w_{21}^{(2)} + a_2^{(1)}\times w_{22}^{(2)} + a_3^{(1)}\times w_{23}^{(2)} + b_2^{(2)}\\
+v_3^{(2)} = a_1^{(1)}\times w_{31}^{(2)} + a_2^{(1)}\times w_{32}^{(2)} + a_3^{(1)}\times w_{33}^{(2)} + b_3^{(2)}\\
+v_4^{(2)} = a_1^{(1)}\times w_{41}^{(2)} + a_2^{(1)}\times w_{42}^{(2)} + a_3^{(1)}\times w_{43}^{(2)} + b_4^{(2)}\\
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;若用矩阵形式进行表达： &lt;span class=&#34;math display&#34;&gt;\[V^{(2)} = A^{(1)}\times W^{(2)} + B^{(2)}\]&lt;/span&gt; 其中， &lt;span class=&#34;math display&#34;&gt;\[
+V^{(2)} = (v_1^{(2)}, v_2^{(2)}, v_3^{(2)}, v_4^{(2)})\\
+A^{(1)} = (a_1^{(1)}, a_2^{(1)}, a_3^{(1)})\\
+W^{(2)} = \begin{pmatrix}
+w_{11}^{(2)} &amp;amp; w_{21}^{(2)} &amp;amp; w_{31}^{(2)} &amp;amp; w_{41}^{(2)}\\
+w_{12}^{(2)} &amp;amp; w_{22}^{(2)} &amp;amp; w_{32}^{(2)} &amp;amp; w_{42}^{(2)}\\
+w_{13}^{(2)} &amp;amp; w_{23}^{(2)} &amp;amp; w_{33}^{(2)} &amp;amp; w_{43}^{(2)}
+\end{pmatrix}\\
+B^{(2)} = (b_1^{(2)}, b_2^{(2)}, b_3^{(2)}, b_4^{(2)})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;再经过激活函数（非线性函数）变换后得到： &lt;span class=&#34;math display&#34;&gt;\[A^{(2)} = f(V^{(2)})\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;同理，经由 &lt;span class=&#34;math display&#34;&gt;\[
+V^{(3)} = A^{(2)}\times W^{(3)} + B^{(3)}\\
+A^{(3)} = f(V^{(3)})
+\]&lt;/span&gt; 可以得到最终输出。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;反向传播&lt;/strong&gt;&lt;br /&gt;
+首先对于最后一层节点的偏导数，其实我们很容易得到，我们定义神经网络总共有&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;层，对于最后一层即第&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;层（输出层），根据偏导数的定义：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_i^{(K)} =&amp;amp;\ \frac{\partial}{\partial v_i^{(K)}}L(w,b)\\
+=&amp;amp;\ \frac{\partial L(w,b)}{\partial a_i^{(K)}}\times \frac{\partial a_i^{(K)}}{\partial v_i^{(K)}}\\
+=&amp;amp;\ \frac{\partial L(w,b)}{\partial a_i^{(K)}}\times f&amp;#39;(v_i^{(K)})
+\end{align}
+\tag{4}
+\]&lt;/span&gt; 明显的是，&lt;span class=&#34;math inline&#34;&gt;\(a_i^{(K)}\)&lt;/span&gt;是最后一层（即输出层）的输出值，&lt;span class=&#34;math inline&#34;&gt;\(f&amp;#39;(v_i^{(K)})\)&lt;/span&gt;则是激活函数对&lt;span class=&#34;math inline&#34;&gt;\(v_i^{(K)}\)&lt;/span&gt;的导数。&lt;/p&gt;
+&lt;p&gt;对（4）式进一步推导可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_i^{(K)} =&amp;amp;\ \frac{\partial}{\partial a_i^{(K)}}\Big[\frac{1}{2n_K}\sum_{j=1}^{n_K}\Big(y_j-a_j^{(K)}\Big)^2\Big]\times f&amp;#39;(v_i^{(K)})\\
+=&amp;amp;\ -\frac{1}{n_k}(y_i-a_i^{(K)})\times f&amp;#39;(v_i^{(K)})
+\end{align}
+\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(y_i\)&lt;/span&gt;是样本对应的正确值，&lt;span class=&#34;math inline&#34;&gt;\(n_K\)&lt;/span&gt;是第K层节点个数。&lt;/p&gt;
+&lt;p&gt;因此，可得到最后一层（第K层）的计算公式： &lt;span class=&#34;math display&#34;&gt;\[
+\delta_i^{(K)} = -\frac{1}{n_k}(y_i-a_i^{(K)})\times f&amp;#39;(v_i^{(K)})
+\tag{5}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;那么对于第&lt;span class=&#34;math inline&#34;&gt;\(K-1\)&lt;/span&gt;层的偏导数，可以根据第&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;层的计算出来： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;amp;\ \frac{\partial}{\partial v_i^{(K-1)}}L(w,b)\\
+=&amp;amp;\ \frac{\partial}{\partial v_i^{(K-1)}}\Big[\frac{1}{2n_K}\sum_{j=1}^{n_K}\Big(y_j-a_j^{(K)}\Big)^2\Big]\\
+=&amp;amp;\ \frac{1}{2n_K}\Big[\frac{\partial}{\partial v_i^{(K-1)}} \sum_{j=1}^{n_K}\Big(y_j-f(v_j^{(K)})\Big)^2\Big]
+\end{align}
+\tag{6}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;利用连续函数的求导和求和顺序可互换，（6）式可以推得： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;amp;\ -\frac{1}{n_K} \sum_{j=1}^{n_K} \Big[(y_j-f(v_j^{(K)}))\times \frac{\partial}{\partial v_i^{(K-1)}}f(v_j^{(K)})\Big]\\
+=&amp;amp;\ -\frac{1}{n_K} \sum_{j=1}^{n_K} \Big[(y_j-f(v_j^{(K)}))\times \frac{\partial f(v_j^{(K)})}{\partial v_i^{(K)}}\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]\\
+=&amp;amp;\ \sum_{j=1}^{n_K} \Big[-\frac{1}{n_K} (y_j-f(v_j^{(K)}))\times f&amp;#39;(v_j^{(K)})\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;联合（5）式，由（6）式可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;amp;\ \sum_{j=1}^{n_K} \Big[ \delta_i^{(K)}\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]\\
+=&amp;amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times \frac{\partial }{\partial v_i^{(K-1)}}\Big[ \sum_{m=0}^{n_{K-1}}a_m^{(K-1)}\times w_{jm}^{(K)}+b_j^{(K)} \Big]\Bigg]\\
+=&amp;amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times \frac{\partial }{\partial v_i^{(K-1)}}\Big[ \sum_{m=0}^{n_{K-1}}f(v_m^{(K-1)})\times w_{jm}^{(K)}+b_j^{(K)} \Big]\Bigg]\\
+=&amp;amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times f&amp;#39;(v_i^{(K-1)})\times w_{ji}^{(K)} \Bigg]\\
+=&amp;amp;\ \Bigg[\sum_{j=1}^{n_K}\Big[ \delta_i^{(K)}\times w_{ji}^{(K)} \Big]\Bigg] \times f&amp;#39;(v_i^{(K-1)})
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;因此，可得到第K-1层的计算公式： &lt;span class=&#34;math display&#34;&gt;\[
+\delta_i^{(K-1)} = \Bigg[\sum_{j=1}^{n_K}\Big[ \delta_i^{(K)}\times w_{ji}^{(K)} \Big]\Bigg] \times f&amp;#39;(v_i^{(K-1)})
+\tag{7}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;同理，用&lt;span class=&#34;math inline&#34;&gt;\(K-2\)&lt;/span&gt;替换&lt;span class=&#34;math inline&#34;&gt;\(K-1\)&lt;/span&gt;，用&lt;span class=&#34;math inline&#34;&gt;\(K-1\)&lt;/span&gt;替换&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;，则可计算第&lt;span class=&#34;math inline&#34;&gt;\(K-2\)&lt;/span&gt;层的偏导数。 &lt;span class=&#34;math display&#34;&gt;\[
+\delta_i^{(K-2)} = \Bigg[\sum_{j=1}^{n_{K-1}}\Big[ \delta_i^{(K-1)}\times w_{ji}^{(K-1)} \Big]\Bigg] \times f&amp;#39;(v_i^{(K-2)})
+\tag{7}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;同样的，可以根据（7）式计算得到网络中所有节点的偏导数。&lt;/p&gt;
+&lt;p&gt;回归我们的参数迭代公式： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+w_{ij}^{(l)} =&amp;amp;\ w_{ij}^{(l)} - \alpha\times \frac{\partial}{\partial w_{ij}^{(l)}}L(w,b)\\
+b_i^{(l)} =&amp;amp;\ b_i^{(l)} - \alpha\times \frac{\partial}{\partial b_i^{(l)}}L(w,b)
+\end{align}
+\tag{8}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;对于后面的偏导数部分，我们可以加以处理，对于参数&lt;span class=&#34;math inline&#34;&gt;\(w_{ij}^{(l)}\)&lt;/span&gt;部分： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial L(w,b)}{\partial w_{ij}^{(l)}} =&amp;amp;\ \frac{\partial L(w,b)}{\partial v_i^{(l)}}\times \frac{\partial  v_i^{(l)}}{\partial w_{ij}^{(l)}}\\
+=&amp;amp;\ \delta_i^{(l)}\times \frac{\partial v_i^{(l)}}{\partial w_{ij}^{(l)}}\\
+=&amp;amp;\ \delta_i^{(l)}\times \frac{\partial }{\partial w_{ij}^{(l)}}\Big[\sum_{j=0}^{n_{l-1}}a_j^{(l-1)}\times w_{ij}^{(l)}+b_i^{(l)}\Big]\\
+=&amp;amp;\ \delta_i^{(l)}\times a_j^{(l-1)}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;对于参数&lt;span class=&#34;math inline&#34;&gt;\(b_i^{(l)}\)&lt;/span&gt;部分： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial L(w,b)}{\partial b_i^{(l)}} =&amp;amp;\ \frac{\partial L(w,b)}{\partial v_i^{(l)}}\times \frac{\partial v_i^{(l)}}{\partial b_i^{(l)}}\\
+=&amp;amp;\ \delta_i^{(l)}\times \frac{\partial}{\partial b_i^{(l)}}\Big[\sum_{j=0}^{n_{l-1}}a_j^{(l-1)}\times w_{ij}^{(l)}+b_i^{(l)}\Big]\\
+=&amp;amp;\ \delta_i^{(l)}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;因此，由（8）式可以推得 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+w_{ij}^{(l)} =&amp;amp;\ w_{ij}^{(l)} - \alpha\times \delta_i^{(l)}\times a_j^{(l-1)}\\
+b_i^{(l)} =&amp;amp;\ b_i^{(l)} - \alpha\times \delta_i^{(l)}
+\end{align}
+\tag{8}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Over！反向传播算法到此结束！&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reference&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;http://ruder.io/optimizing-gradient-descent/index.html&#34;&gt;Sebastian Ruder. An overview of gradient descent optimization algorithms&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
       <title>关于Rmarkdown生成中文内容pdf的那些事</title>
-      <link>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</link>
+      <link>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</link>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</guid>
-      <description> 缘于某人用Rmarkdown搞不出中文内容的pdf而引发一场激战之下，TT只能忍气吞声继续走上帮人帮到底的道路，于是网上搜出一大堆关于Rmarkdown生成中文pdf的麻烦事。无奈，众里寻它千百度，最终发现解决问题的YAML模板及相关的解决方案，怕在接下来的日子可能遭受同样的折磨，并以扩充Blog文章为前提，书写此文。
-首先，让我们先在RStudio菜单栏选择Tools并点击Global Options。选择Sweaver并按图勾选，最后点OK~  Figure1. 可爱的Global Options窗口  然后.Rmd文件中的YAML模板如下设置：
---- title: &amp;quot;我是一个Test文档的标题&amp;quot; author: &amp;quot;我是一个Test文档的作者名称&amp;quot; date: &amp;quot;我是一个Test文档的写作日期&amp;quot; CJKmainfont: Microsoft YaHei output: pdf_document: includes: header-includes: - \usepackage{xeCJK} keep_tex: yes latex_engine: xelatex --- 注：介个模板用上了大微软的雅黑字体，如若想修改，那请继续摸索摸索。（T.T累了不想改了~）
-搞定！Over！愿你的探索之路不与我一样艰辛((٩(//̀Д/́/)۶))
-课外补充：
- 关于Rmarkdown to pdf的美好世界
-如果你也被这样的问题所困扰，那么你会发现R界的大佬谢益辉搞了个包叫rticles，直接提供template给你写中文文档。然而，无奈Tex世界的混乱，还是遇到奇奇怪怪的乱七八糟的问题，但是大佬说大家用TinyTex吧，那将提供Rmarkdown to pdf的一片美好世界。  </description>
+      <guid>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</guid>
+      <description>
+
+
+&lt;p&gt;缘于某人用Rmarkdown搞不出中文内容的pdf而引发一场激战之下，TT只能忍气吞声继续走上帮人帮到底的道路，于是网上搜出一大堆关于Rmarkdown生成中文pdf的麻烦事。无奈，众里寻它千百度，最终发现解决问题的YAML模板及相关的解决方案，怕在接下来的日子可能遭受同样的折磨，并以扩充Blog文章为前提，书写此文。&lt;/p&gt;
+首先，让我们先在RStudio菜单栏选择Tools并点击Global Options。选择Sweaver并按图勾选，最后点OK~
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RMD2PDF.PNG&#34; width = &#34;500&#34; height = &#34;470&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+Figure1. 可爱的Global Options窗口
+&lt;/div&gt;
+&lt;p&gt;然后.Rmd文件中的YAML模板如下设置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;--- 
+title: &amp;quot;我是一个Test文档的标题&amp;quot; 
+author: &amp;quot;我是一个Test文档的作者名称&amp;quot; 
+date: &amp;quot;我是一个Test文档的写作日期&amp;quot; 
+CJKmainfont: Microsoft YaHei
+output:
+  pdf_document:
+    includes:
+      header-includes:
+        - \usepackage{xeCJK}
+    keep_tex: yes
+    latex_engine: xelatex
+---&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注：介个模板用上了大微软的雅黑字体，如若想修改，那请继续摸索摸索。（T.T累了不想改了~）&lt;/p&gt;
+&lt;p&gt;搞定！Over！愿你的探索之路不与我一样艰辛((٩(//̀Д/́/)۶))&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;课外补充：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;关于Rmarkdown to pdf的美好世界&lt;br /&gt;
+如果你也被这样的问题所困扰，那么你会发现R界的大佬&lt;a href=&#34;https://yihui.name/&#34;&gt;谢益辉&lt;/a&gt;搞了个包叫&lt;a href=&#34;https://github.com/rstudio/rticles&#34;&gt;rticles&lt;/a&gt;，直接提供template给你写中文文档。然而，无奈Tex世界的混乱，还是遇到奇奇怪怪的乱七八糟的问题，但是大佬说大家用&lt;a href=&#34;https://yihui.name/tinytex/&#34;&gt;TinyTex&lt;/a&gt;吧，那将提供Rmarkdown to pdf的一片美好世界。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
       <title>Variational Auto-Encoder</title>
-      <link>/post/variational-auto-encoder.html</link>
+      <link>/post/variational-auto-encoder/</link>
       <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/variational-auto-encoder.html</guid>
-      <description>IntroductionWe assume the observed variable \(x\) is a random sample from an unknown underlying process, whose true distribution \(p^*(x)\) is unknown. We attempt to approximate this underlying process with a chosen model \(p_{\theta}(x)\), with parameters \(\theta\): \[x\sim p_{\theta}(x)\] We always talk about learning like Deep Learning, and actually the learning is the process of searching for a value of the parameters \(\theta\) in model \(p_{\theta}(x)\), which can approximate the true distribution of the data, denoted by \(p^*(x)\).</description>
+      <guid>/post/variational-auto-encoder/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;We assume the observed variable &lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt; is a random sample from an &lt;strong&gt;unknown underlying process&lt;/strong&gt;, whose &lt;strong&gt;true distribution&lt;/strong&gt; &lt;span class=&#34;math inline&#34;&gt;\(p^*(x)\)&lt;/span&gt; is &lt;strong&gt;unknown&lt;/strong&gt;. We attempt to approximate this underlying process with a chosen model &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x)\)&lt;/span&gt;, with parameters &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;: &lt;span class=&#34;math display&#34;&gt;\[x\sim p_{\theta}(x)\]&lt;/span&gt; We always talk about learning like &lt;strong&gt;Deep Learning&lt;/strong&gt;, and actually the &lt;strong&gt;learning&lt;/strong&gt; is the process of searching for a value of the parameters &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; in model &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x)\)&lt;/span&gt;, which can approximate the true distribution of the data, denoted by &lt;span class=&#34;math inline&#34;&gt;\(p^*(x)\)&lt;/span&gt;. In other words, &lt;span class=&#34;math display&#34;&gt;\[p_{\theta}(x)\approx p^*(x)\]&lt;/span&gt; Latent variables are variables that are part of the model, but which we don’t observe, and are therefore not part of the dataset. We typically use &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; to denote such latent variables.&lt;/p&gt;
+&lt;p&gt;The marginal distribution over the observed variables &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x)\)&lt;/span&gt;, is given by: &lt;span class=&#34;math display&#34;&gt;\[
+p_{\theta}(x) = \int p_{\theta}(x,z) dz = \int p_{\theta}(z) p_{\theta}(x|z) dz
+\]&lt;/span&gt; We use the term &lt;strong&gt;deep latent variable model (DLVM)&lt;/strong&gt; to denote a &lt;strong&gt;latent variable model&lt;/strong&gt; &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x,z)\)&lt;/span&gt; whose distributions are parameterized by neural networks.&lt;/p&gt;
+&lt;div id=&#34;example-dlvm-for-multivariate-bernoulli-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example DLVM for multivariate Bernoulli data&lt;/h2&gt;
+&lt;p&gt;A simple example DLVM for binary data &lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;, with a spherical Gaussian latent space, and a factorized Bernoulli obervation model &lt;span class=&#34;math display&#34;&gt;\[
+p(z) = \mathcal{N}(0,\text{I})\\
+\text{p} = \text{DecoderNeuralNet}_{\theta}(z)\\
+\begin{align}
+\log p(x|z) =&amp;amp; \sum_{j=1}^J \log p(x_j|z) = \sum_{j=1}^J \text{Bernoulli}(x_j,p_j)\\
+=&amp;amp; \sum_{j=1}^Jx_j \log p_j + (1-x_j)\log (1-p_j)
+\end{align}
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(0\leq p_j\leq 1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Therefore, we easily get &lt;span class=&#34;math inline&#34;&gt;\(p(x,z) = p(x|z)\times p(z)\)&lt;/span&gt; by the term we described above.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;some-problem&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Some problem&lt;/h2&gt;
+&lt;p&gt;Note that &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x,z)\)&lt;/span&gt; is efficient to compute. Since the intractability of &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x)\)&lt;/span&gt; (&lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x) = \int p_{\theta}(x,z) dz\)&lt;/span&gt;), the posterior distribution &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(z|x)\)&lt;/span&gt; is also intractable, because their densities are related through the basic identity: &lt;span class=&#34;math display&#34;&gt;\[p_{\theta}(z|x) = \frac{p_{\theta}(x,z)}{p_{\theta}(x)}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;How can we perform efficient approximate posterior inference and efficient approximate maximum likelihood estimation in deep latent variable models, in the presence of large datasets?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;similar-method-like-dlvm&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Similar method like DLVM&lt;/h2&gt;
+&lt;p&gt;We introduce a parametric inference model &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x)\)&lt;/span&gt; (also called as &lt;strong&gt;encoder&lt;/strong&gt;)in this part and we try to optimize the variational parameters &lt;span class=&#34;math inline&#34;&gt;\(\phi\)&lt;/span&gt; such that: &lt;span class=&#34;math display&#34;&gt;\[q_{\phi}(z|x) \approx p_{\theta}(z|x)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Similar to &lt;strong&gt;DLVM&lt;/strong&gt;, the distribution of &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x)\)&lt;/span&gt; also can be parameterized using deep neural networks. In this case, the variational parameters &lt;span class=&#34;math inline&#34;&gt;\(\phi\)&lt;/span&gt; include the weights and biases of the neural network. For example: &lt;span class=&#34;math display&#34;&gt;\[
+(\mu,\sigma) = \text{EncoderNeuralNet}_{\phi}(x)\\
+q_{\phi}(z|x) = \mathcal{N}(\mu,\text{diag}(\sigma^2))
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;evidence-lower-bound-elbo-and-kl-divergence&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Evidence lower bound (ELBO) and KL divergence&lt;/h1&gt;
+&lt;p&gt;The optimization objective of the variational autoencoder is the &lt;strong&gt;evidence lower bound&lt;/strong&gt;, abbreviated as ELBO. An alternative term for this objective is &lt;strong&gt;variational lower bound&lt;/strong&gt;. We can obtain the lower bound by: &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\log p_{\theta}(x) =&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x)}[\log p_{\theta}(x)] = \mathbb{E}_{q_{\phi}(z|x)} \Big[\log\Big[ \frac{p_{\theta}(x,z)}{p_{\theta}(z|x)}\Big]\Big]\\
+=&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x)}\Big[\log\Big[\frac{p_{\theta}(x,z)}{q_{\phi}(z|x)}\frac{q_{\phi}(z|x)}{p_{\theta}(z|x)}\Big]\Big]\\
+=&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x)}\Big[\log\Big[\frac{p_{\theta}(x,z)}{q_{\phi}(z|x)}\Big]\Big] + \mathbb{E}_{q_{\phi}(z|x)}\Big[\log\Big[\frac{q_{\phi}(z|x)}{p_{\theta}(z|x)}\Big]\Big]\\
+=&amp;amp;\ \mathcal{L}_{\theta,\phi}(x) + KL[q_{\phi}(z|x)||p_{\theta}(z|x)]\\
+\geq&amp;amp;\ \mathcal{L}_{\theta,\phi}(x)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;div id=&#34;kl-divergence&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;KL divergence&lt;/h2&gt;
+&lt;p&gt;We want to find a good probability distribution &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x)\)&lt;/span&gt; (‘good’ means the efficient computation) to approximate the true posterior probability &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(z|x)\)&lt;/span&gt;, where the &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; is the latent variable. &lt;strong&gt;KL divergence&lt;/strong&gt; can measure the distance well between these two distribution. For the discrete probability situation, the &lt;strong&gt;KL divergence&lt;/strong&gt; can be written as &lt;span class=&#34;math display&#34;&gt;\[KL(q||p) = \sum q(x)\log \frac{q(x)}{p(x)}\]&lt;/span&gt;&lt;/p&gt;
+&lt;div id=&#34;example-of-1-dimension-guassian-distribution&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Example of 1-dimension Guassian distribution&lt;/h3&gt;
+&lt;p&gt;Supposed that we have two random variables &lt;span class=&#34;math inline&#34;&gt;\(x_1, x_2\)&lt;/span&gt; w.r.t the guassian distribution &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}(\mu_1,\sigma_1^2),\mathcal{N}(\mu_2,\sigma_2^2)\)&lt;/span&gt; respectively.&lt;/p&gt;
+&lt;p&gt;Recall that the density function of guassian distribution &lt;span class=&#34;math display&#34;&gt;\[
+\mathcal{N}(\mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]&lt;/span&gt; Then &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL(p_1,p_2) =&amp;amp;\ \int p_1(x)\log \frac{p_1(x)}{p_2(x)}dx\\
+=&amp;amp;\ \int p_1(x)(\log p_1(x) - \log p_2(x))dx\\
+=&amp;amp;\ \int p_1(x)(\log \frac{1}{\sqrt{2\pi\sigma_1^2}}e^{-\frac{(x-\mu_1)^2}{2\sigma_1^2}} - \log \frac{1}{\sqrt{2\pi\sigma_2^2}}e^{-\frac{(x-\mu_2)^2}{2\sigma_2^2}})dx\\
+=&amp;amp;\ \int p_1(x)(-\log \sqrt{2\pi \sigma_1^2} - \frac{(x-\mu_1)^2}{2\sigma_1^2} + \log \sqrt{2\pi \sigma_2^2} + \frac{(x-\mu_2)^2}{2\sigma_2^2})dx\\
+=&amp;amp;\ \int p_1(x)(-\frac{1}{2}\log2\pi-\log\sigma_1+\frac{1}{2}\log2\pi+\log\sigma_2 - (\frac{(x-\mu_1)^2}{2\sigma_1^2}-\frac{(x-\mu_2)^2}{2\sigma_2^2}))dx\\
+=&amp;amp;\ \int p_1(x)(\log\frac{\sigma_2}{\sigma_1} - (\frac{(x-\mu_1)^2}{2\sigma_1^2}-\frac{(x-\mu_2)^2}{2\sigma_2^2}))dx\\
+=&amp;amp;\ \int p_1(x)(\log\frac{\sigma_2}{\sigma_1})dx + \int p_1(x)(\frac{(x-\mu_2)^2}{2\sigma_2^2})dx - \int p_1(x)(\frac{(x-\mu_1)^2}{2\sigma_1^2})dx\\
+=&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{1}{2\sigma_2^2}\int p_1(x)(x-\mu_2)^2dx - \frac{1}{2\sigma_1^2}\int p_1(x)(x-\mu_1)^2dx
+\end{align}
+\]&lt;/span&gt; Since &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2 = \int p_1(x)(x-\mu_1)^2dx\)&lt;/span&gt;, then &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL(p_1,p_2) =&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{1}{2\sigma_2^2}\int p_1(x)(x-\mu_2)^2dx - \frac{1}{2}\\
+=&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{1}{2\sigma_2^2}\int p_1(x)(x - \mu_1 + \mu_1 - \mu_2)^2dx - \frac{1}{2}\\
+=&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{1}{2\sigma_2^2}[\int p_1(x)(x-\mu_1)^2dx+\int p_1(x)(\mu_1-\mu_2)^2dx+2\int p_1(x)(x-\mu_1)(\mu_1-\mu_2)dx] - \frac{1}{2}\\
+\end{align}
+\]&lt;/span&gt; We know that &lt;span class=&#34;math inline&#34;&gt;\(\mu_1 = \int x p_1(x)dx\)&lt;/span&gt;, so &lt;span class=&#34;math inline&#34;&gt;\(2\int p_1(x)(x-\mu_1)(\mu_1-\mu_2)dx = 2(\mu_1-\mu_2)[\int xp_1(x)dx - \mu_1] = 0\)&lt;/span&gt;, thus &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL(p_1,p_2) =&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{1}{2\sigma_2^2}[\int p_1(x)(x-\mu_1)^2dx + (\mu_1-\mu_2)^2] - \frac{1}{2}\\
+=&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{\sigma_1^2+(\mu_1 - \mu_2)^2}{2\sigma_2^2} - \frac{1}{2}\\
+\end{align}
+\]&lt;/span&gt; If we suppose that the &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}(\mu_2,\sigma_2^2)\)&lt;/span&gt; is standard guassian distribution, &lt;span class=&#34;math inline&#34;&gt;\(\mu_2 = 0, \sigma_2^2 = 1\)&lt;/span&gt;, so &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL =&amp;amp;\ \log\frac{\sigma_2}{\sigma_1} + \frac{\sigma_1^2+(\mu_1 - \mu_2)^2}{2\sigma_2^2} - \frac{1}{2}\\
+=&amp;amp;\ \log1 - \log\sigma_1 + \frac{\sigma_1^2+(\mu_1 - 0)^2}{2} - \frac{1}{2}\\
+=&amp;amp;\ -\log\sigma_1 + \frac{\sigma_1^2+\mu_1^2}{2} - \frac{1}{2}\\
+\end{align}
+\]&lt;/span&gt; We expect that the &lt;strong&gt;KL&lt;/strong&gt; can be as small as possible, we calculate its derivative, then we get &lt;span class=&#34;math display&#34;&gt;\[
+\frac{\partial KL}{\partial \sigma_1} = -\frac{1}{\sigma_1} + \sigma_1\\
+\frac{\partial KL}{\partial \mu_1} = \mu_1
+\]&lt;/span&gt; We let them equal to zero, then we get &lt;span class=&#34;math display&#34;&gt;\[
+-\frac{1}{\sigma_1} + \sigma_1 = 0 \Rightarrow \sigma_1 = 1\\
+\mu_1 = 0
+\]&lt;/span&gt; which means that the &lt;strong&gt;KL&lt;/strong&gt; becomes the minimum when &lt;span class=&#34;math inline&#34;&gt;\(x_2 \sim \mathcal{N}(0,1)\)&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;minimization-of-kl-divergence&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Minimization of KL divergence&lt;/h3&gt;
+&lt;p&gt;If we want to use the ELBO to approximate the log-likelihood, then we need to minimize the &lt;span class=&#34;math inline&#34;&gt;\(D_{KL}[q_{\phi}(z|x)||p_{\theta}(z|x)]\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;From &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL[q_{\phi}(z|x)||p_{\theta}(z|x)] =&amp;amp;\ \int q_{\phi}(z|x) \log \frac{q_{\phi}(z|x)}{p_{\theta}(z|x)} dz\\
+=&amp;amp;\ \int q_{\phi}(z|x) [\log q_{\phi}(z|x) - \log  p_{\theta}(z|x)]dz
+\end{align}
+\]&lt;/span&gt; and Bayesian formula &lt;span class=&#34;math display&#34;&gt;\[
+p_{\theta}(z|x) = \frac{p_{\theta}(x|z)*p_{\theta}(z)}{p_{\theta}(x)}
+\]&lt;/span&gt; We can get &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL[q_{\phi}(z|x)||p_{\theta}(z|x)] =&amp;amp;\ \int q_{\phi}(z|x) [\log q_{\phi}(z|x) - \log  \frac{p_{\theta}(x|z)*p_{\theta}(z)}{p_{\theta}(x)}]dz\\
+=&amp;amp;\ \int q_{\phi}(z|x) [\log q_{\phi}(z|x) -\log  p_{\theta}(x|z) - \log p_{\theta}(z) + \log p_{\theta}(x)]dz\\
+=&amp;amp;\  \int q_{\phi}(z|x) [\log q_{\phi}(z|x) -\log  p_{\theta}(x|z) - \log p_{\theta}(z)]dz + \log p_{\theta}(x)\\
+=&amp;amp;\ KL[q_{\phi}(z|x)||p_{\theta}(z)] - \int q_{\phi}(z|x) \log p_{\theta}(x|z)dz + \log p_{\theta}(x)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;When the data &lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt; are provided, then last term in the right side &lt;span class=&#34;math inline&#34;&gt;\(\log p_{\theta}(x)\)&lt;/span&gt; becomes constant, and we wish the &lt;span class=&#34;math inline&#34;&gt;\(D_{KL}[q_{\phi}(z|x)||p_{\theta}(z|x)]\)&lt;/span&gt; can be as small as possible.&lt;/p&gt;
+&lt;p&gt;Thus, the optimization problem becomes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\min\limits_x D_{KL}[q_{\phi}(z|x)||p_{\theta}(z)]\)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\max\limits_x \int q_{\phi}(z|x) \log p_{\theta}(x|z)dz\)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It also can be written as &lt;span class=&#34;math display&#34;&gt;\[\min_x KL[q_{\phi}(z|x)||p_{\theta}(z)] - \mathbb{E}_{q_{\phi}(z|x)}[\log p_{\theta}(x|z)]\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Although we can obtain our new optimization problem, the problem actually is difficult to solve, and thus we would like to straightly optimize the &lt;strong&gt;ELBO&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;variational-auto-encoder&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Variational Auto-Encoder&lt;/h1&gt;
+&lt;div id=&#34;connection-with-em&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Connection with EM&lt;/h2&gt;
+&lt;p&gt;For standard EM algorithms, the posterior is often known, &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x) = q(z|x) = p_{\theta}(z|x)\)&lt;/span&gt;, then the &lt;strong&gt;KL&lt;/strong&gt; term becomes zero, so &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\log p_{\theta}(x) = \mathcal{L}_{\theta}(x) =&amp;amp;\ \mathbb{E}_{q(z|x)}\Big[\log\Big[\frac{p_{\theta}(x,z)}{q(z|x)}\Big]\Big]\\
+=&amp;amp;\ \mathbb{E}_{q(z|x)}[\log p_{\theta}(x,z)] - \mathbb{E}_{q(z|x)}[\log q(z|x)]
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The above step is indeed the E-step in the standard EM algorithm. The M-step would be &lt;span class=&#34;math display&#34;&gt;\[\theta_{\text{new}} = \arg \max_\theta L_{\theta}(x)\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;stochastic-gradient-based-optimization-of-the-elbo&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Stochastic gradient-based optimization of the ELBO&lt;/h2&gt;
+&lt;p&gt;From the &lt;strong&gt;Evidence lower bound (ELBO)&lt;/strong&gt; part, we obtain the inequality fomula as &lt;span class=&#34;math inline&#34;&gt;\(\log p_{\theta}(x) \geq \mathcal{L}_{\theta,\phi}(x)\)&lt;/span&gt;. Recall that EM algorithm is one of the special case of Minorize-Maximization (MM) algorithm, and &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{L}_{\theta,\phi}(x)\)&lt;/span&gt; can be considered as the surrogate function in MM algorithm, so we would get the maximum of log-likelihood by maximizing the lower bound.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;VAE1.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+Figure1. The EM algorithm involves alternatel computing a lower bound on the log likelihood for the current parameter values and then maximizing this bound to obtain the new parameter values.
+&lt;/div&gt;
+&lt;p&gt;Given a dataset with i.i.d. data, the ELBO objective is the sum (or average) of individual-datapoint ELBO’s: &lt;span class=&#34;math display&#34;&gt;\[
+\mathcal{L}_{\theta,\phi}(\mathcal{D})=\sum_{x\in\mathcal{D}}\mathcal{L}_{\theta,\phi}(x)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Apparantly, the individual-datapoint ELBO and its gradient &lt;span class=&#34;math inline&#34;&gt;\(\nabla_{\theta,\phi}\mathcal{L}_{\theta,\phi}(x)\)&lt;/span&gt; is intractable in general.&lt;/p&gt;
+&lt;div id=&#34;the-sgvb-estimator-and-auto-encoding-vb-aevb-algorithm&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The SGVB estimator and Auto-Encoding VB (AEVB) algorithm&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Reparamterization trick&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; be a continuous random variable and &lt;span class=&#34;math inline&#34;&gt;\(z\sim q_{\phi}(z|x)\)&lt;/span&gt; be some conditional distribution. It is often possible to express the random variable &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; as a deterministic variable &lt;span class=&#34;math inline&#34;&gt;\(z=g_{\phi}(\epsilon,x)\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt; is an auxiliary variable with independent marginal &lt;span class=&#34;math inline&#34;&gt;\(p(\epsilon)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We suppose that the recognition model &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x)\)&lt;/span&gt; can be written as some differentiable transformation of another randome variable &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(g_{\phi}(\epsilon,x)\)&lt;/span&gt;, and we can form a simple Monte Carlo estimator &lt;span class=&#34;math inline&#34;&gt;\(\tilde{\mathcal{L}}_{\theta,\phi}(x)\)&lt;/span&gt; of the individual-datapoint ELBO: &lt;span class=&#34;math display&#34;&gt;\[
+\epsilon \sim p(\epsilon)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;so we can get our generic Stochastic Gradient Variational Bayes (SGVB) estimator from the lower bound &lt;span class=&#34;math display&#34;&gt;\[
+\tilde{\mathcal{L}}_{\theta,\phi}^{A}(x^{(i)}) = \frac{1}{L}\sum_{l=1}^L[\log p_{\theta}(x^{(i)},z^{(i,l)}) - \log q_{\phi}(z^{(i,l)}|x^{(i)})]
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(z^{(i,l)} = g_{\phi}(\epsilon^{(i,l)},x^{(i)}),\quad \epsilon^{(i,l)} \sim p(\epsilon)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We try to decompose the &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{L}_{\theta,\phi}(x)\)&lt;/span&gt;, and we get &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{L}_{\theta,\phi}(x^{(i)}) =&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x^{(i)})}\Big[\log\frac{p_{\theta}(x^{(i)},z)}{q_{\phi}(z|x^{(i)})}\Big]\\
+=&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x^{(i)})}\Big[\log\frac{p_{\theta}(x^{(i)}|z)p_{\theta}(z)}{q_{\phi}(z|x^{(i)})}\Big]\\
+=&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x^{(i)})}\Big[\log p_{\theta}(x^{(i)}|z)-\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z)}\Big]\\
+=&amp;amp;\ \mathbb{E}_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(x^{(i)}|z)]-KL[q_{\phi}(z|x^{(i)})||p_{\theta}(z)]
+\end{align}
+\]&lt;/span&gt; The final equality showed the same object result (In Minimization of KL divergence section).&lt;/p&gt;
+&lt;p&gt;With this equality, we also can obtain another estimator &lt;span class=&#34;math display&#34;&gt;\[
+\tilde{\mathcal{L}}_{\theta,\phi}^{B}(x^{(i)}) = \mathbb{E}_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(x^{(i)}|z)]-KL[q_{\phi}(z|x^{(i)})||p_{\theta}(z)]\\
+=\frac{1}{L}\sum_{l=1}^L\log p_{\theta}(x^{(i)}|z^{(i,l)})-KL[q_{\phi}(z|x^{(i)})||p_{\theta}(z)]
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(z^{(i,l)} = g_{\phi}(\epsilon^{(i,l)},x^{(i)}),\quad \epsilon^{(i,l)} \sim p(\epsilon)\)&lt;/span&gt;. Given multiple datapoints from a dataset &lt;span class=&#34;math inline&#34;&gt;\(\text{X}\)&lt;/span&gt; with &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; datapoints, we can construct an estimator of the marginal likelihood lower bound of the full dataset, based on minibatches: &lt;span class=&#34;math display&#34;&gt;\[
+\mathcal{L}_{\theta,\phi}(\text{X})\simeq\tilde{\mathcal{L}}_{\theta,\phi}^{M}(\text{X}^M)=\frac{N}{M}\sum_{i=1}^M\tilde{\mathcal{L}}_{\theta,\phi}(x^{(i)})
+\]&lt;/span&gt; where the minibatch &lt;span class=&#34;math inline&#34;&gt;\(\text{X}^M=\{x^{(i)}\}_{i=1}^M\)&lt;/span&gt; is randomly drawn sample of &lt;span class=&#34;math inline&#34;&gt;\(M\)&lt;/span&gt; datapoints from the full dataset &lt;span class=&#34;math inline&#34;&gt;\(\text{X}\)&lt;/span&gt; with &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; datapoints. In the paper &lt;a href=&#34;https://arxiv.org/abs/1312.6114&#34;&gt;Auto-Encoding Variational Bayes&lt;/a&gt;, author set &lt;span class=&#34;math inline&#34;&gt;\(M = 100, L = 1\)&lt;/span&gt; in their experiments.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;VAE2.PNG&#34; width = &#34;700&#34; height = &#34;250&#34; alt=&#34;Figure2&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;variational-auto-encoder-with-specific-case&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Variational Auto-Encoder with specific case&lt;/h2&gt;
+&lt;p&gt;We know that we can not perform the algorithm that we describe above, because we don’t know the distributions of &lt;span class=&#34;math inline&#34;&gt;\(\epsilon, p_{\theta}(x|z), q_{\phi}(z|x), p_{\theta}(z)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(g_{\phi}(\epsilon,x)\)&lt;/span&gt;. In reality, like author described in the paper, we firstly let the prior over the latent variables be the centered isotropic multivariate Guassian &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(z) = \mathcal{N}(0,\text{I})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div id=&#34;variational-approxiamte-posterior-q_phizxi&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Variational approxiamte posterior &lt;span class=&#34;math inline&#34;&gt;\(q_{\phi}(z|x^{(i)})\)&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;Let the variational approxiamte posterior be a multivariate Guassian with a diagonal covariance structure: &lt;span class=&#34;math display&#34;&gt;\[
+q_{\phi}(z|x^{(i)}) = \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\mu^{(i)},\sigma^{(i)}\)&lt;/span&gt; denote the variational mean and s.d. evaluated by datapoint &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Then a valid reparameterization is &lt;span class=&#34;math inline&#34;&gt;\(z=\mu+\sigma\epsilon\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt; is an auxiliary noise variable &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\sim \mathcal{N}(0,\text{I})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(J\)&lt;/span&gt; be the dimensionality of &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\mu^{(i)}_j, \sigma^{(i)}_j\)&lt;/span&gt; denote the &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;-th element. Recall that &lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{E}[z] = \int z p(z) dz\\
+\mathbb{E}[z^2] = \int z^2 p(z) dz\\
+\text{Var}[z] = \mathbb{E}[z^2] - \mathbb{E}^2[z]
+\]&lt;/span&gt; Then, &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\int q_{\phi}(z|x^{(i)})\log p_{\theta}(z)dz =&amp;amp;\ \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})\log \mathcal{N}(0,\text{I})dz\\
+=&amp;amp;\ \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})(\log \frac{1}{\sqrt{2\pi}})dz - \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I}) \frac{z^2}{2}dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi)\int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})dz - \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I}) \frac{z^2}{2}dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\int z^2 \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J\mathbb{E}_{ q_{\phi}(z_j|x^{(i)})}[z_j^2]\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J\Big[\mathbb{E}_{ q_{\phi}(z_j|x^{(i)})}^2[z_j]+\text{Var}_{ q_{\phi}(z_j|x^{(i)})}[z_j]\Big]\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J(\mu_j^2+\sigma_j^2)
+\end{align}
+\]&lt;/span&gt; and &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\int q_{\phi}(z|x^{(i)})\log q_{\phi}(z|x^{(i)})dz =&amp;amp;\ \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})\log \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})dz\\
+=&amp;amp;\ \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})\log \Big[\frac{1}{\sqrt{2\pi\sigma^{(i)^2}}}\exp(\frac{-(z-\mu^{(i)})^2}{2\sigma^{(i)^2}})\Big]dz\\
+=&amp;amp;\ \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})\Big[-\frac{1}{2}\log 2\pi - \frac{1}{2}\log \sigma^{(i)^2} - \frac{(z-\mu^{(i)})^2}{2\sigma^{(i)^2}}\Big]dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})\Big[\frac{\log \sigma^{(i)^2}}{2} - \frac{(z-\mu^{(i)})^2}{2\sigma^{(i)^2}}\Big]dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \int \mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I}) \Big[\frac{1}{2}\log \sigma^{(i)^2} - \frac{z^2-2\mu^{(i)}z+\mu^{(i)^2}}{2\sigma^{(i)^2}}\Big]dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{J=1}^J\log \sigma_j^{(i)^2} + \int \frac{1}{2\sigma^{(i)^2}}\mathcal{N}(\mu^{(i)},\sigma^{(i)^2}\text{I})(z^2-2\mu^{(i)}z+\mu^{(i)^2})dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J\log \sigma_j^{(i)^2} + \frac{1}{2}\sum_{j=1}^J\frac{\mu^{(i)^2}+\sigma^{(i)^2}-2\mu^{(i)^2}+\mu^{(i)^2}}{\sigma^{(i)^2}}\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J(1+\log \sigma_j^{(i)^2})
+\end{align}
+\]&lt;/span&gt; Therefore, &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+-KL[q_{\phi}(z|x^{(i)})||p_{\theta}(z)] =&amp;amp; - \int q_{\phi}(z|x^{(i)})\log \frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z)}dz\\
+=&amp;amp;\ - \int q_{\phi}(z|x^{(i)})[\log q_{\phi}(z|x^{(i)}) - \log p_{\theta}(z)]dz\\
+=&amp;amp;\ \int q_{\phi}(z|x^{(i)})[\log p_{\theta}(z) - \log q_{\phi}(z|x^{(i)})]dz\\
+=&amp;amp;\ -\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J(\mu_j^2+\sigma_j^2) - \Big[-\frac{J}{2}\log(2\pi) - \frac{1}{2}\sum_{j=1}^J(1+\log \sigma_j^{(i)^2})\Big]\\
+=&amp;amp;\ \frac{1}{2}\sum_{j=1}^J(1+\log \sigma_j^{(i)^2}-\mu_j^2-\sigma_j^2)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;true-posterior-p_thetaxz&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;True posterior &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x|z)\)&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;We supposed that the true posterior &lt;span class=&#34;math inline&#34;&gt;\(p_{\theta}(x|z)\)&lt;/span&gt; be a multivariate Gaussian (in case of real-valued data) or Bernoulli (in case of binary data) whose distribution parameters are computed from &lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt; with a MLP (Multi-Layer Perceptron).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bernoulli MLP as decoder&lt;/strong&gt;&lt;br /&gt;
+If the data are binary data, then we would choose &lt;span class=&#34;math display&#34;&gt;\[
+\log p_{\theta}(x|z) = \sum_{j=1}^Dx_j \log y_j + (1-x_j)\log (1-y_j)
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(y = f_\sigma(W_2\tanh(W_1z+b_1)+b_2)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(f_\sigma(\cdot)\)&lt;/span&gt; is the elementwise sigmoid activation function and &lt;span class=&#34;math inline&#34;&gt;\(\theta=\{W_1,W_2,b_1,b_2\}\)&lt;/span&gt; are the weights and biases of the MLP.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Gaussian MLP as decoder&lt;/strong&gt;&lt;br /&gt;
+Let decoder be a mutivariate Guassian with a diagonal covariance structure: &lt;span class=&#34;math display&#34;&gt;\[
+\log p_{\theta}(x|z) = \log \mathcal{N}(\mu,\sigma^2\text{I})
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\mu = W_4h+b_4,\ \log\sigma^2 = W_5h+b_5,\ h = \tanh(W_3Z+b_3)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\{W_3,W_4,W_5,b_3,b_4,b_5\}\)&lt;/span&gt; are the weights and biases of the MLP and part of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Analysis in case of binary data&lt;/strong&gt;&lt;br /&gt;
+Recall the second estimator we describe above &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{L}_{\theta,\phi}(\text{X})\simeq&amp;amp;\ \tilde{\mathcal{L}}_{\theta,\phi}^{B}(x^{(i)})\\
+=&amp;amp;\ \frac{1}{L}\sum_{l=1}^L\log p_{\theta}(x^{(i)}|z^{(i,l)}) - KL[q_{\phi}(z|x^{(i)})||p_{\theta}(z)]\\
+=&amp;amp;\ \frac{1}{L}\sum_{l=1}^L\log p_{\theta}(x^{(i)}|z^{(i,l)}) + \frac{1}{2}\sum_{j=1}^J(1+\log \sigma_j^{(i)^2}-\mu_j^2-\sigma_j^2)
+\end{align}
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(z^{(i,l)} = \mu^{(i)} + \sigma^{(i)}\epsilon^{(l)}, \epsilon^{l}\sim p(\epsilon)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\log p_{\theta}(x|z) = \sum_{j=1}^Dx_j \log y_j + (1-x_j)\log (1-y_j)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;using-variational-auto-encoder-in-python&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Using Variational Auto-Encoder in python&lt;/h1&gt;
+&lt;div id=&#34;import-packages&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Import packages&lt;/h2&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;function-for-visualizing-batch-images&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Function for visualizing batch images&lt;/h2&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;def VisConcatImg(batch_images, title):
+    batch_size = np.shape(batch_images)[0]
+    sqrt_size = int(batch_size ** 0.5)
+    batch_images = batch_images.reshape(batch_size, 28, 28)
+    row_concatenated = [np.concatenate(batch_images[i*sqrt_size : (i+1)*sqrt_size], axis=1) for i in range(sqrt_size)]
+    concatenated = np.concatenate(row_concatenated, axis=0)
+    plt.imshow(concatenated, cmap=&amp;#39;gray&amp;#39;)
+    plt.title(title)
+    plt.axis(&amp;#39;off&amp;#39;)
+    plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mnist-dataset&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;MNIST Dataset&lt;/h2&gt;
+&lt;p&gt;The MNIST includes 60000 training samples and 10000 testing samples. Each sample is a 784-dimensional vector (28??28), with pixel values in [0, 1], which can be assumed as multivariate Bernoulli variables.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Downloading MNIST dataset
+mnist = input_data.read_data_sets(&amp;#39;./mnist&amp;#39;, one_hot=False)
+# VAE for MNIST
+class VAE(object):
+    def __init__(self, x_size=28*28, hidden1_size=100, hidden2_size=400, hidden3_size=100, hidden4_size=400, z_size=20, learning_rate=1e-4):
+        self.x_size = x_size
+        self.hidden1_size = hidden1_size
+        self.hidden2_size = hidden2_size
+        self.hidden3_size = hidden3_size
+        self.hidden4_size = hidden4_size
+        self.z_size = z_size
+        self.learning_rate = learning_rate
+        self.x = tf.placeholder(tf.float32, [None, x_size])
+        self.epsilon = tf.placeholder(tf.float32, [None, z_size]) # sample from N(0,1) for every step
+        with tf.variable_scope(&amp;#39;encoder&amp;#39;):
+            self.encoder()
+        with tf.variable_scope(&amp;#39;decoder&amp;#39;):
+            self.decoder()
+        with tf.variable_scope(&amp;#39;loss&amp;#39;):
+            self.compute_loss()
+        with tf.variable_scope(&amp;#39;train&amp;#39;):
+            self.train_op = tf.train.AdamOptimizer(self.learning_rate).minimize(self.total_loss)
+    def encoder(self):
+        self.hidden1 = tf.layers.dense(self.x, units=self.hidden1_size, activation=tf.nn.relu)
+        self.hidden2 = tf.layers.dense(self.hidden1, units=self.hidden2_size, activation=tf.nn.relu)
+        self.mu = tf.layers.dense(self.hidden2, units=self.z_size)
+        self.sigma = tf.layers.dense(self.hidden2, units=self.z_size, activation=tf.exp)
+        self.z = tf.add(self.mu, tf.multiply(self.epsilon, self.sigma))
+        
+    def decoder(self):
+        self.hidden3 = tf.layers.dense(self.z, units=self.hidden3_size, activation=tf.nn.relu)
+        self.hidden4 = tf.layers.dense(self.hidden3, units=self.hidden4_size, activation=tf.nn.relu)
+        self.y = tf.layers.dense(self.hidden4, units=self.x_size, activation=tf.nn.sigmoid)
+        
+    # adding 1e-8 before taking the logarithm to avoid numerical instability.
+    def compute_loss(self):
+        self.recons_loss = tf.reduce_mean(tf.reduce_sum(-(self.x * tf.log(self.y + 1e-8) + (1 - self.x) * tf.log(1 - self.y + 1e-8)), 1))
+        self.KL_loss = tf.reduce_mean(-0.5 * tf.reduce_sum(1 + 2 * tf.log(self.sigma + 1e-8) - tf.square(self.mu) - tf.square(self.sigma), 1))
+        self.total_loss = self.recons_loss + self.KL_loss
+        
+# Training VAE
+model = VAE()
+BATCH_SIZE = 100
+EPOCHS = 50
+STEPS = int(60000 / BATCH_SIZE)
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+for e in range(EPOCHS):
+    for i in range(STEPS):
+        train_data, _ = mnist.train.next_batch(batch_size=BATCH_SIZE)
+        ep = np.random.multivariate_normal(np.zeros(model.z_size), np.eye(model.z_size), size=BATCH_SIZE)
+        sess.run(model.train_op, feed_dict={model.x: train_data, model.epsilon: ep})
+    REloss, KLloss, Tloss = sess.run([model.recons_loss, model.KL_loss, model.total_loss], feed_dict={model.x: train_data, model.epsilon: ep})
+    print(&amp;#39;Epoch: &amp;#39;, e, &amp;#39;| reconstruction loss: &amp;#39;, REloss, &amp;#39;| KL loss:&amp;#39;, KLloss, &amp;#39;| total loss: &amp;#39;, Tloss)
+# Visualizing results
+test_data, _ = mnist.test.next_batch(batch_size=50)
+VisConcatImg(test_data, &amp;#39;raw images&amp;#39;)
+ep = np.random.multivariate_normal(np.zeros(model.z_size), np.eye(model.z_size), size=50)
+latent, recons_x = sess.run([model.mu, model.y], feed_dict={model.x: test_data, model.epsilon: ep})
+VisConcatImg(recons_x, &amp;#39;reconstructed images&amp;#39;)
+randoms = np.random.multivariate_normal(np.zeros(model.z_size), np.eye(model.z_size), size=50)
+generated_x = sess.run(model.y, feed_dict={model.z: randoms})
+VisConcatImg(generated_x, &amp;#39;generated images&amp;#39;)
+sess.close()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;result&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Result&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;VAE3.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+Figure3. Raw Images
+&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;VAE4.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+Figure4. Reconstructed Images
+&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;VAE5.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+Figure5. Generated Images
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reference&lt;/h1&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1312.6114&#34;&gt;D. P. Kingma and M. Welling. Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114, 2014. 5, 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/eeyangc/Statistical-Machine-Learning&#34;&gt;Yang Can. VAE_demo in python. 2018,12,31&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
       <title>小菜鸟的入门TensorFlow</title>
-      <link>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</link>
+      <link>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/</link>
       <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</guid>
-      <description>迈出TensorFlow世界的第一步 安装TensorFlow 鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 Anaconda，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！
- 图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
-conda 4.5.12 那么，Anaconda安装成功！
-下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
-首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：
- 图2. Environments界面  我们命名为tensorflow，并选择python3.5的版本：
- 图3. 创建新环境窗口  安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。
- 图4. 安装成功后的python3.5环境  搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的jupyter notebook和spyder。先选择Home界面，然后可以看到jupyter notebook和spyder下方均显示Install，当然就点击Install，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成Launch（如图5所示）。
- 图5. 安装jupyter和spyder成功后的Home界面  如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！
-conda activate tensorflow 这里的tensorflow其实是我们的python3.5环境的命名~
- 通过pip安装我们的主角TensorFlow ٩(๑&amp;gt; ₃ &amp;lt;)۶з 搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow
-conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.</description>
+      <guid>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/</guid>
+      <description>
+
+
+&lt;div id=&#34;tensorflow&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;迈出TensorFlow世界的第一步&lt;/h1&gt;
+&lt;div id=&#34;tensorflow&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;安装TensorFlow&lt;/h2&gt;
+&lt;p&gt;鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 &lt;a href=&#34;https://www.anaconda.com/&#34;&gt;Anaconda&lt;/a&gt;，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS1.PNG&#34; width = &#34;500&#34; height = &#34;300&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 下载Anaconda
+&lt;/div&gt;
+&lt;div id=&#34;anaconda&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;设置水土不服的Anaconda&lt;/h3&gt;
+&lt;p&gt;首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过&lt;code&gt;conda --version&lt;/code&gt;看看是否成功安装了Anaconda。一般会得到版本信息，如下所示&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda 4.5.12&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;那么，Anaconda安装成功！&lt;/p&gt;
+&lt;p&gt;下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --set show_channel_urls yes&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;python3.5&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;创建python3.5环境&lt;/h3&gt;
+&lt;p&gt;首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。&lt;/p&gt;
+&lt;p&gt;首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS2.PNG&#34; width = &#34;650&#34; height = &#34;330&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. Environments界面
+&lt;/div&gt;
+&lt;p&gt;我们命名为&lt;em&gt;tensorflow&lt;/em&gt;，并选择python3.5的版本：&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS3.PNG&#34; width = &#34;350&#34; height = &#34;180&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. 创建新环境窗口
+&lt;/div&gt;
+&lt;p&gt;安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS4.PNG&#34; width = &#34;650&#34; height = &#34;330&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 安装成功后的python3.5环境
+&lt;/div&gt;
+&lt;p&gt;搞定python3.5的环境后，我们顺便在python3.5环境下安装常用的&lt;strong&gt;jupyter notebook&lt;/strong&gt;和&lt;strong&gt;spyder&lt;/strong&gt;。先选择Home界面，然后可以看到&lt;strong&gt;jupyter notebook&lt;/strong&gt;和&lt;strong&gt;spyder&lt;/strong&gt;下方均显示&lt;strong&gt;Install&lt;/strong&gt;，当然就点击&lt;strong&gt;Install&lt;/strong&gt;，就等着Anaconda Navigator帮我们搞定啦！安装成功后，它们下方会变成&lt;strong&gt;Launch&lt;/strong&gt;（如图5所示）。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS5.PNG&#34; width = &#34;650&#34; height = &#34;350&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. 安装jupyter和spyder成功后的Home界面
+&lt;/div&gt;
+&lt;p&gt;如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda activate tensorflow&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里的tensorflow其实是我们的python3.5环境的命名~&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;piptensorflow-&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;通过pip安装我们的主角TensorFlow ٩(๑&amp;gt; ₃ &amp;lt;)۶з&lt;/h3&gt;
+&lt;p&gt;搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda activate python35
+pip install tensorflow&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入&lt;code&gt;python&lt;/code&gt;运行python，然后输入下面的命令。&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import tensorflow as tf
+hello = tf.constant(&amp;#39;Hello, TensorFlow!&amp;#39;)
+sess = tf.Session()
+print(sess.run(hello))
+a = tf.constant(1)
+b = tf.constant(2)
+c = sess.run(a+b)
+print(&amp;quot;1 + 2 = %d&amp;quot; % c)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果输出了&lt;br /&gt;
+‘Hello, TensorFlow!’&lt;br /&gt;
+1 + 2 = 3&lt;br /&gt;
+那么恭喜你，TensorFlow安装成功！！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Attention!&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;CPU有个利器(๑•̀_•́๑)&lt;br /&gt;
+当我使用&lt;code&gt;sess = tf.Session()&lt;/code&gt;的时候，对话框告诉我：&lt;br /&gt;
+2018-12-26 15:03:57.708274: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2&lt;br /&gt;
+然后一脸懵，杰是个啥？&lt;br /&gt;
+感恩必应搜索，感恩维基百科！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;高级矢量扩展（AVX）是英特尔在2008年3月提出的英特尔和AMD微处理器的x86指令集体系结构的扩展，英特尔首先通过Sandy Bridge处理器在2011年第一季度推出，随后由AMD推出Bulldozer处理器在2011年第三季度.AVX提供了新功能，新指令和新编码方案。 特别是，AVX引入了融合乘法累加（FMA）操作，加速了线性代数计算，即点积，矩阵乘法，卷积等。几乎所有机器学习训练都涉及大量这些操作，因此将会支持AVX和FMA的CPU（最高达300％）更快。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而对话框想告诉我，我的CPU支持AVX，让我赶紧用上它！&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import tensorflow as tf
+import os
+os.environ[&amp;#39;TF_CPP_MIN_LOG_LEVEL&amp;#39;] = &amp;#39;2&amp;#39;
+sess = tf.Session()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样就不会出现警告了~&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;目前觉得不重要的part(๑•̀_•́๑)&lt;br /&gt;
+&lt;strong&gt;查看Windows系统下机器的GPU信息&lt;/strong&gt;&lt;br /&gt;
+首先打开“运行”对话框并在“运行”对话框中输入“dxdiag”（如图6），此时会打开“DirextX诊断工具”窗口，再通过选择“显示”标签便可查到机器的GPU信息（如图7）。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS6.PNG&#34; width = &#34;360&#34; height = &#34;200&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. 输入dxdiag命令
+&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TS7.PNG&#34; width = &#34;650&#34; height = &#34;470&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. 查看机器GPU信息
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;简单提及安装GPU版本TensorFlow&lt;/strong&gt;&lt;br /&gt;
+如果你觉得运行的速度不满足你的需求，那么你可以选择用上GPU版本的TensorFlow，那将帮助你火箭般的速度运行！下面简单带过如何安装TensorFlow的GPU版本~由于具体操作复杂，暂且跳过~&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip install tensorflow-gpu&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
       <title>Expectation-Maximization Algorithm</title>
-      <link>/post/expectation-maximization-algorithm.html</link>
+      <link>/post/expectation-maximization-algorithm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/expectation-maximization-algorithm.html</guid>
-      <description>From some on-line article, it is interesting that we can consider EM algorithm as some Chinese Kungfu manuals and it contains 9 levels of perspectives. With such metaphor, I can feel how this method powerful it is. Now, I want to share my view with you.
-Introduction to the EM algorithmExpectation-Maximization (EM) algorithm is an important method to solve the maximum likelihood problem with latent variables in statistics. It is widely used in Machine Learning because it can simplify many difficult problems.</description>
+      <guid>/post/expectation-maximization-algorithm/</guid>
+      <description>
+
+
+&lt;p&gt;From some on-line article, it is interesting that we can consider EM algorithm as some Chinese Kungfu manuals and it contains 9 levels of perspectives. With such metaphor, I can feel how this method powerful it is. Now, I want to share my view with you.&lt;/p&gt;
+&lt;div id=&#34;introduction-to-the-em-algorithm&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction to the EM algorithm&lt;/h2&gt;
+&lt;p&gt;Expectation-Maximization (EM) algorithm is an important method to solve the maximum likelihood problem with latent variables in statistics. It is widely used in Machine Learning because it can simplify many difficult problems. One of the famous and classical application is &lt;strong&gt;gaussian mixture model&lt;/strong&gt;.&lt;/p&gt;
+&lt;div id=&#34;basic-probability-theory&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Basic probability theory&lt;/h3&gt;
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(p(x|\theta)\)&lt;/span&gt; be the probability density function of random variable &lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; is the parameter of the density function, then we know that the basic probability property is &lt;span class=&#34;math display&#34;&gt;\[
+p(\text{x};\theta) \geq 0, \int_{-\infty}^{+\infty}p(\text{x};\theta) d\text{x} = 1.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;If we take the expectation of x, we get &lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{E}[\text{x}] = \int\text{x}p(\text{x};\theta) d\text{x}
+\]&lt;/span&gt; In the integral, we know that the &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{E}[\text{x}]\)&lt;/span&gt; involves &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; but not &lt;span class=&#34;math inline&#34;&gt;\(\text{x}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;If we generalize it to function and let &lt;span class=&#34;math inline&#34;&gt;\(f(\text{x})\)&lt;/span&gt; be a function of &lt;span class=&#34;math inline&#34;&gt;\(\text{x}\)&lt;/span&gt;. Similarly, the expectation of &lt;span class=&#34;math inline&#34;&gt;\(f(x)\)&lt;/span&gt; is given by &lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{E}[f] = \int f(\text{x})p(\text{x};\theta) d\text{x}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;With the similar result, we know that the &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{E}[f]\)&lt;/span&gt; involves &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; but not &lt;span class=&#34;math inline&#34;&gt;\(\text{x}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;motivation-of-the-em-algorithm&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Motivation of the EM algorithm&lt;/h3&gt;
+&lt;p&gt;At the beginning, we denote that&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\text{X}\)&lt;/span&gt;: Set of all observed data (incomplete-data)&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\text{Z}\)&lt;/span&gt;: Set of all latent variables&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;: Set of all model parameters&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\{ \text{X,Z} \}\)&lt;/span&gt;: Each observation in &lt;span class=&#34;math inline&#34;&gt;\(\text{X}\)&lt;/span&gt; is corresponding value of the latent variable &lt;span class=&#34;math inline&#34;&gt;\(\text{Z}\)&lt;/span&gt; (complete-data)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then the log-likelihood function can be written as &lt;span class=&#34;math display&#34;&gt;\[
+L(\text{X};\theta) = \ln p(\text{X};\theta) = \ln \{ \sum_{\text{Z}}p(\text{X}, \text{Z};\theta) \}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;It is too hard to straightly solve the problem with &lt;span class=&#34;math inline&#34;&gt;\(\ln\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\sum\)&lt;/span&gt;. The likelihood function for the complete data set simply takes the form &lt;span class=&#34;math inline&#34;&gt;\(\ln p(\text{X,Z}|\theta)\)&lt;/span&gt;, and we shall suppose that maximization of this complete-data log-likelihood function is straightforward.&lt;/p&gt;
+&lt;p&gt;In practice, we are not given the latent variable &lt;span class=&#34;math inline&#34;&gt;\(\text{Z}\)&lt;/span&gt; but we know the posterior distribution &lt;span class=&#34;math inline&#34;&gt;\(p(\text{Z}|\text{X};\theta)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-level-1-of-the-em-algorithm&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The Level 1 of the EM algorithm&lt;/h3&gt;
+&lt;p&gt;In the level 1, we just need to know the basic knowledge of EM algorithm.&lt;/p&gt;
+&lt;p&gt;In the &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{E}\)&lt;/span&gt;-step, we use the current parameter values &lt;span class=&#34;math inline&#34;&gt;\(\theta_{\text{old}}\)&lt;/span&gt; to find the posterior distribution of the latent variables given by &lt;span class=&#34;math inline&#34;&gt;\(p(\text{Z}|\text{X};\theta_{\text{old}})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Then, we would use this posterior distribution to find the expectation of the &lt;strong&gt;complete-data&lt;/strong&gt; log-likelihood evaluated for some general parameter value &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. This expectation, denoted &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{Q}(\theta,\theta_{\text{old}})\)&lt;/span&gt;, is given by &lt;span class=&#34;math display&#34;&gt;\[
+\mathcal{Q}(\theta,\theta_{\text{old}}) = \mathbb{E}_{\text{Z}|\text{X};\theta_{\text{old}}}[\ln p(\text{X,Z};\theta)] = \sum_{\text{Z}} \ln p(\text{X,Z};\theta)p(\text{Z}|\text{X};\theta_{\text{old}})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In the &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{M}\)&lt;/span&gt; (Maximization) step, we determine the revised parameter estimate &lt;span class=&#34;math inline&#34;&gt;\(\theta_{\text{new}}\)&lt;/span&gt; by maximizing the function &lt;span class=&#34;math display&#34;&gt;\[
+\theta_{\text{new}} = \arg \max_\limits{\theta} \mathcal{Q}(\theta,\theta_{\text{old}})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Since the &lt;strong&gt;complete-data&lt;/strong&gt; log-likelihood involves unobversed data &lt;span class=&#34;math inline&#34;&gt;\(\text{Z}\)&lt;/span&gt;, we use &lt;strong&gt;Expectation&lt;/strong&gt; to eliminate the uncertainty, and the function &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{E}_{\text{Z}|\text{X},\theta_{\text{old}}}[\ln p(\text{X,Z}|\theta)]\)&lt;/span&gt; does not involve &lt;span class=&#34;math inline&#34;&gt;\(\text{Z}\)&lt;/span&gt; but involve &lt;span class=&#34;math inline&#34;&gt;\((\theta,\theta_{\text{old}})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We can summarize the procedure as:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;While &lt;span class=&#34;math inline&#34;&gt;\(\theta_{\text{new}} - \theta_{old} &amp;gt; \epsilon\)&lt;/span&gt;&lt;br /&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\quad\)&lt;/span&gt; Expectation-Step on log likelihood function: &lt;span class=&#34;math display&#34;&gt;\[
+\mathcal{Q}(\theta,\theta_{\text{old}}) = \mathbb{E}_{\text{Z}|\text{X};\theta_{\text{old}}}[\ln p(\text{X,Z};\theta)]= \sum_{\text{Z}} \ln p(\text{X,Z};\theta)p(\text{Z}|\text{X};\theta_{\text{old}})
+\]&lt;/span&gt; &lt;span class=&#34;math inline&#34;&gt;\(\quad\)&lt;/span&gt; Maximization-Step on &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{Q}(\theta,\theta_{\text{old}})\)&lt;/span&gt;: &lt;span class=&#34;math display&#34;&gt;\[
+\theta_{\text{new}} = \arg \max_\limits{\theta} \mathcal{Q}(\theta,\theta_{\text{old}})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-level-2-of-the-em-algorithm&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The Level 2 of the EM algorithm&lt;/h3&gt;
+&lt;p&gt;After writting down the pseudocode of EM algorithm, we want to know the reason that we can use expectation to approximate the maximum log-likelihood by repeating &lt;strong&gt;Expectation&lt;/strong&gt; and &lt;strong&gt;Maximization&lt;/strong&gt;. In other words, we want to prove that &lt;span class=&#34;math display&#34;&gt;\[
+\arg \max_\theta \mathbb{E}_{\text{Z}|\text{X};\theta_{\text{old}}}[\ln p(\text{X};\theta)] \approx \arg \max_\theta \ln p(\text{X};\theta)
+\]&lt;/span&gt; where the joint distribution &lt;span class=&#34;math inline&#34;&gt;\(p(\text{X}, \text{Z};\theta)\)&lt;/span&gt; is governed by a set of parameters &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Next we introduce a distribution &lt;span class=&#34;math inline&#34;&gt;\(q(\text{Z})\)&lt;/span&gt; defined over the latent variables.&lt;/p&gt;
+&lt;p&gt;Since &lt;span class=&#34;math display&#34;&gt;\[
+p(\text{X},\text{Z};\theta) = p(\text{Z}|\text{X};\theta)p(\text{X};\theta)
+\]&lt;/span&gt; and &lt;span class=&#34;math display&#34;&gt;\[
+\sum_\text{Z}q(\text{Z}) = 1
+\]&lt;/span&gt; we can get decomposition by &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\ln p(\text{X};\theta) =&amp;amp;\ \ln \frac{p(\text{X},\text{Z};\theta)}{p(\text{Z}|\text{X};\theta)}\\
+=&amp;amp;\ \ln p(\text{X},\text{Z};\theta) - \ln p(\text{Z}|\text{X};\theta) + \ln q(\text{Z}) - \ln q(\text{Z})\\
+=&amp;amp;\ \ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})} - \ln \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}\\
+=&amp;amp; \sum_\text{Z}q(\text{Z}) \{ \ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})} - \ln \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})} \}\\
+=&amp;amp;\ \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})} - \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}\\
+=&amp;amp;\ \mathcal{L}(q,\theta) + KL(q||p)
+\end{align}
+\]&lt;/span&gt; where &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{L}(q,\theta) = \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})}\\
+KL(q||p) = - \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We call the &lt;span class=&#34;math inline&#34;&gt;\(KL(q||p)\)&lt;/span&gt; as the Kullback-Leibler divergence (KL divergence, also known as relative entropy).&lt;/p&gt;
+&lt;p&gt;Recall that &lt;strong&gt;Jensen’s inequality&lt;/strong&gt; holds for convex function &lt;span class=&#34;math inline&#34;&gt;\(f(x)\)&lt;/span&gt;. &lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{E}[f(x)] \geq f(\mathbb{E}[x])
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Applying Jensen’s inequality in KL divergence, we have &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+KL(q||p) =&amp;amp; - \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})} = -\mathbb{E}_q[\ln\{\frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}\} ]\\
+\geq&amp;amp; -\ln \mathbb{\text{E}_q}[\frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}] = -\ln \sum_\text{Z} q(\text{Z}) \frac{p(\text{Z}|\text{X};\theta)}{q(\text{Z})}\\
+=&amp;amp; -\ln \sum_\text{Z} p(\text{Z}|\text{X};\theta) = -\ln 1\\ =&amp;amp;\ 0
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;If we let &lt;span class=&#34;math inline&#34;&gt;\(q(\text{Z}) = p(\text{Z}|\text{X};\theta)\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(p(\text{X},\text{Z};\theta) = p(\text{Z}|\text{X};\theta)p(\text{X};\theta)\)&lt;/span&gt;, then &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{L}(q,\theta) =&amp;amp; \sum_\text{Z}q(\text{Z}) \ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})} = \mathbb{E}_q[\ln \frac{p(\text{X},\text{Z};\theta)}{q(\text{Z})}]\\
+=&amp;amp;\ \mathbb{E}_{\text{Z}|\text{X};\theta}[\ln p(X;\theta)]
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Thus, we can get the result that &lt;span class=&#34;math inline&#34;&gt;\(\ln p(\text{X};\theta) \geq \mathcal{L}(q,\theta) = \mathbb{E}_{\text{Z}|\text{X};\theta}[\ln p(X;\theta)]\)&lt;/span&gt;, so we can say that &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{L}(q,\theta) = \mathbb{E}_{\text{Z}|\text{X};\theta}[\ln p(X;\theta)]\)&lt;/span&gt; is the low bound of &lt;span class=&#34;math inline&#34;&gt;\(\ln p(\text{X};\theta)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;EM1.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+Figure1. The EM algorithm involves alternatel computing a lower bound on the log likelihood for the current parameter values and then maximizing this bound to obtain the new parameter values.
+&lt;/div&gt;
+&lt;p&gt;Actually, EM algorithm is one of the special case of Minorize-Maximization (MM) algorithm, and &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{L}(q,\theta)\)&lt;/span&gt; can be considered as the &lt;strong&gt;surrogate function&lt;/strong&gt; in MM algorithm.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
-      <title>About me</title>
-      <link>/about.html</link>
+      <title>Made by Thompson</title>
+      <link>/privacy/</link>
       <pubDate>Thu, 20 Dec 2018 18:00:00 +0800</pubDate>
       
-      <guid>/about.html</guid>
-      <description> Thompson Hu  Hometown: Kityall in Guangdong Love programming with R Try to be more professional in Machine Learning  Background  Hong Kong University of Science and Technology  Msc in Financial Mathematics  Shenzhen University  Bs in Applied Mathematics    Research  Machine Learning Bioinformatics  </description>
+      <guid>/privacy/</guid>
+      <description>&lt;p&gt;©️ 2018 $\cdot$ Made by Thompson Hu.&lt;/p&gt;
+</description>
     </item>
     
     <item>
       <title>Coordinate Descent Algorithm</title>
-      <link>/post/coordinate-descent-algorithm.html</link>
+      <link>/post/coordinate-descent-algorithm/</link>
       <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/coordinate-descent-algorithm.html</guid>
-      <description>Coordinate Descent FrameworkAt the begining of this section, we start to discuss three different types of function.
-Given convex, differentiable function \(f: \mathbb{R}^n \to \mathbb{R}\), we know \(f(x+\delta \cdot e_i)\geq f(x)\) for all \(\delta\) because \(\nabla f(x) = (\frac{\partial f}{\partial x_1}(x),\dots,\frac{\partial f}{\partial x_n}(x)) = 0\). Here, \(e_i = (0,\dots,1,\dots,0) \in \mathbb{R}^n\), the \(i\)th standard basis vactor.Figure1. Convex and differential function \(f\)Given convex but not differentiable function \(f\), we can not found a global minimizer.</description>
+      <guid>/post/coordinate-descent-algorithm/</guid>
+      <description>
+
+
+&lt;div id=&#34;coordinate-descent-framework&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Coordinate Descent Framework&lt;/h3&gt;
+&lt;p&gt;At the begining of this section, we start to discuss three different types of function.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Given convex, differentiable function &lt;span class=&#34;math inline&#34;&gt;\(f: \mathbb{R}^n \to \mathbb{R}\)&lt;/span&gt;, we know &lt;span class=&#34;math inline&#34;&gt;\(f(x+\delta \cdot e_i)\geq f(x)\)&lt;/span&gt; for all &lt;span class=&#34;math inline&#34;&gt;\(\delta\)&lt;/span&gt; because &lt;span class=&#34;math inline&#34;&gt;\(\nabla f(x) = (\frac{\partial f}{\partial x_1}(x),\dots,\frac{\partial f}{\partial x_n}(x)) = 0\)&lt;/span&gt;. Here, &lt;span class=&#34;math inline&#34;&gt;\(e_i = (0,\dots,1,\dots,0) \in \mathbb{R}^n\)&lt;/span&gt;, the &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;th standard basis vactor.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CD1.PNG&#34; width = &#34;200&#34; height = &#34;200&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+Figure1. Convex and differential function &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;
+&lt;/div&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Given convex but not differentiable function &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;, we can not found a global minimizer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CD2.PNG&#34; width = &#34;400&#34; height = &#34;200&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+Figure2. Convex but not differential function &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;
+&lt;/div&gt;
+&lt;ol start=&#34;3&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Given convex &lt;span class=&#34;math inline&#34;&gt;\(g\)&lt;/span&gt; and each convex but not differentiable &lt;span class=&#34;math inline&#34;&gt;\(h_i\)&lt;/span&gt;, so we get &lt;span class=&#34;math inline&#34;&gt;\(f(x)=g(x)+\sum_{i=1}^n h_i(x_i)\)&lt;/span&gt;. In this function, the non-smooth part is called as &lt;strong&gt;separable&lt;/strong&gt;.&lt;br /&gt;
+For any &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt;, we get
+&lt;span class=&#34;math display&#34;&gt;\[\begin{align}
+f(y) - f(x) \geq&amp;amp; \nabla g(x)^T (y-x) + \sum_{i=1}^n [h_i(y_i)-h_i(x_i)]\\
+=&amp;amp; \sum\limits_{i=1}^n [\nabla_ig(x)(y_i-x_i)+h_i(y_i)-h_i(x_i)] \geq 0
+\end{align}\]&lt;/span&gt;
+Thus, we can get global minimizer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CD3.PNG&#34; width = &#34;400&#34; height = &#34;200&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+Figure3. Convex, not differential but separable function &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;
+&lt;/div&gt;
+If we get a function with the formula like &lt;span class=&#34;math inline&#34;&gt;\(f(x) = g(x) + \sum_{i=1}^n h_i(x_i)\)&lt;/span&gt;, where the &lt;span class=&#34;math inline&#34;&gt;\(g\)&lt;/span&gt; is convex and differentiable function, each &lt;span class=&#34;math inline&#34;&gt;\(h_i\)&lt;/span&gt; is convex functions, then we can use coordinate descent to find global minimizer. The procedure is following: start with some initial guess &lt;span class=&#34;math inline&#34;&gt;\(x^{(0)}\)&lt;/span&gt;, and repeat
+&lt;span class=&#34;math display&#34;&gt;\[\begin{align}
+x_1^{(k)} \in&amp;amp; \mathop{\arg\min}_{x_1} f(x_1,x_2^{(k-1)},x_3^{(k-1)},\dots,x_n^{(k-1)})\\
+x_2^{(k)} \in&amp;amp; \mathop{\arg\min}_{x_2} f(x_1^{(k)},x_2,x_3^{(k-1)},\dots,x_n^{(k-1)})\\
+x_3^{(k)} \in&amp;amp; \mathop{\arg\min}_{x_3} f(x_1^{(k)},x_2^{(k)},x_3,\dots,x_n^{(k-1)})\\
+\cdots&amp;amp; \\
+x_n^{(k)} \in&amp;amp; \mathop{\arg\min}_{x_n} f(x_1^{(k)},x_2^{(k)},x_3^{(k)},\dots,x_n)\\
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;for &lt;span class=&#34;math inline&#34;&gt;\(k=1,2,3,\dots,K\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; after we solve for &lt;span class=&#34;math inline&#34;&gt;\(x_i^{(k)}\)&lt;/span&gt;, we use its new value from then on.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;coordinate-descent-for-linear-regression-with-convex-penalties&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Coordinate descent for linear regression with convex penalties&lt;/h3&gt;
+&lt;/div&gt;
+</description>
     </item>
     
   </channel>

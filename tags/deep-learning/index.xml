@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Deep Learning on BONBON BLOG</title>
-    <link>/tags/deep-learning.html</link>
-    <description>Recent content in Deep Learning on BONBON BLOG</description>
+    <title>Deep Learning on Bonbon Blog</title>
+    <link>/tags/deep-learning/</link>
+    <description>Recent content in Deep Learning on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/deep-learning/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>深度神经网络基础</title>
-      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</link>
+      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</guid>
+      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</guid>
       <description>神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
  图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
 Sigmoid函数

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on BONBON BLOG</title>
-    <link>/tags.html</link>
-    <description>Recent content in Tags on BONBON BLOG</description>
+    <title>Tags on Bonbon Blog</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -13,55 +14,55 @@
     
     <item>
       <title>Algorithm</title>
-      <link>/tags/algorithm.html</link>
+      <link>/tags/algorithm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/algorithm.html</guid>
+      <guid>/tags/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Deep Learning</title>
-      <link>/tags/deep-learning.html</link>
+      <link>/tags/deep-learning/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/deep-learning.html</guid>
+      <guid>/tags/deep-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r.html</link>
+      <link>/tags/r/</link>
       <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r.html</guid>
+      <guid>/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rmarkdown</title>
-      <link>/tags/rmarkdown.html</link>
+      <link>/tags/rmarkdown/</link>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/rmarkdown.html</guid>
+      <guid>/tags/rmarkdown/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Tensorflow</title>
-      <link>/tags/tensorflow.html</link>
+      <title>TensorFlow</title>
+      <link>/tags/tensorflow/</link>
       <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/tensorflow.html</guid>
+      <guid>/tags/tensorflow/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Vae</title>
-      <link>/tags/vae.html</link>
+      <title>VAE</title>
+      <link>/tags/vae/</link>
       <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/vae.html</guid>
+      <guid>/tags/vae/</guid>
       <description></description>
     </item>
     

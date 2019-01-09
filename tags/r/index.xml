@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on BONBON BLOG</title>
-    <link>/tags/r.html</link>
-    <description>Recent content in R on BONBON BLOG</description>
+    <title>R on Bonbon Blog</title>
+    <link>/tags/r/</link>
+    <description>Recent content in R on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Thu, 20 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>Coordinate Descent Algorithm</title>
-      <link>/post/coordinate-descent-algorithm.html</link>
+      <link>/post/coordinate-descent-algorithm/</link>
       <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/coordinate-descent-algorithm.html</guid>
+      <guid>/post/coordinate-descent-algorithm/</guid>
       <description>Coordinate Descent FrameworkAt the begining of this section, we start to discuss three different types of function.
 Given convex, differentiable function \(f: \mathbb{R}^n \to \mathbb{R}\), we know \(f(x+\delta \cdot e_i)\geq f(x)\) for all \(\delta\) because \(\nabla f(x) = (\frac{\partial f}{\partial x_1}(x),\dots,\frac{\partial f}{\partial x_n}(x)) = 0\). Here, \(e_i = (0,\dots,1,\dots,0) \in \mathbb{R}^n\), the \(i\)th standard basis vactor.Figure1. Convex and differential function \(f\)Given convex but not differentiable function \(f\), we can not found a global minimizer.</description>
     </item>

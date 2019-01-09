@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on BONBON BLOG</title>
-    <link>/categories.html</link>
-    <description>Recent content in Categories on BONBON BLOG</description>
+    <title>Categories on Bonbon Blog</title>
+    <link>/categories/</link>
+    <description>Recent content in Categories on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Deep Learning</title>
-      <link>/categories/deep-learning.html</link>
+      <link>/categories/deep-learning/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/categories/deep-learning.html</guid>
+      <guid>/categories/deep-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning</title>
-      <link>/categories/machine-learning.html</link>
+      <link>/categories/machine-learning/</link>
       <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/machine-learning.html</guid>
+      <guid>/categories/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rmarkdown</title>
-      <link>/categories/rmarkdown.html</link>
+      <link>/categories/rmarkdown/</link>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/categories/rmarkdown.html</guid>
+      <guid>/categories/rmarkdown/</guid>
       <description></description>
     </item>
     

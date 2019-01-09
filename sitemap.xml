@@ -1,117 +1,183 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
-  <url>
-    <loc>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</loc>
-    <lastmod>2019-01-05T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</loc>
+      <lastmod>2019-01-05T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B.html</loc>
-    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/%E5%85%B3%E4%BA%8Ermarkdown%E7%94%9F%E6%88%90%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9pdf%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</loc>
+      <lastmod>2019-01-02T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/post/variational-auto-encoder.html</loc>
-    <lastmod>2018-12-31T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/variational-auto-encoder/</loc>
+      <lastmod>2018-12-31T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</loc>
-    <lastmod>2018-12-26T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/</loc>
+      <lastmod>2018-12-26T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/post/expectation-maximization-algorithm.html</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/expectation-maximization-algorithm/</loc>
+      <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/about.html</loc>
-    <lastmod>2018-12-20T18:00:00+08:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/privacy/</loc>
+      <lastmod>2018-12-20T18:00:00+08:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/post/coordinate-descent-algorithm.html</loc>
-    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
-  </url>
+    
+    <url>
+    
+      <loc>/post/</loc>
+      <lastmod>2018-12-20T18:00:00+08:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/tags/algorithm.html</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/post/coordinate-descent-algorithm/</loc>
+      <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+    </url>
+    
   
-  <url>
-    <loc>/</loc>
-    <lastmod>2019-01-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/algorithm/</loc>
+      <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/categories.html</loc>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/</loc>
+      <lastmod>2017-10-15T00:00:00+08:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags/deep-learning.html</loc>
-    <lastmod>2019-01-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/categories/</loc>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/categories/deep-learning.html</loc>
-    <lastmod>2019-01-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/deep-learning/</loc>
+      <lastmod>2019-01-05T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/categories/machine-learning.html</loc>
-    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/categories/deep-learning/</loc>
+      <lastmod>2019-01-05T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/post.html</loc>
-    <lastmod>2019-01-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/categories/machine-learning/</loc>
+      <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags/r.html</loc>
-    <lastmod>2018-12-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/publication_types/</loc>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags/rmarkdown.html</loc>
-    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/r/</loc>
+      <lastmod>2018-12-20T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/categories/rmarkdown.html</loc>
-    <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/rmarkdown/</loc>
+      <lastmod>2019-01-02T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags.html</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/categories/rmarkdown/</loc>
+      <lastmod>2019-01-02T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags/tensorflow.html</loc>
-    <lastmod>2018-12-31T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/</loc>
+      <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
-  <url>
-    <loc>/tags/vae.html</loc>
-    <lastmod>2018-12-31T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
+    
+    <url>
+    
+      <loc>/tags/tensorflow/</loc>
+      <lastmod>2018-12-31T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/vae/</loc>
+      <lastmod>2018-12-31T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
   
 </urlset>

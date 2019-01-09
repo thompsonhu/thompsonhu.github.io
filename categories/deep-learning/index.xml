@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Deep Learning on BONBON BLOG</title>
-    <link>/categories/deep-learning.html</link>
-    <description>Recent content in Deep Learning on BONBON BLOG</description>
+    <title>Deep Learning on Bonbon Blog</title>
+    <link>/categories/deep-learning/</link>
+    <description>Recent content in Deep Learning on Bonbon Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>深度神经网络基础</title>
-      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</link>
+      <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80.html</guid>
+      <guid>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</guid>
       <description>神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
  图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
 Sigmoid函数
@@ -29,19 +30,19 @@ Sigmoid函数
     
     <item>
       <title>Variational Auto-Encoder</title>
-      <link>/post/variational-auto-encoder.html</link>
+      <link>/post/variational-auto-encoder/</link>
       <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/variational-auto-encoder.html</guid>
+      <guid>/post/variational-auto-encoder/</guid>
       <description>IntroductionWe assume the observed variable \(x\) is a random sample from an unknown underlying process, whose true distribution \(p^*(x)\) is unknown. We attempt to approximate this underlying process with a chosen model \(p_{\theta}(x)\), with parameters \(\theta\): \[x\sim p_{\theta}(x)\] We always talk about learning like Deep Learning, and actually the learning is the process of searching for a value of the parameters \(\theta\) in model \(p_{\theta}(x)\), which can approximate the true distribution of the data, denoted by \(p^*(x)\).</description>
     </item>
     
     <item>
       <title>小菜鸟的入门TensorFlow</title>
-      <link>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</link>
+      <link>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/</link>
       <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow.html</guid>
+      <guid>/post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/</guid>
       <description>迈出TensorFlow世界的第一步 安装TensorFlow 鉴于python3更高级（传闻python2最终会被淘汰，所以希望选择能陪伴更久的工具:)），本文中会以python3为基准，屏幕前的读者你！也建议你跟我用上python3！另外，如果你刚起步使用python的话，那建议你直接下载 Anaconda，快捷高效，下载引导详见图1。Anaconda会帮助我们省去下载很多库的时间，把时间留给TensorFlow吧！
  图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
 conda 4.5.12 那么，Anaconda安装成功！
@@ -59,10 +60,10 @@ conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼�
     
     <item>
       <title>Expectation-Maximization Algorithm</title>
-      <link>/post/expectation-maximization-algorithm.html</link>
+      <link>/post/expectation-maximization-algorithm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/expectation-maximization-algorithm.html</guid>
+      <guid>/post/expectation-maximization-algorithm/</guid>
       <description>From some on-line article, it is interesting that we can consider EM algorithm as some Chinese Kungfu manuals and it contains 9 levels of perspectives. With such metaphor, I can feel how this method powerful it is. Now, I want to share my view with you.
 Introduction to the EM algorithmExpectation-Maximization (EM) algorithm is an important method to solve the maximum likelihood problem with latent variables in statistics. It is widely used in Machine Learning because it can simplify many difficult problems.</description>
     </item>

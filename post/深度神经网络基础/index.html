@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.3.0">
+  <meta name="generator" content="Hugo 0.52" />
+  <meta name="author" content="Thompson Hu">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
+ 图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
+Sigmoid函数
+\[f(z) = \frac{1}{1&#43;e^{-z}}\] tanh函数
+\[f(z) = \frac{e^z-e^{-z}}{e^z&#43;e^{-z}}\] ReLu函数
+\[f(z) = \max(0,z)\]
+ 神经网络基础认知 我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。  图3. 神经网络基础层级结构  我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 \[ \left [ \begin{matrix} w_{11} &amp; w_{12} &amp; w_{13} \\ w_{21} &amp; w_{22} &amp; w_{23} \\ w_{31} &amp; w_{32} &amp; w_{33} \end{matrix} \right ] \] 其中，第一列的\(w_{11}, w_{21}, w_{31}\)代表的是输入层的点\(x_1\)分别连接隐藏层的三个节点的边的权值；第二列的\(w_{12}, w_{22}, w_{32}\)代表的是输入层的点\(x_2\)分别连接隐藏层的三个节点的边的权值；第三列的\(w_{13}, w_{23}, w_{33}\)代表的是输入层的点\(x_3\)分别连接隐藏层的三个节点的边的权值。
+图中的“&#43;1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： \[ \begin{align} a_1 = w_{11}\times x_1 &#43; w_{12}\times x_2 &#43; w_{13}\times x_3 &#43; b_1\\ a_2 = w_{21}\times x_1 &#43; w_{22}\times x_2 &#43; w_{23}\times x_3 &#43; b_2\\ a_3 = w_{31}\times x_1 &#43; w_{32}\times x_2 &#43; w_{33}\times x_3 &#43; b_3 \end{align} \tag{1} \] 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数\(f(\cdot)\)（前面已提及）。（1）式可以变换为（2）式： \[ \begin{align} a_1 = f(w_{11}\times x_1 &#43; w_{12}\times x_2 &#43; w_{13}\times x_3 &#43; b_1)\\ a_2 = f(w_{21}\times x_1 &#43; w_{22}\times x_2 &#43; w_{23}\times x_3 &#43; b_2)\\ a_3 = f(w_{31}\times x_1 &#43; w_{32}\times x_2 &#43; w_{33}\times x_3 &#43; b_3) \end{align} \tag{2} \] 将（2）式改写为矩阵运算形式（3）式： \[ \begin{align} \boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} &#43; \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x&#43;\boldsymbol{B}) \end{align} \tag{3} \]">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="../../styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bonbon Blog">
+  <meta property="og:url" content="/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
+  <meta property="og:title" content="深度神经网络基础 | Bonbon Blog">
+  <meta property="og:description" content="神经元及神经网络基础结构  图1. 神经元的组成（源自维基百科）  神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。
+ 图2. 神经网络基础结构  通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。
+Sigmoid函数
+\[f(z) = \frac{1}{1&#43;e^{-z}}\] tanh函数
+\[f(z) = \frac{e^z-e^{-z}}{e^z&#43;e^{-z}}\] ReLu函数
+\[f(z) = \max(0,z)\]
+ 神经网络基础认知 我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。  图3. 神经网络基础层级结构  我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 \[ \left [ \begin{matrix} w_{11} &amp; w_{12} &amp; w_{13} \\ w_{21} &amp; w_{22} &amp; w_{23} \\ w_{31} &amp; w_{32} &amp; w_{33} \end{matrix} \right ] \] 其中，第一列的\(w_{11}, w_{21}, w_{31}\)代表的是输入层的点\(x_1\)分别连接隐藏层的三个节点的边的权值；第二列的\(w_{12}, w_{22}, w_{32}\)代表的是输入层的点\(x_2\)分别连接隐藏层的三个节点的边的权值；第三列的\(w_{13}, w_{23}, w_{33}\)代表的是输入层的点\(x_3\)分别连接隐藏层的三个节点的边的权值。
+图中的“&#43;1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： \[ \begin{align} a_1 = w_{11}\times x_1 &#43; w_{12}\times x_2 &#43; w_{13}\times x_3 &#43; b_1\\ a_2 = w_{21}\times x_1 &#43; w_{22}\times x_2 &#43; w_{23}\times x_3 &#43; b_2\\ a_3 = w_{31}\times x_1 &#43; w_{32}\times x_2 &#43; w_{33}\times x_3 &#43; b_3 \end{align} \tag{1} \] 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数\(f(\cdot)\)（前面已提及）。（1）式可以变换为（2）式： \[ \begin{align} a_1 = f(w_{11}\times x_1 &#43; w_{12}\times x_2 &#43; w_{13}\times x_3 &#43; b_1)\\ a_2 = f(w_{21}\times x_1 &#43; w_{22}\times x_2 &#43; w_{23}\times x_3 &#43; b_2)\\ a_3 = f(w_{31}\times x_1 &#43; w_{32}\times x_2 &#43; w_{33}\times x_3 &#43; b_3) \end{align} \tag{2} \] 将（2）式改写为矩阵运算形式（3）式： \[ \begin{align} \boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} &#43; \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x&#43;\boldsymbol{B}) \end{align} \tag{3} \]"><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-01-05T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-01-05T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>深度神经网络基础 | Bonbon Blog</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">深度神经网络基础</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2019-01-05 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2019-01-05 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      Jan 5, 2019
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <a href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/#disqus_thread"></a>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="../../categories/deep-learning/">Deep Learning</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%e6%b7%b1%e5%ba%a6%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80&amp;url=%2fpost%2f%25E6%25B7%25B1%25E5%25BA%25A6%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C%25E5%259F%25BA%25E7%25A1%2580%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2f%25E6%25B7%25B1%25E5%25BA%25A6%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C%25E5%259F%25BA%25E7%25A1%2580%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2f%25E6%25B7%25B1%25E5%25BA%25A6%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C%25E5%259F%25BA%25E7%25A1%2580%2f&amp;title=%e6%b7%b1%e5%ba%a6%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2f%25E6%25B7%25B1%25E5%25BA%25A6%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C%25E5%259F%25BA%25E7%25A1%2580%2f&amp;title=%e6%b7%b1%e5%ba%a6%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%e6%b7%b1%e5%ba%a6%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80&amp;body=%2fpost%2f%25E6%25B7%25B1%25E5%25BA%25A6%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C%25E5%259F%25BA%25E7%25A1%2580%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<div class="section level1">
+<h1>神经元及神经网络基础结构</h1>
+<div align="center">
+<img src="NN1.PNG" width = "400" height = "200" alt="Figure1" />
+<p>
+图1. 神经元的组成（源自维基百科）
+</div>
+<p>神经元这个图大多数理科生在高中生物课本都学过~神经网络则由许许多多的神经元所组成，通常一个神经元具有多个树突，主要用来接收消息；轴突只有一条，相当于我们定义的一个计算过程；而轴突尾部的许许多多轴突末梢，将传递信息给其他神经元。</p>
+<div align="center">
+<img src="NN2.PNG" width = "400" height = "200" alt="Figure2" />
+<p>
+图2. 神经网络基础结构
+</div>
+<p>通常这里的非线性函数会用上各式各样的激活函数，比如Sigmoid函数，tanh函数和ReLu函数。</p>
+<p><strong>Sigmoid函数</strong><br />
+<span class="math display">\[f(z) = \frac{1}{1+e^{-z}}\]</span> <strong>tanh函数</strong><br />
+<span class="math display">\[f(z) = \frac{e^z-e^{-z}}{e^z+e^{-z}}\]</span> <strong>ReLu函数</strong><br />
+<span class="math display">\[f(z) = \max(0,z)\]</span></p>
+<p><img src="../../post/2019-01-05-深度神经网络基础_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div class="section level1">
+<h1>神经网络基础认知</h1>
+我们把许多神经元组合起来就可以得到一个神经网络，由于有输入的数据和我们想得到的输出数据，便会有“输入层”（Input layer）和“输出层”（Output layer）；中间的神经元则组成了“隐藏层”（Hidden layer）。在下面图3中，输入层有3个神经元，隐藏层有4个神经元，输出层有2个神经元。在实际情况中，输入层和输出层通常是固定的，而隐藏层的层数和节点数则可以自由调节。
+<div align="center">
+<img src="NN3.PNG" width = "300" height = "300" alt="Figure3" />
+<p>
+图3. 神经网络基础层级结构
+</div>
+<p>我们假设一个全连接的网络结构，其中隐藏层只有一层。另外，假设输入层和隐藏层之间的边的权值构成的矩阵为 <span class="math display">\[
+\left [
+\begin{matrix}
+w_{11} &amp; w_{12} &amp; w_{13} \\
+w_{21} &amp; w_{22} &amp; w_{23} \\
+w_{31} &amp; w_{32} &amp; w_{33}
+\end{matrix}
+\right ]
+\]</span> 其中，第一列的<span class="math inline">\(w_{11}, w_{21}, w_{31}\)</span>代表的是输入层的点<span class="math inline">\(x_1\)</span>分别连接隐藏层的三个节点的边的权值；第二列的<span class="math inline">\(w_{12}, w_{22}, w_{32}\)</span>代表的是输入层的点<span class="math inline">\(x_2\)</span>分别连接隐藏层的三个节点的边的权值；第三列的<span class="math inline">\(w_{13}, w_{23}, w_{33}\)</span>代表的是输入层的点<span class="math inline">\(x_3\)</span>分别连接隐藏层的三个节点的边的权值。</p>
+<p>图中的“+1”点代表我们添加了一个值b，称其为偏置项。那么，隐藏层的节点可以由下计算得到： <span class="math display">\[
+\begin{align}
+a_1 = w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1\\
+a_2 = w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2\\
+a_3 = w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3
+\end{align}
+\tag{1}
+\]</span> 由于线性计算的表现能力比较差，所以考虑用非线性函数进行计算，即使用激活函数<span class="math inline">\(f(\cdot)\)</span>（前面已提及）。（1）式可以变换为（2）式： <span class="math display">\[
+\begin{align}
+a_1 = f(w_{11}\times x_1 + w_{12}\times x_2 + w_{13}\times x_3 + b_1)\\
+a_2 = f(w_{21}\times x_1 + w_{22}\times x_2 + w_{23}\times x_3 + b_2)\\
+a_3 = f(w_{31}\times x_1 + w_{32}\times x_2 + w_{33}\times x_3 + b_3)
+\end{align}
+\tag{2}
+\]</span> 将（2）式改写为矩阵运算形式（3）式： <span class="math display">\[
+\begin{align}
+\boldsymbol{a} = f \begin{pmatrix} \begin{pmatrix} w_{11},w_{12},w_{13}\\w_{21},w_{22},w_{23}\\w_{31},w_{32},w_{33} \end{pmatrix} \begin{pmatrix} x_1\\x_2\\x_3 \end{pmatrix} + \begin{pmatrix} b_1\\b_2\\b_3 \end{pmatrix} \end{pmatrix} = f(\boldsymbol{W}x+\boldsymbol{B})
+\end{align}
+\tag{3}
+\]</span></p>
+<div align="center">
+<img src="NN4.PNG" width = "400" height = "400" alt="Figure4" />
+<p>
+图4. 简单全连接网络中层之间的计算方式
+</div>
+当我们增加隐藏层的层数，便可以构成更复杂的网络，即深度神经网络。
+<div align="center">
+<img src="NN5.PNG" width = "600" height = "400" alt="Figure5" />
+<p>
+图5. 深度神经网络示意图
+</div>
+</div>
+<div id="loss-function" class="section level1">
+<h1>损失函数（Loss Function）</h1>
+<p>训练数据通常是一系列“输入-输出”数据对组成的集合，我们希望输入一个数据，尽可能与配对的输出数据相同。那么网络的输出结果和实际的真实结果差多少，我们需要一定数学形式进行量化，所以引入了损失函数（Loss Function）。常见的损失函数有以下几种：</p>
+<p><strong>0-1损失函数</strong><br />
+如果预测值和真实值一样，则损失值为0；若不等，则为1；公式表达为： <span class="math display">\[
+L(y,f(x)) = \begin{cases}
+1, &amp; y = f(x)\\
+0, &amp; y \neq f(x)
+\end{cases}
+\]</span></p>
+<p><strong>绝对值损失函数（1-范数形式）</strong><br />
+通过预测值和真实值之差的绝对值进行衡量，公式表达为： <span class="math display">\[
+L(y,f(x)) = |y-f(x)|
+\]</span></p>
+<p><strong>均方误差损失函数（2-范数形式）</strong><br />
+通过计算预测值和真实值之差的平方再求均值，可得到均方误差，公式表达为： <span class="math display">\[
+L(y,f(x)) = \frac{1}{n}\sum_{i=1}^n(y_i-f(x_i))^2
+\]</span></p>
+</div>
+<div class="section level1">
+<h1>优化算法</h1>
+<div id="gradient-descent-method" class="section level2">
+<h2>梯度下降法（Gradient Descent Method）</h2>
+<p>传统的梯度下降法是通过计算损失函数的一阶导数作为方向进行下降计算，计算方法可表示为： <span class="math display">\[
+W_{ij} = W_{ij} - \alpha\frac{\partial}{\partial W_{ij}}L(w,b)\\
+b_i = b_i - \alpha\frac{\partial}{\partial b_i}L(w,b)
+\]</span> 其中<span class="math inline">\(W_{ij}\)</span>和<span class="math inline">\(b_i\)</span>是需要优化的参数，<span class="math inline">\(L(w,b)\)</span>是损失函数，<span class="math inline">\(\alpha\)</span>在深度学习中通常称为学习率（learning rate），在机器学习或最优化计算领域中我们通常称为步长（stepsize）。</p>
+<p>传统的梯度下降法需要计算<span class="math inline">\(n\)</span>个梯度，即样本数量的梯度个数，在数据越来越大的时代，这会大大降低我们需要的计算速度，因此也产生了随机梯度下降（Stochastic gradient descent）这一类的方法。随机梯度下降通常随机选取某个样本并计算其相应导数，作为所有样本相同的导数进行计算，这种方法在实践上有不错的效果。当然，我们可以随机选取一小批样本，样本数量记为batch size，将batch size个样本的导数进行累加后求均值作为所有样本相同的导数，再进一步计算；这种方法我们称为小批量随机梯度下降法（mini-batch stochastic gradient descent）。</p>
+<p>虽然梯度下降直接快速，但是也有一定的不足，由于我们需要选取stepsize，若stepsize太大，那可能无法达到优化问题的最优点；若stepsize太小，则收敛速度太慢，大大降低了模型训练速度。同时，不变的stepsize可能会使结果无法收敛到全局最优解，并可能停在局部最小值（局部最优解），当然很容易陷入到“鞍点”。</p>
+<div align="center">
+<img src="NN6.PNG" width = "400" height = "400" alt="Figure6" />
+<p>
+图6. “鞍点”示意图
+</div>
+</div>
+<div id="momentummomentum-optimizer" class="section level2">
+<h2>Momentum优化器（Momentum Optimizer）</h2>
+<p>Momentum优化器也可称为基于动量的优化算法，其中参数的更新会根据梯度的变化而变化：动量再梯度连续指向同一方向上时会增加，而在梯度方向变化时会减小；这样可以更快地收敛并减少震荡。公式表示为： <span class="math display">\[
+v_t^{W} = \gamma \times v_{t-1}^{W} + \alpha \times \frac{\partial}{\partial W_{ij}}L(w,b)\\
+W_{ij} = W_{ij} - v_t^{W}\\
+v_t^{b} = \gamma \times v_{t-1}^{b} + \alpha \times \frac{\partial}{\partial b_i}L(w,b)\\
+b_i = b_i - v_t^{b}
+\]</span> 其中，<span class="math inline">\(\gamma\)</span>是动量更新值，通常取0.9。这样，基于Momentum的随机梯度下降可以更快地收敛，并减少陷入局部最优点的概率。</p>
+</div>
+<div id="adagradadaptive-gradient-optimizer" class="section level2">
+<h2>Adagrad优化器（Adaptive Gradient Optimizer）</h2>
+<p>Momentum优化器虽然加速了参数的更新并加速收敛，但存在缺点是没有对不同的参数进行区别对待。Adagrad优化器则基于这样的梯度优化思想：根据参数自适应地更新学习率（也为步长stepsize），对于不频繁更新的参数做较大更新，而对于频繁更新的参数做较小的更新。</p>
+<p>Adagrad对于每个参数<span class="math inline">\(\theta_{t,i}\)</span>，在每个时间点<span class="math inline">\(t\)</span>使用不同的学习率。首先我们先考虑Adagrad的单参数情况，为了公式形式的整洁，我们记各个时间点<span class="math inline">\(t\)</span>的参数<span class="math inline">\(\theta_{t,i}\)</span>下的目标函数梯度为<span class="math inline">\(g_{t,i}\)</span>： <span class="math display">\[g_{t,i} = \frac{\partial}{\partial \theta_{t,i}}L(\theta_{t,i})\]</span> 在Adagrad的更新规则中，我们会根据每个时间点<span class="math inline">\(t\)</span>对每个参数<span class="math inline">\(\theta_{t+1,i}\)</span>基于上次已经计算过的梯度<span class="math inline">\(\theta_{t,i}\)</span>来修改步长： <span class="math display">\[\theta_{t+1,i} = \theta_{t,i} - \frac{\alpha}{\sqrt{G_{t,ii}+\epsilon}}\times g_{t,i}\]</span> 其中，<span class="math inline">\(G_{t,ii}\in R^{d\times d}\)</span>，<span class="math inline">\(G_{t,ii}\)</span>是一个对角矩阵，其对角元素<span class="math inline">\(t\)</span>时刻参数<span class="math inline">\(\theta_{t,i}\)</span>的梯度平方和，<span class="math inline">\(\epsilon\)</span>是一个光滑项，防止分母为0，通常取1e-8级别的数。另外，<span class="math inline">\(\alpha\)</span>使用默认值0.01。Adagrad有个缺点就是其分母实际上累积了梯度的平方，会使得步长（学习率）越来越小。</p>
+</div>
+<div id="adadelta" class="section level2">
+<h2>Adadelta优化器</h2>
+<p>Adadelta是对Adagrad的改进，通过用过去计算的梯度平方的均值代替单纯的累加梯度平方，可以避免一味地降低步长。</p>
+<p><span class="math inline">\(t\)</span>时刻的梯度平方均值表示为： <span class="math display">\[
+E[g^2]_{t,i} = \gamma\times E[g^2]_{t-1,i} + (1-\gamma)\times g_{t,i}^2
+\]</span> 其中，<span class="math inline">\(\gamma\)</span>和前面提到的Momentum优化器中的<span class="math inline">\(\gamma\)</span>类似，通常取0.9。将累积梯度平方更改为梯度平方均值，可得到： <span class="math display">\[\theta_{t+1,i} = \theta_{t,i} - \frac{\alpha}{\sqrt{E_t+\epsilon}}\times g_{t,i}\]</span> 另外，我们还想要变换分子的<span class="math inline">\(\gamma\)</span>，将<span class="math inline">\(\gamma\)</span>改为<span class="math inline">\(\sqrt{E[\Delta\theta^2]_t+\epsilon}\)</span>，便得到Adadelta的计算形式，以上内容可以总结为： <span class="math display">\[
+E[g^2]_{t,i} = \gamma\times E[g^2]_{t-1,i} + (1-\gamma)\times g_{t,i}^2\\
+E[\Delta\theta^2]_{t,i} = \gamma\times E[\Delta\theta^2]_{t-1,i} + (1-\gamma)\times \Delta\theta_{t,i}^2\\
+\theta_{t+1,i} = \theta_{t,i} - \frac{\sqrt{E[\Delta\theta^2]_{t-1,i}+\epsilon}}{\sqrt{E[g^2]_{t,i}+\epsilon}}\times g_{t,i}
+\]</span> 显然，我们不再需要提前设定步长了。</p>
+</div>
+<div id="adamadaptive-moment-estimation-optimizer-adam-optimizer" class="section level2">
+<h2>Adam优化器（Adaptive Moment Estimation Optimizer, Adam Optimizer）</h2>
+<p>Adam也是个人名，圣经中说他是世上的第一个人类也是第一个男人，接着和夏娃结为夫妻，过上了幸福的生活…跑远了！回正题！其实Adam的全称中文是自适应矩估计，它不仅像Adadelta一样存储过去梯度平方<span class="math inline">\(v_t\)</span>的平均值之外，还保留了像Momentum一样的保留了过去梯度<span class="math inline">\(m_t\)</span>，其计算公式为： <span class="math display">\[
+m_t = \beta_1m_{t-1} + (1-\beta_1)g_t\\
+v_t = \beta_2v_{t-1} + (1-\beta_2)g_t^2
+\]</span> 由于<span class="math inline">\(m_t\)</span>和<span class="math inline">\(v_t\)</span>在计算上会存在偏差，所以进行了偏差校正： <span class="math display">\[
+\hat{m_t} = \frac{m_t}{1-\beta_1^t}\\
+\hat{v_t} = \frac{v_t}{1-\beta_2^t}
+\]</span> Adam的更新规则： <span class="math display">\[\theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v_t}+\epsilon}}\times \hat{m_t}\]</span> 其中，<span class="math inline">\(\beta_1\)</span>通常取0.9，<span class="math inline">\(\beta_2\)</span>通常取0.999，<span class="math inline">\(\epsilon\)</span>通常取1e-8。大多实验表明，Adam比其他自适应学习算法表现更优。</p>
+</div>
+<div class="section level2">
+<h2>算法表现效果</h2>
+<div align="center">
+<img src="http://ruder.io/content/images/2016/09/saddle_point_evaluation_optimizers.gif" alt="Figure7" />
+<p>
+图7. 不同优化器的随机梯度下降法在鞍点处的不同表现
+</div>
+<p>注：动图来源于Sebastian Ruder的文章，由<a href="https://twitter.com/alecrad">Alec Radford</a>制作。</p>
+<ul>
+<li><strong>题外话（跳过这段吧~）</strong><br />
+在整理学习优化算法的时候，发现一件有趣的事。我边看着《Tensorflow入门与实战》的第四章边学习优化算法，同时网上边找找资料帮助理解。然而有趣的是我找到了一位业界大神Sebastian Ruder的主页，并看到了他在2016年1月6日写下了<em>An overview of gradient descent optimization algorithms</em>。看着看着我发现手中拿的书竟然是电脑屏幕上显示的文章的中文版，我便好奇地寻找手中这本实战书的出版时间 —— 2018年2月17日。怪哉怪哉~再翻翻书，发现并无任何引用。算了，回归主题！（Reference选了日期比较前的S.R.大佬的文章作为引用）</li>
+</ul>
+</div>
+</div>
+<div id="backpropagation" class="section level1">
+<h1>反向传播算法（Backpropagation）</h1>
+<p>反向传播算法是目前用来训练人工神经网络（Artificial Neural Network，ANN）的最常用且最有效的算法。首先我们先定义变量：</p>
+<ul>
+<li><span class="math inline">\(v_i^{(l)}\)</span>：第<span class="math inline">\(l\)</span>层的第<span class="math inline">\(i\)</span>个节点的输入值，<span class="math inline">\(v_i^{(l)} = \sum_{j=0}^n w_{ij}^{(l)}a_j^{(l-1)} + b_i^{(l)}\)</span>；</li>
+<li><span class="math inline">\(a_i^{(l)}\)</span>：第<span class="math inline">\(l\)</span>层的第<span class="math inline">\(i\)</span>个节点的输出值，<span class="math inline">\(a_i^{(l)} = f(v_i^{(l)})\)</span>，其中<span class="math inline">\(f(\cdot)\)</span>是激活函数；</li>
+<li><span class="math inline">\(w_{ij}^{(l)}\)</span>：第<span class="math inline">\(l-1\)</span>层的第<span class="math inline">\(j\)</span>个节点到第<span class="math inline">\(l\)</span>层的第<span class="math inline">\(i\)</span>个节点的权值；</li>
+<li><span class="math inline">\(b_i^{(l)}\)</span>：第<span class="math inline">\(l\)</span>层计算第<span class="math inline">\(i\)</span>个节点的输入值时的偏置项的值；</li>
+<li><span class="math inline">\(K\)</span>：神经网络的总层数；</li>
+<li><span class="math inline">\(f(\cdot)\)</span>：激活函数，例如sigmoid函数，tanh函数或者ReLu函数；</li>
+<li><span class="math inline">\(L(w,b)\)</span>：整体损失函数，常用的损失函数为<span class="math inline">\(\frac{1}{2n}\sum_{i=1}^n(y_i-f(x_i))^2\)</span>，其中n是样本的个数。</li>
+</ul>
+<p>反向传播计算过程的细节如下所示：</p>
+<ul>
+<li><p><strong>参数初始化</strong><br />
+随机初始化网络中的各层的参数<span class="math inline">\(w_{ij}^{(l)}\)</span>和<span class="math inline">\(b_i^{(l)}\)</span>，且满足<span class="math inline">\(N(0,\ 0.01)\)</span>分布的随机数；</p></li>
+<li><strong>前向传播</strong><br />
+
+<div align="center">
+<p><img src="NN3.PNG" width = "300" height = "300" /></p>
+</div></li>
+</ul>
+<p>以图3中隐藏层的第一个节点（从上往下数第一个）为例，对于这个节点而言，其输入信号为： <span class="math display">\[v_1^{(2)} = a_1^{(1)}\times w_{11}^{(2)} + a_2^{(1)}\times w_{12}^{(2)} + a_3^{(1)}\times w_{13}^{(2)} + b_1^{(2)}\]</span></p>
+<p>同理，我们可以得到该层的其他节点的计算： <span class="math display">\[
+v_2^{(2)} = a_1^{(1)}\times w_{21}^{(2)} + a_2^{(1)}\times w_{22}^{(2)} + a_3^{(1)}\times w_{23}^{(2)} + b_2^{(2)}\\
+v_3^{(2)} = a_1^{(1)}\times w_{31}^{(2)} + a_2^{(1)}\times w_{32}^{(2)} + a_3^{(1)}\times w_{33}^{(2)} + b_3^{(2)}\\
+v_4^{(2)} = a_1^{(1)}\times w_{41}^{(2)} + a_2^{(1)}\times w_{42}^{(2)} + a_3^{(1)}\times w_{43}^{(2)} + b_4^{(2)}\\
+\]</span></p>
+<p>若用矩阵形式进行表达： <span class="math display">\[V^{(2)} = A^{(1)}\times W^{(2)} + B^{(2)}\]</span> 其中， <span class="math display">\[
+V^{(2)} = (v_1^{(2)}, v_2^{(2)}, v_3^{(2)}, v_4^{(2)})\\
+A^{(1)} = (a_1^{(1)}, a_2^{(1)}, a_3^{(1)})\\
+W^{(2)} = \begin{pmatrix}
+w_{11}^{(2)} &amp; w_{21}^{(2)} &amp; w_{31}^{(2)} &amp; w_{41}^{(2)}\\
+w_{12}^{(2)} &amp; w_{22}^{(2)} &amp; w_{32}^{(2)} &amp; w_{42}^{(2)}\\
+w_{13}^{(2)} &amp; w_{23}^{(2)} &amp; w_{33}^{(2)} &amp; w_{43}^{(2)}
+\end{pmatrix}\\
+B^{(2)} = (b_1^{(2)}, b_2^{(2)}, b_3^{(2)}, b_4^{(2)})
+\]</span></p>
+<p>再经过激活函数（非线性函数）变换后得到： <span class="math display">\[A^{(2)} = f(V^{(2)})\]</span></p>
+<p>同理，经由 <span class="math display">\[
+V^{(3)} = A^{(2)}\times W^{(3)} + B^{(3)}\\
+A^{(3)} = f(V^{(3)})
+\]</span> 可以得到最终输出。</p>
+<ul>
+<li><strong>反向传播</strong><br />
+首先对于最后一层节点的偏导数，其实我们很容易得到，我们定义神经网络总共有<span class="math inline">\(K\)</span>层，对于最后一层即第<span class="math inline">\(K\)</span>层（输出层），根据偏导数的定义：</li>
+</ul>
+<p><span class="math display">\[
+\begin{align}
+\delta_i^{(K)} =&amp;\ \frac{\partial}{\partial v_i^{(K)}}L(w,b)\\
+=&amp;\ \frac{\partial L(w,b)}{\partial a_i^{(K)}}\times \frac{\partial a_i^{(K)}}{\partial v_i^{(K)}}\\
+=&amp;\ \frac{\partial L(w,b)}{\partial a_i^{(K)}}\times f&#39;(v_i^{(K)})
+\end{align}
+\tag{4}
+\]</span> 明显的是，<span class="math inline">\(a_i^{(K)}\)</span>是最后一层（即输出层）的输出值，<span class="math inline">\(f&#39;(v_i^{(K)})\)</span>则是激活函数对<span class="math inline">\(v_i^{(K)}\)</span>的导数。</p>
+<p>对（4）式进一步推导可以得到： <span class="math display">\[
+\begin{align}
+\delta_i^{(K)} =&amp;\ \frac{\partial}{\partial a_i^{(K)}}\Big[\frac{1}{2n_K}\sum_{j=1}^{n_K}\Big(y_j-a_j^{(K)}\Big)^2\Big]\times f&#39;(v_i^{(K)})\\
+=&amp;\ -\frac{1}{n_k}(y_i-a_i^{(K)})\times f&#39;(v_i^{(K)})
+\end{align}
+\]</span> 其中，<span class="math inline">\(y_i\)</span>是样本对应的正确值，<span class="math inline">\(n_K\)</span>是第K层节点个数。</p>
+<p>因此，可得到最后一层（第K层）的计算公式： <span class="math display">\[
+\delta_i^{(K)} = -\frac{1}{n_k}(y_i-a_i^{(K)})\times f&#39;(v_i^{(K)})
+\tag{5}
+\]</span></p>
+<p>那么对于第<span class="math inline">\(K-1\)</span>层的偏导数，可以根据第<span class="math inline">\(K\)</span>层的计算出来： <span class="math display">\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;\ \frac{\partial}{\partial v_i^{(K-1)}}L(w,b)\\
+=&amp;\ \frac{\partial}{\partial v_i^{(K-1)}}\Big[\frac{1}{2n_K}\sum_{j=1}^{n_K}\Big(y_j-a_j^{(K)}\Big)^2\Big]\\
+=&amp;\ \frac{1}{2n_K}\Big[\frac{\partial}{\partial v_i^{(K-1)}} \sum_{j=1}^{n_K}\Big(y_j-f(v_j^{(K)})\Big)^2\Big]
+\end{align}
+\tag{6}
+\]</span></p>
+<p>利用连续函数的求导和求和顺序可互换，（6）式可以推得： <span class="math display">\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;\ -\frac{1}{n_K} \sum_{j=1}^{n_K} \Big[(y_j-f(v_j^{(K)}))\times \frac{\partial}{\partial v_i^{(K-1)}}f(v_j^{(K)})\Big]\\
+=&amp;\ -\frac{1}{n_K} \sum_{j=1}^{n_K} \Big[(y_j-f(v_j^{(K)}))\times \frac{\partial f(v_j^{(K)})}{\partial v_i^{(K)}}\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]\\
+=&amp;\ \sum_{j=1}^{n_K} \Big[-\frac{1}{n_K} (y_j-f(v_j^{(K)}))\times f&#39;(v_j^{(K)})\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]
+\end{align}
+\]</span></p>
+<p>联合（5）式，由（6）式可以得到： <span class="math display">\[
+\begin{align}
+\delta_i^{(K-1)} =&amp;\ \sum_{j=1}^{n_K} \Big[ \delta_i^{(K)}\times \frac{\partial v_i^{(K)}}{\partial v_i^{(K-1)}} \Big]\\
+=&amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times \frac{\partial }{\partial v_i^{(K-1)}}\Big[ \sum_{m=0}^{n_{K-1}}a_m^{(K-1)}\times w_{jm}^{(K)}+b_j^{(K)} \Big]\Bigg]\\
+=&amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times \frac{\partial }{\partial v_i^{(K-1)}}\Big[ \sum_{m=0}^{n_{K-1}}f(v_m^{(K-1)})\times w_{jm}^{(K)}+b_j^{(K)} \Big]\Bigg]\\
+=&amp;\ \sum_{j=1}^{n_K}\Bigg[ \delta_i^{(K)}\times f&#39;(v_i^{(K-1)})\times w_{ji}^{(K)} \Bigg]\\
+=&amp;\ \Bigg[\sum_{j=1}^{n_K}\Big[ \delta_i^{(K)}\times w_{ji}^{(K)} \Big]\Bigg] \times f&#39;(v_i^{(K-1)})
+\end{align}
+\]</span></p>
+<p>因此，可得到第K-1层的计算公式： <span class="math display">\[
+\delta_i^{(K-1)} = \Bigg[\sum_{j=1}^{n_K}\Big[ \delta_i^{(K)}\times w_{ji}^{(K)} \Big]\Bigg] \times f&#39;(v_i^{(K-1)})
+\tag{7}
+\]</span></p>
+<p>同理，用<span class="math inline">\(K-2\)</span>替换<span class="math inline">\(K-1\)</span>，用<span class="math inline">\(K-1\)</span>替换<span class="math inline">\(K\)</span>，则可计算第<span class="math inline">\(K-2\)</span>层的偏导数。 <span class="math display">\[
+\delta_i^{(K-2)} = \Bigg[\sum_{j=1}^{n_{K-1}}\Big[ \delta_i^{(K-1)}\times w_{ji}^{(K-1)} \Big]\Bigg] \times f&#39;(v_i^{(K-2)})
+\tag{7}
+\]</span></p>
+<p>同样的，可以根据（7）式计算得到网络中所有节点的偏导数。</p>
+<p>回归我们的参数迭代公式： <span class="math display">\[
+\begin{align}
+w_{ij}^{(l)} =&amp;\ w_{ij}^{(l)} - \alpha\times \frac{\partial}{\partial w_{ij}^{(l)}}L(w,b)\\
+b_i^{(l)} =&amp;\ b_i^{(l)} - \alpha\times \frac{\partial}{\partial b_i^{(l)}}L(w,b)
+\end{align}
+\tag{8}
+\]</span></p>
+<p>对于后面的偏导数部分，我们可以加以处理，对于参数<span class="math inline">\(w_{ij}^{(l)}\)</span>部分： <span class="math display">\[
+\begin{align}
+\frac{\partial L(w,b)}{\partial w_{ij}^{(l)}} =&amp;\ \frac{\partial L(w,b)}{\partial v_i^{(l)}}\times \frac{\partial  v_i^{(l)}}{\partial w_{ij}^{(l)}}\\
+=&amp;\ \delta_i^{(l)}\times \frac{\partial v_i^{(l)}}{\partial w_{ij}^{(l)}}\\
+=&amp;\ \delta_i^{(l)}\times \frac{\partial }{\partial w_{ij}^{(l)}}\Big[\sum_{j=0}^{n_{l-1}}a_j^{(l-1)}\times w_{ij}^{(l)}+b_i^{(l)}\Big]\\
+=&amp;\ \delta_i^{(l)}\times a_j^{(l-1)}
+\end{align}
+\]</span></p>
+<p>对于参数<span class="math inline">\(b_i^{(l)}\)</span>部分： <span class="math display">\[
+\begin{align}
+\frac{\partial L(w,b)}{\partial b_i^{(l)}} =&amp;\ \frac{\partial L(w,b)}{\partial v_i^{(l)}}\times \frac{\partial v_i^{(l)}}{\partial b_i^{(l)}}\\
+=&amp;\ \delta_i^{(l)}\times \frac{\partial}{\partial b_i^{(l)}}\Big[\sum_{j=0}^{n_{l-1}}a_j^{(l-1)}\times w_{ij}^{(l)}+b_i^{(l)}\Big]\\
+=&amp;\ \delta_i^{(l)}
+\end{align}
+\]</span></p>
+<p>因此，由（8）式可以推得 <span class="math display">\[
+\begin{align}
+w_{ij}^{(l)} =&amp;\ w_{ij}^{(l)} - \alpha\times \delta_i^{(l)}\times a_j^{(l-1)}\\
+b_i^{(l)} =&amp;\ b_i^{(l)} - \alpha\times \delta_i^{(l)}
+\end{align}
+\tag{8}
+\]</span></p>
+<p>Over！反向传播算法到此结束！</p>
+</div>
+<div id="reference" class="section level1">
+<h1>Reference</h1>
+<p><a href="http://ruder.io/optimizing-gradient-descent/index.html">Sebastian Ruder. An overview of gradient descent optimization algorithms</a></p>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/deep-learning/">Deep Learning</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="../../img/portrait.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="../../">Thompson Hu</a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:ttxinlinhu@qq.com" >
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a itemprop="sameAs" href="https://github.com/thompsonhu" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+<section id="comments">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "thompsonhu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="../../privacy/">Made by Thompson</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    <script id="dsq-count-scr" src="//thompsonhu.disqus.com/count.js" async></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+
+    
+
+  </body>
+</html>
+
