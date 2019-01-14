@@ -183,7 +183,8 @@ Discriminator也是一个NN，但是它的输入是一张图片或是一句话�
 &lt;div align=&#34;center&#34;&gt;
 &lt;p&gt;&lt;img src=&#34;GAN21.PNG&#34; width = &#34;500&#34; height = &#34;700&#34;/&gt;&lt;/p&gt;
 &lt;/div&gt;
-回到正题！！！ &lt;strong&gt;方法1&lt;/strong&gt;&lt;br /&gt;
+&lt;p&gt;回到正题！！！&lt;/p&gt;
+&lt;strong&gt;方法1&lt;/strong&gt;&lt;br /&gt;
 那有一种方法呢，就是在获得中间的latent variables之前时，两个encoder最后有几层是共享相同参数的；同样在进入decoder部分时，前面几层也是共享相同参数的。这样在获得latent variables的时候，能够尽可能落在相同的latent space。这样的方法出现在文章&lt;a href=&#34;https://arxiv.org/abs/1606.07536&#34;&gt;Coupled Generative Adversarial Networks&lt;/a&gt;和文章&lt;a href=&#34;https://arxiv.org/abs/1703.00848&#34;&gt;Unsupervised Image-to-Image Translation Networks&lt;/a&gt;。
 &lt;div align=&#34;center&#34;&gt;
 &lt;img src=&#34;GAN17.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure17&#34; /&gt;
