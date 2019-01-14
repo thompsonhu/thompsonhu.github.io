@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.3.0">
+  <meta name="generator" content="Hugo 0.52" />
+  <meta name="author" content="Thompson Hu">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="从知乎上了解到台大有位著名的教授李宏毅超级会讲Generative Adversarial Networks, GAN技术，所以慕名而到Youtube找到他的上课视频成为他的“课外学生”。李教授真的厉害，形象生动地讲解GAN的各个知识点。那么，我把我学到的整理为一篇博客，尝试作为一名“GAN路上的导游”。
+Yann LeCun是Facebook的AI研究部门的Director，同时也是NYU（New York University）的一位教授，维基百科上是这么介绍他：
+ He is the Chief Artificial Intelligence Scientist at Facebook AI Research, and he is well known for his work on optical character recognition and computer vision using convolutional neural networks (CNN), and is a founding father of convolutional nets.
+ 做Deep Learning的人多多少少会听过这个名字，他曾经这样回答了Quora论坛上的一个问题（What are some recent and potentially upcoming breakthroughs in unsupervised learning?）：
+ Adversarial training is the coolest thing since sliced bread.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="../../styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bonbon Blog">
+  <meta property="og:url" content="/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/">
+  <meta property="og:title" content="生成对抗网络的第一Part | Bonbon Blog">
+  <meta property="og:description" content="从知乎上了解到台大有位著名的教授李宏毅超级会讲Generative Adversarial Networks, GAN技术，所以慕名而到Youtube找到他的上课视频成为他的“课外学生”。李教授真的厉害，形象生动地讲解GAN的各个知识点。那么，我把我学到的整理为一篇博客，尝试作为一名“GAN路上的导游”。
+Yann LeCun是Facebook的AI研究部门的Director，同时也是NYU（New York University）的一位教授，维基百科上是这么介绍他：
+ He is the Chief Artificial Intelligence Scientist at Facebook AI Research, and he is well known for his work on optical character recognition and computer vision using convolutional neural networks (CNN), and is a founding father of convolutional nets.
+ 做Deep Learning的人多多少少会听过这个名字，他曾经这样回答了Quora论坛上的一个问题（What are some recent and potentially upcoming breakthroughs in unsupervised learning?）：
+ Adversarial training is the coolest thing since sliced bread."><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-01-14T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-01-14T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>生成对抗网络的第一Part | Bonbon Blog</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">生成对抗网络的第一Part</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2019-01-14 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2019-01-14 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      Jan 14, 2019
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <a href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/#disqus_thread"></a>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="../../categories/deep-learning/">Deep Learning</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%b8%80Part&amp;url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25B8%2580part%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25B8%2580part%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25B8%2580part%2f&amp;title=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%b8%80Part"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25B8%2580part%2f&amp;title=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%b8%80Part"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%b8%80Part&amp;body=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25B8%2580part%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>从知乎上了解到台大有位著名的教授<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html">李宏毅</a>超级会讲<a href="https://arxiv.org/abs/1406.2661v1">Generative Adversarial Networks, GAN</a>技术，所以慕名而到Youtube找到他的上课视频成为他的“课外学生”。李教授真的厉害，形象生动地讲解GAN的各个知识点。那么，我把我学到的整理为一篇博客，尝试作为一名“GAN路上的导游”。</p>
+<p>Yann LeCun是Facebook的AI研究部门的Director，同时也是NYU（New York University）的一位教授，维基百科上是这么介绍他：</p>
+<blockquote>
+<p>He is the Chief Artificial Intelligence Scientist at Facebook AI Research, and he is well known for his work on optical character recognition and computer vision using convolutional neural networks (CNN), and is a founding father of convolutional nets.</p>
+</blockquote>
+<p>做Deep Learning的人多多少少会听过这个名字，他曾经这样回答了Quora论坛上的一个问题（What are some recent and potentially upcoming breakthroughs in unsupervised learning?）：</p>
+<blockquote>
+<p>Adversarial training is the coolest thing since sliced bread.</p>
+</blockquote>
+<p>这里sliced bread的中文意思是切片面包，但其实这里是表示了有一个好东西问世，给某个领域带来了巨大发展，维基百科这么说：</p>
+<blockquote>
+<p>The phrase “the greatest thing since sliced bread” is a common hyperbole used to praise an invention or development.</p>
+</blockquote>
+<p>这也说明了GAN推进了整个领域的发展。Yann LeCun对GAN也有过这样极高的评价：</p>
+<blockquote>
+<p>This, and the variations that are now being proposed is the most interesting idea in the last 10 years in ML, in my opinion.</p>
+</blockquote>
+李教授统计了ICASSP（International Conference on Acoustics, Speech and Signal Processing）的文章题目涵盖关键词的数量：
+<div align="center">
+<img src="GAN1.PNG" width = "500" height = "500" alt="Figure1" />
+<p>
+图1. ICASSP文章题目涵盖关键词的数量变化图
+</div>
+<p>很明显，从17年的2篇Adversarial到18年的42篇Adversarial，同年增长了21倍！相当惊人！既然GAN这么Popular又是这么酷炫，那么我们就开始正文吧！(๑•̀ㅂ•́)و✧</p>
+<div id="gangan" class="section level1">
+<h1>什么是GAN？说GAN就干！</h1>
+<p>GAN里面主要分为Generator和Discriminator这两部分，其实原理很简单，Generator是负责训练样本并能生成对的Output，而Discriminator像是一位老师，看看Generator这位学生交的作业质量怎么样，会给Generator的作业一个分数。下面我们更详细地介绍他们这两部分~</p>
+<div id="generator" class="section level2">
+<h2>一无所知的Generator生成器</h2>
+Generator其实就是neural network (NN)，它的输入是向量，那我们如果丢一个向量到Generator里面，它就能产生某个Output（可能是一张相片或者一句话等等）
+<div align="center">
+<img src="GAN2.PNG" width = "500" height = "500" alt="Figure2" />
+<p>
+图2. Generator生成器的示例图
+</div>
+<p>李教授酷爱二次元，所以他举了这样的例子，丢一些向量给生成图片的Generator就生成了一些二次元的图片；另外，对应句子生成的例子，丢一些向量给生成句子的Generator就生成了一些句子。简单来说，我们给Generator这个function（NN其实就是一个复杂的function）赋值，它就会产生对应的结果。</p>
+我们以图片为例，输入的向量中的每一个元素，可能对应着图片中不同的特征。假设第一位是改变头发的长短特征，那从下图中可以看到0.1改为3后，图片中的女孩从短头发变为长头发；假设向量倒数第二位是改变头发的颜色特征，那从下图可以看到5.4改为2.4后，图片中的女孩从紫色变为了蓝色；假设向量倒数第一位是改变嘴巴特征，那从下图可以看到0.9改为3.5后，图片中的女孩从小嘴巴变为了张开嘴巴。
+<div align="center">
+<img src="GAN3.PNG" width = "500" height = "500" alt="Figure3" />
+<p>
+图3. 输入向量对结果输出的影响
+</div>
+<p>在实际操作中，如果我们通过大量的样本让Generator训练，使其能够输出与图片尽可能相似的结果，那这样就只是普通的NN（神经网络），但我们想要更高级！想要输出的图片质量更好！而GAN满足了我们的需求，它的idea妙就妙在搞多了一个Discriminator（监督器），审判Generator输出的结果是不是真的“好”。</p>
+</div>
+<div id="discriminator" class="section level2">
+<h2>超严厉的Discriminator监督器</h2>
+Discriminator也是一个NN，但是它的输入是一张图片或是一句话（Generator的输出）。而它的输出是一个数值，这个数值代表了这张图片的质量如何，数值越大，那图片的质量就越好，越像是真实的图片；相反，数值越小，图片质量越差。下面可以看到不同质量的二次元图片对应着不同的得分数值~
+<div align="center">
+<img src="GAN4.PNG" width = "500" height = "500" alt="Figure4" />
+<p>
+图4. 不同二次元图片对应不同的得分
+</div>
+<p>前面大致讲了一下Generator和Discriminator的关系，但是不算很生动详细！下面我来举个栗子！</p>
+我们可以把Generator和Discriminator当做捕食者和被捕食者，那Pokemon里面鸟系对虫系就有着威慑能力，天生虫系会怕鸟系嘛，这很合理╮(๑•́ ₃•̀๑)╭
+<div align="center">
+<img src="GAN5.PNG" width = "300" height = "300" alt="Figure5" />
+<p>
+图5. 小智的比比鸟和绿毛虫的初次相遇
+</div>
+<p>其实一开始绿毛虫（一代Generator）就很怕波波（一代Discriminator）嘛，所以它就会进化成铁甲蛹（二代Generator），那波波个子小就拿它没办法了，吃也吃不了╮(๑•́ ₃•̀๑)╭所以波波也进化了变成了比比鸟（二代Discriminator）。那现在比比鸟翅膀大了，爪子一夹，把铁甲蛹抓到空中再丢下来（极其残忍！），铁甲蛹也会痛！所以铁甲蛹不甘示弱，它接着进化成巴大蝴（三代Generator）！这下比比鸟没办法它也进化成比雕（三代Discriminator），它以为比雕可能会搞得定巴大蝴！奈何巴大蝴也有翅膀了，还有催眠粉！比雕觉得没办法了，就这样吧，两人实力相当了！</p>
+<div align="center">
+<img src="GAN6.PNG" width = "500" height = "500" alt="Figure6" />
+<p>
+图6. Generator和Discriminator的相互关系
+</div>
+<p>回到现实！这里的巴大蝴就是我们的最终Generator（这里以三代为例，实际需要N代），那它所生成的图片可以让最终的Discriminator认为是真实的，这就达到了我们的目的(*•̀ㅂ•́)و</p>
+</div>
+<div id="gan" class="section level2">
+<h2>GAN的算法框架</h2>
+<p>我们了解了Generator和Discriminator的基本知识后，我们来看看算法~</p>
+<p>首先随机产生了两个NN作为Generator和Discriminator，然后不断循环：固定Generator调Discriminator的参数，再固定Discriminator调Generator的参数。具体过程如下所示：</p>
+在第一步中固定Generator调Discriminator的参数，对于从Database出来的真实案例，我们希望Discriminator给高分；对于Generator生成的案例，我们希望Discriminator给低分。Discriminator通过训练会在这个过程中学会给真实的案例高分，给假的案例低分。
+<div align="center">
+<img src="GAN7.PNG" width = "500" height = "500" alt="Figure7" />
+<p>
+图7. 固定Generator下训练Discriminator
+</div>
+在下一步中我们固定Discriminator调Generator的参数，我们希望调整Generator后，我们给一个向量生成一个案例，这个案例通过Discriminator得到的分数能够尽量高。
+<div align="center">
+<img src="GAN8.PNG" width = "500" height = "500" alt="Figure8" />
+<p>
+图8. 固定Discriminator下训练Generator
+</div>
+如果我们写成Pseudocode（伪代码），就变成下面这样：
+<div align="center">
+<img src="GAN9.PNG" width = "500" height = "500" alt="Figure9" />
+<p>
+图9. 关于GAN算法的伪代码
+</div>
+</div>
+</div>
+<div id="unsupervised-conditional-generation" class="section level1">
+<h1>Unsupervised Conditional Generation非监督的条件生成器</h1>
+<p>通常在普通的神经网络方法下，但是我们需要对应的样本来帮助我们生成我们需要的图片；我们给一个输入，再给一个Label告诉机器，你看到这个输入就需要有这样的Label的输出，但如果对于某些样本我们刚好没有对应Label的话，但我们手中有其他类似的，那我们可以通过非监督的条件生成器来生成我们想要的结果。</p>
+我们希望能够创造一个Generator，输入一个来自Domain X的样本，可以输出一个对应在Domain Y的样本。<strong>这相当于一种风格转化的案例。</strong>举个例子，现在许多人喜欢拍照用滤镜，通常我们拍的普通相片是没有带滤镜的，那现在我希望能够得到水彩画形式的相片，如下所示：
+<div align="center">
+<img src="GAN10.PNG" width = "500" height = "500" alt="Figure10" />
+<p>
+图10. 变成水彩画形式的相片
+</div>
+<div id="direct-transformation" class="section level2">
+<h2>样本的直接转化问题（Direct Transformation）</h2>
+<p>像上面叙述的例子，其实普通相片到油画形式的相片，只是<strong>色彩质地</strong>有所区别，但是总体的框架基本不变，相当于说只是小部分修改了我们输入的相片，那Direct Transformation就足够帮我们处理这个问题了。</p>
+通常我们会用GAN的技术来实现，GAN其实也是可以解决这个问题，如果Generator的层数很少，不是那么复杂，在Discrimiantor的监督下生成油画型的图片跟输入的图片差距不会太大。但是如果Generator很复杂的情况下，Generator是存在可能会生成在Domain Y的相片与在Domain X的相片差距很大。即使在Discriminator中拿到了很高的分数，但是与原始输入的样本差距甚远，如下图所示：
+<div align="center">
+<img src="GAN11.PNG" width = "500" height = "500" alt="Figure11" />
+<p>
+图11. 普通GAN的弱点
+</div>
+<p>在Domain X的河道图输入之后，尽管训练得到的Generator产生了艺术型的油画图，但是明显上图中的梵高自画像不是我们希望得到的输出，但它确实是属于Domain Y类型的图片。</p>
+<div id="cycle-gan" class="section level3">
+<h3>Cycle GAN</h3>
+存在上述的问题，那么我们想在生成Domain Y的图片之后，我们可以做一个逆函数（NN）来返回去检验这个图片，看看能否恢复成我们输入图片的样子；当然，我们需要Discriminator帮助我们将输入的图片训练生成在Domain Y的图片。
+<div align="center">
+<img src="GAN12.PNG" width = "500" height = "500" alt="Figure12" />
+<p>
+图12. Cycle GAN处理过程示意图
+</div>
+</div>
+<div id="stargan" class="section level3">
+<h3>StarGAN</h3>
+<p>如果现在我们不仅仅希望普通相片可以变成一张油画照，我们还希望可以变成黑白照或者素描照，那我们的案例就变得更复杂，需要多个Domain，而且我们希望能够在多个Domain里面互转。假设我们有普通照片，油画照，黑白照和素描照这四种类型照片，那其实我们需要创建<span class="math inline">\(C_4^2\)</span>个Cycle GAN来解决这样一个大问题，使得在这四个Domain之间实现互转（如下图(a)所示）。</p>
+<p>2017年arXiv上Yunjey Choi等人发表了文章<a href="https://arxiv.org/abs/1711.09020">StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation</a>，StarGAN的方便之处是在于只学习了一个Generator，就可以在多个Domain之间实现互转（如下图(b)所示）。</p>
+<div align="center">
+<img src="GAN13.PNG" width = "500" height = "500" alt="Figure13" />
+<p>
+图13. Cross-domain models和StarGAN的示意图
+</div>
+<p>下面我们通过原文提供的案例来进一步了解StarGAN：</p>
+<ul>
+<li><p>首先，我们先<strong>训练Discriminator</strong>。这个Discriminator的输入有真实的照片和假的照片，我们希望Discriminator可以输出判断输入的照片是真的还是假的；同时希望可以输出判断真实的照片属于哪一个Domain。在下图案例可以看到，我们真实判断的Domain是<span class="math inline">\(0\ 0\ 1\ 0\ 1\)</span>相当于真实照片是一个棕色头发年轻的女性角色。在这个地方可以注意到，我们只在考虑CelebA label，但是没有考虑RaFD label，而这个是由Mask vector所控制的（先设定为<span class="math inline">\(1\ 0\)</span>）。</p></li>
+<li><p>接着我们以真实照片（<strong>棕色头发年轻的女性角色</strong>）和我们希望得到的Domain（<strong><span class="math inline">\(1\ 0\ 0\ 1\ 1\)</span></strong>）作为我们<strong>训练Generator</strong>的输入，我们希望输出得到目标Domain的照片（转化案例是希望得到一个<strong>黑色头发年轻的男性角色</strong>）。</p></li>
+<li><p>利用Cycle GAN的想法，我们用输出的照片（<strong>黑色头发年轻的男性角色</strong>）和我们原始的Domain（<strong><span class="math inline">\(0\ 0\ 1\ 0\ 1\)</span></strong>）作为另外一个Generator的输入，希望得到和原始一模一样的照片（<strong>棕色头发年轻的女性角色</strong>）。</p></li>
+<li><p>最后呢~将第二步训练得到的照片作为Discriminator的输入，训练Discriminator判断能不能认为输入的照片是真实的照片，并且是属于我们希望得到的Domain（<strong><span class="math inline">\(1\ 0\ 0\ 1\ 1\)</span></strong>）。</p></li>
+<li><p>循环前面第二到第四步，直到第四步中Discriminator认为第二步所输出的照片是真实的且属于Domain（<strong><span class="math inline">\(1\ 0\ 0\ 1\ 1\)</span></strong>）。</p></li>
+</ul>
+同理，我们可以让Mask vector为<span class="math inline">\(0\ 1\)</span>，不考虑CelebA label了而是考虑RaFD label，即考虑情绪的变换。
+<div align="center">
+<img src="GAN14.PNG" width = "600" height = "700" alt="Figure14" />
+<p>
+图14. 来自原Paper的案例
+</div>
+</div>
+</div>
+<div id="projection-to-common-space" class="section level2">
+<h2>投影到共有的空间（Projection to Common Space）</h2>
+<p>那如果想要<strong>转化的结果跟你原来输入的样本结果差别很大</strong>，对于图片而言，可能<strong>画风突变</strong>！比如从真人头像到二次元的漫画头像，这时没办法简单地进行Direct Transformation了，需要利用Projection这样的技术。如果我们先通过编码器获得latent variables，再通过解码器获得我们想要的输出，这样就有可能做到比较大的变换。</p>
+<strong>问题</strong><br />
+对于两个Domain的大变化的互转，我们希望可以先分别对两个不同Domain的样本做Auto-Encoder，同时最小化重建的误差（Minimizing reconstruction error）。我们假设Domain X是漫画版本闪电侠，我们希望直接通过图片转化成真人版本的闪电侠（Domain Y），我们按刚刚说的流程，实现的流程如下图所示。
+<div align="center">
+<img src="GAN15.PNG" width = "700" height = "500" alt="Figure15" />
+<p>
+图15. 漫画闪电侠与真人版的互换
+</div>
+但是这样做存在问题就是Domain X做好的Auto-Encoder跟Domain Y做好的Auto-Encoder是完全没有联系的，这种情况下可能我输入一张闪电侠的漫画图片，通过Y的解码器（Decoder）之后，没办法得到闪电侠的真人图片，而是得到了绿箭侠的真人图片(๑•́ ₃ •̀)
+<div align="center">
+<img src="GAN16.PNG" width = "700" height = "500" alt="Figure16" />
+<p>
+图16. 漫画闪电侠的变换结果出错的可能性
+</div>
+【注：美剧闪电侠第五季的第九集和美剧绿箭第七季的第九集中，Oliver Queen变成了闪电侠。。。Barry Allen变成了绿箭侠。。。源自异世界的剧情_(:з」∠)_ 】
+<div align="center">
+<p><img src="GAN21.PNG" width = "500" height = "700"/></p>
+</div>
+回到正题！！！ <strong>方法1</strong><br />
+那有一种方法呢，就是在获得中间的latent variables之前时，两个encoder最后有几层是共享相同参数的；同样在进入decoder部分时，前面几层也是共享相同参数的。这样在获得latent variables的时候，能够尽可能落在相同的latent space。这样的方法出现在文章<a href="https://arxiv.org/abs/1606.07536">Coupled Generative Adversarial Networks</a>和文章<a href="https://arxiv.org/abs/1703.00848">Unsupervised Image-to-Image Translation Networks</a>。
+<div align="center">
+<img src="GAN17.PNG" width = "700" height = "500" alt="Figure17" />
+<p>
+图17. 共享参数的方法示意图
+</div>
+<strong>方法2</strong><br />
+另外一种方法就是我们加一个Domain Discriminator，对中间产生的latent variables进行判定，判定产生的latent variables是来自<span class="math inline">\(EN_X\)</span>还是来自<span class="math inline">\(EN_Y\)</span>，那么两个Encoder就会训练使得产生的latent variables能够骗过Discriminator。这样相当于这个Domain Discriminator促使两个Encoder产生的latent variables来自相同的分布。
+<div align="center">
+<img src="GAN18.PNG" width = "700" height = "500" alt="Figure18" />
+<p>
+图18. 加入Domain Discriminator的示意图
+</div>
+<p><strong>方法3</strong><br />
+利用Cycle GAN的想法，我们还可以输入一张我们想要转换的图片（比如输入是漫画闪电侠），通过Domain X的encoder和Domain Y的decoder得到目标输出结果；然后，将这个结果作为Domain Y的encoder的输入，再通过Domain X的decoder得到我们想要转换的图片，当然我们会希望重建误差尽可能小。</p>
+另外，我们可以加入两个Discriminator来判断两个decoder生成的图片是否属于各自相对应的Domain，这样的想法就有用在ComboGAN上，ComboGAN的文章全名叫做<a href="https://arxiv.org/abs/1712.06909">ComboGAN: Unrestrained Scalability for Image Domain Translation</a>。
+<div align="center">
+<img src="GAN19.PNG" width = "700" height = "500" alt="Figure19" />
+<p>
+图19. Cycle GAN想法下的流程示意图
+</div>
+<p><strong>方法4</strong><br />
+除了最小化重建误差，我们也可以最小化从Domain X和Domain Y分别编码得到的latent variables。跟方法3有点相似，先输入一张我们想要转换的图片（比如输入是漫画闪电侠），通过Domain X的encoder得到latent variables，再通过Domain Y的decoder得到目标输出结果；然后，将这个结果作为Domain Y的encoder的输入，可以再次得到latent variables。其中这两次获得的latent variables，我们希望它们能够越接近越好。那这样的方法就有用在DTN和XGAN上，它们的文章全名分别为<a href="https://arxiv.org/abs/1611.02200">Unsupervised Cross-Domain Image Generation</a>和<a href="https://arxiv.org/abs/1711.05139">XGAN: Unsupervised Image-to-Image Translation for Many-to-Many Mappings</a>。</p>
+<div class="section level3">
+<h3>更多的应用！语音变换！</h3>
+其实这项技术还可以用在语音变换上，可能生活中我们希望做一个变声器，我们说一句话但是扬声器出来的是另外一个人的声音。其实阿笠博士在20年前就已经给柯南一个变声器了，每次柯南都用来假装毛利小五郎的声音(..•˘_˘•..)
+<div align="center">
+<img src="GAN20.PNG" width = "500" height = "500" alt="Figure20" />
+<p>
+图20. 柯南的蝴蝶结变声器
+</div>
+<p>结束基础普及知识的第一Part！！！第二Part再从基础理论来看GAN！</p>
+</div>
+</div>
+</div>
+<div id="reference" class="section level1">
+<h1>Reference</h1>
+<ol style="list-style-type: decimal">
+<li><a href="http://speech.ee.ntu.edu.tw/~tlkagk/index.html">李宏毅个人主页</a></li>
+<li><a href="https://youtu.be/DQNNMiAP5lw">李宏毅，Youtube：GAN Lecture 1 (2018): Introduction</a></li>
+<li><a href="https://arxiv.org/abs/1406.2661v1">I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley, S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial networks,” in Advances in Neural Information Processing Systems (NIPS), 2014. 1, 3</a></li>
+<li><a href="https://arxiv.org/abs/1711.09020">Y. Choi, M. Choi, M. Kim, J.-W. Ha, S. Kim, and J. Choo, “Stargan: Unified generative adversarial networks for multi-domain image-toimage translation,” in IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018. 1, 3, 6, 7, 8, 9, 10</a></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/deep-learning/">Deep Learning</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="../../img/portrait.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="../../">Thompson Hu</a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:ttxinlinhu@qq.com" >
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a itemprop="sameAs" href="https://github.com/thompsonhu" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">深度神经网络基础</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+<section id="comments">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "thompsonhu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="../../privacy/">Made by Thompson</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    <script id="dsq-count-scr" src="//thompsonhu.disqus.com/count.js" async></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+
+    
+
+  </body>
+</html>
+

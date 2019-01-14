@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>生成对抗网络的第一Part</title>
+      <link>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/</guid>
+      <description>从知乎上了解到台大有位著名的教授李宏毅超级会讲Generative Adversarial Networks, GAN技术，所以慕名而到Youtube找到他的上课视频成为他的“课外学生”。李教授真的厉害，形象生动地讲解GAN的各个知识点。那么，我把我学到的整理为一篇博客，尝试作为一名“GAN路上的导游”。
+Yann LeCun是Facebook的AI研究部门的Director，同时也是NYU（New York University）的一位教授，维基百科上是这么介绍他：
+ He is the Chief Artificial Intelligence Scientist at Facebook AI Research, and he is well known for his work on optical character recognition and computer vision using convolutional neural networks (CNN), and is a founding father of convolutional nets.
+ 做Deep Learning的人多多少少会听过这个名字，他曾经这样回答了Quora论坛上的一个问题（What are some recent and potentially upcoming breakthroughs in unsupervised learning?）：
+ Adversarial training is the coolest thing since sliced bread.</description>
+    </item>
     
     <item>
       <title>深度神经网络基础</title>

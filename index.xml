@@ -11,6 +11,227 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>生成对抗网络的第一Part</title>
+      <link>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/</guid>
+      <description>
+
+
+&lt;p&gt;从知乎上了解到台大有位著名的教授&lt;a href=&#34;http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html&#34;&gt;李宏毅&lt;/a&gt;超级会讲&lt;a href=&#34;https://arxiv.org/abs/1406.2661v1&#34;&gt;Generative Adversarial Networks, GAN&lt;/a&gt;技术，所以慕名而到Youtube找到他的上课视频成为他的“课外学生”。李教授真的厉害，形象生动地讲解GAN的各个知识点。那么，我把我学到的整理为一篇博客，尝试作为一名“GAN路上的导游”。&lt;/p&gt;
+&lt;p&gt;Yann LeCun是Facebook的AI研究部门的Director，同时也是NYU（New York University）的一位教授，维基百科上是这么介绍他：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;He is the Chief Artificial Intelligence Scientist at Facebook AI Research, and he is well known for his work on optical character recognition and computer vision using convolutional neural networks (CNN), and is a founding father of convolutional nets.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;做Deep Learning的人多多少少会听过这个名字，他曾经这样回答了Quora论坛上的一个问题（What are some recent and potentially upcoming breakthroughs in unsupervised learning?）：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Adversarial training is the coolest thing since sliced bread.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里sliced bread的中文意思是切片面包，但其实这里是表示了有一个好东西问世，给某个领域带来了巨大发展，维基百科这么说：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The phrase “the greatest thing since sliced bread” is a common hyperbole used to praise an invention or development.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这也说明了GAN推进了整个领域的发展。Yann LeCun对GAN也有过这样极高的评价：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This, and the variations that are now being proposed is the most interesting idea in the last 10 years in ML, in my opinion.&lt;/p&gt;
+&lt;/blockquote&gt;
+李教授统计了ICASSP（International Conference on Acoustics, Speech and Signal Processing）的文章题目涵盖关键词的数量：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN1.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. ICASSP文章题目涵盖关键词的数量变化图
+&lt;/div&gt;
+&lt;p&gt;很明显，从17年的2篇Adversarial到18年的42篇Adversarial，同年增长了21倍！相当惊人！既然GAN这么Popular又是这么酷炫，那么我们就开始正文吧！(๑•̀ㅂ•́)و✧&lt;/p&gt;
+&lt;div id=&#34;gangan&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;什么是GAN？说GAN就干！&lt;/h1&gt;
+&lt;p&gt;GAN里面主要分为Generator和Discriminator这两部分，其实原理很简单，Generator是负责训练样本并能生成对的Output，而Discriminator像是一位老师，看看Generator这位学生交的作业质量怎么样，会给Generator的作业一个分数。下面我们更详细地介绍他们这两部分~&lt;/p&gt;
+&lt;div id=&#34;generator&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;一无所知的Generator生成器&lt;/h2&gt;
+Generator其实就是neural network (NN)，它的输入是向量，那我们如果丢一个向量到Generator里面，它就能产生某个Output（可能是一张相片或者一句话等等）
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN2.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. Generator生成器的示例图
+&lt;/div&gt;
+&lt;p&gt;李教授酷爱二次元，所以他举了这样的例子，丢一些向量给生成图片的Generator就生成了一些二次元的图片；另外，对应句子生成的例子，丢一些向量给生成句子的Generator就生成了一些句子。简单来说，我们给Generator这个function（NN其实就是一个复杂的function）赋值，它就会产生对应的结果。&lt;/p&gt;
+我们以图片为例，输入的向量中的每一个元素，可能对应着图片中不同的特征。假设第一位是改变头发的长短特征，那从下图中可以看到0.1改为3后，图片中的女孩从短头发变为长头发；假设向量倒数第二位是改变头发的颜色特征，那从下图可以看到5.4改为2.4后，图片中的女孩从紫色变为了蓝色；假设向量倒数第一位是改变嘴巴特征，那从下图可以看到0.9改为3.5后，图片中的女孩从小嘴巴变为了张开嘴巴。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN3.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. 输入向量对结果输出的影响
+&lt;/div&gt;
+&lt;p&gt;在实际操作中，如果我们通过大量的样本让Generator训练，使其能够输出与图片尽可能相似的结果，那这样就只是普通的NN（神经网络），但我们想要更高级！想要输出的图片质量更好！而GAN满足了我们的需求，它的idea妙就妙在搞多了一个Discriminator（监督器），审判Generator输出的结果是不是真的“好”。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;discriminator&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;超严厉的Discriminator监督器&lt;/h2&gt;
+Discriminator也是一个NN，但是它的输入是一张图片或是一句话（Generator的输出）。而它的输出是一个数值，这个数值代表了这张图片的质量如何，数值越大，那图片的质量就越好，越像是真实的图片；相反，数值越小，图片质量越差。下面可以看到不同质量的二次元图片对应着不同的得分数值~
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN4.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 不同二次元图片对应不同的得分
+&lt;/div&gt;
+&lt;p&gt;前面大致讲了一下Generator和Discriminator的关系，但是不算很生动详细！下面我来举个栗子！&lt;/p&gt;
+我们可以把Generator和Discriminator当做捕食者和被捕食者，那Pokemon里面鸟系对虫系就有着威慑能力，天生虫系会怕鸟系嘛，这很合理╮(๑•́ ₃•̀๑)╭
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN5.PNG&#34; width = &#34;300&#34; height = &#34;300&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. 小智的比比鸟和绿毛虫的初次相遇
+&lt;/div&gt;
+&lt;p&gt;其实一开始绿毛虫（一代Generator）就很怕波波（一代Discriminator）嘛，所以它就会进化成铁甲蛹（二代Generator），那波波个子小就拿它没办法了，吃也吃不了╮(๑•́ ₃•̀๑)╭所以波波也进化了变成了比比鸟（二代Discriminator）。那现在比比鸟翅膀大了，爪子一夹，把铁甲蛹抓到空中再丢下来（极其残忍！），铁甲蛹也会痛！所以铁甲蛹不甘示弱，它接着进化成巴大蝴（三代Generator）！这下比比鸟没办法它也进化成比雕（三代Discriminator），它以为比雕可能会搞得定巴大蝴！奈何巴大蝴也有翅膀了，还有催眠粉！比雕觉得没办法了，就这样吧，两人实力相当了！&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN6.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. Generator和Discriminator的相互关系
+&lt;/div&gt;
+&lt;p&gt;回到现实！这里的巴大蝴就是我们的最终Generator（这里以三代为例，实际需要N代），那它所生成的图片可以让最终的Discriminator认为是真实的，这就达到了我们的目的(*•̀ㅂ•́)و&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;gan&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;GAN的算法框架&lt;/h2&gt;
+&lt;p&gt;我们了解了Generator和Discriminator的基本知识后，我们来看看算法~&lt;/p&gt;
+&lt;p&gt;首先随机产生了两个NN作为Generator和Discriminator，然后不断循环：固定Generator调Discriminator的参数，再固定Discriminator调Generator的参数。具体过程如下所示：&lt;/p&gt;
+在第一步中固定Generator调Discriminator的参数，对于从Database出来的真实案例，我们希望Discriminator给高分；对于Generator生成的案例，我们希望Discriminator给低分。Discriminator通过训练会在这个过程中学会给真实的案例高分，给假的案例低分。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN7.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. 固定Generator下训练Discriminator
+&lt;/div&gt;
+在下一步中我们固定Discriminator调Generator的参数，我们希望调整Generator后，我们给一个向量生成一个案例，这个案例通过Discriminator得到的分数能够尽量高。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN8.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure8&#34; /&gt;
+&lt;p&gt;
+图8. 固定Discriminator下训练Generator
+&lt;/div&gt;
+如果我们写成Pseudocode（伪代码），就变成下面这样：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN9.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure9&#34; /&gt;
+&lt;p&gt;
+图9. 关于GAN算法的伪代码
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;unsupervised-conditional-generation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Unsupervised Conditional Generation非监督的条件生成器&lt;/h1&gt;
+&lt;p&gt;通常在普通的神经网络方法下，但是我们需要对应的样本来帮助我们生成我们需要的图片；我们给一个输入，再给一个Label告诉机器，你看到这个输入就需要有这样的Label的输出，但如果对于某些样本我们刚好没有对应Label的话，但我们手中有其他类似的，那我们可以通过非监督的条件生成器来生成我们想要的结果。&lt;/p&gt;
+我们希望能够创造一个Generator，输入一个来自Domain X的样本，可以输出一个对应在Domain Y的样本。&lt;strong&gt;这相当于一种风格转化的案例。&lt;/strong&gt;举个例子，现在许多人喜欢拍照用滤镜，通常我们拍的普通相片是没有带滤镜的，那现在我希望能够得到水彩画形式的相片，如下所示：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN10.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure10&#34; /&gt;
+&lt;p&gt;
+图10. 变成水彩画形式的相片
+&lt;/div&gt;
+&lt;div id=&#34;direct-transformation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;样本的直接转化问题（Direct Transformation）&lt;/h2&gt;
+&lt;p&gt;像上面叙述的例子，其实普通相片到油画形式的相片，只是&lt;strong&gt;色彩质地&lt;/strong&gt;有所区别，但是总体的框架基本不变，相当于说只是小部分修改了我们输入的相片，那Direct Transformation就足够帮我们处理这个问题了。&lt;/p&gt;
+通常我们会用GAN的技术来实现，GAN其实也是可以解决这个问题，如果Generator的层数很少，不是那么复杂，在Discrimiantor的监督下生成油画型的图片跟输入的图片差距不会太大。但是如果Generator很复杂的情况下，Generator是存在可能会生成在Domain Y的相片与在Domain X的相片差距很大。即使在Discriminator中拿到了很高的分数，但是与原始输入的样本差距甚远，如下图所示：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN11.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure11&#34; /&gt;
+&lt;p&gt;
+图11. 普通GAN的弱点
+&lt;/div&gt;
+&lt;p&gt;在Domain X的河道图输入之后，尽管训练得到的Generator产生了艺术型的油画图，但是明显上图中的梵高自画像不是我们希望得到的输出，但它确实是属于Domain Y类型的图片。&lt;/p&gt;
+&lt;div id=&#34;cycle-gan&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Cycle GAN&lt;/h3&gt;
+存在上述的问题，那么我们想在生成Domain Y的图片之后，我们可以做一个逆函数（NN）来返回去检验这个图片，看看能否恢复成我们输入图片的样子；当然，我们需要Discriminator帮助我们将输入的图片训练生成在Domain Y的图片。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN12.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure12&#34; /&gt;
+&lt;p&gt;
+图12. Cycle GAN处理过程示意图
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;stargan&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;StarGAN&lt;/h3&gt;
+&lt;p&gt;如果现在我们不仅仅希望普通相片可以变成一张油画照，我们还希望可以变成黑白照或者素描照，那我们的案例就变得更复杂，需要多个Domain，而且我们希望能够在多个Domain里面互转。假设我们有普通照片，油画照，黑白照和素描照这四种类型照片，那其实我们需要创建&lt;span class=&#34;math inline&#34;&gt;\(C_4^2\)&lt;/span&gt;个Cycle GAN来解决这样一个大问题，使得在这四个Domain之间实现互转（如下图(a)所示）。&lt;/p&gt;
+&lt;p&gt;2017年arXiv上Yunjey Choi等人发表了文章&lt;a href=&#34;https://arxiv.org/abs/1711.09020&#34;&gt;StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation&lt;/a&gt;，StarGAN的方便之处是在于只学习了一个Generator，就可以在多个Domain之间实现互转（如下图(b)所示）。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN13.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure13&#34; /&gt;
+&lt;p&gt;
+图13. Cross-domain models和StarGAN的示意图
+&lt;/div&gt;
+&lt;p&gt;下面我们通过原文提供的案例来进一步了解StarGAN：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先，我们先&lt;strong&gt;训练Discriminator&lt;/strong&gt;。这个Discriminator的输入有真实的照片和假的照片，我们希望Discriminator可以输出判断输入的照片是真的还是假的；同时希望可以输出判断真实的照片属于哪一个Domain。在下图案例可以看到，我们真实判断的Domain是&lt;span class=&#34;math inline&#34;&gt;\(0\ 0\ 1\ 0\ 1\)&lt;/span&gt;相当于真实照片是一个棕色头发年轻的女性角色。在这个地方可以注意到，我们只在考虑CelebA label，但是没有考虑RaFD label，而这个是由Mask vector所控制的（先设定为&lt;span class=&#34;math inline&#34;&gt;\(1\ 0\)&lt;/span&gt;）。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;接着我们以真实照片（&lt;strong&gt;棕色头发年轻的女性角色&lt;/strong&gt;）和我们希望得到的Domain（&lt;strong&gt;&lt;span class=&#34;math inline&#34;&gt;\(1\ 0\ 0\ 1\ 1\)&lt;/span&gt;&lt;/strong&gt;）作为我们&lt;strong&gt;训练Generator&lt;/strong&gt;的输入，我们希望输出得到目标Domain的照片（转化案例是希望得到一个&lt;strong&gt;黑色头发年轻的男性角色&lt;/strong&gt;）。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;利用Cycle GAN的想法，我们用输出的照片（&lt;strong&gt;黑色头发年轻的男性角色&lt;/strong&gt;）和我们原始的Domain（&lt;strong&gt;&lt;span class=&#34;math inline&#34;&gt;\(0\ 0\ 1\ 0\ 1\)&lt;/span&gt;&lt;/strong&gt;）作为另外一个Generator的输入，希望得到和原始一模一样的照片（&lt;strong&gt;棕色头发年轻的女性角色&lt;/strong&gt;）。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;最后呢~将第二步训练得到的照片作为Discriminator的输入，训练Discriminator判断能不能认为输入的照片是真实的照片，并且是属于我们希望得到的Domain（&lt;strong&gt;&lt;span class=&#34;math inline&#34;&gt;\(1\ 0\ 0\ 1\ 1\)&lt;/span&gt;&lt;/strong&gt;）。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;循环前面第二到第四步，直到第四步中Discriminator认为第二步所输出的照片是真实的且属于Domain（&lt;strong&gt;&lt;span class=&#34;math inline&#34;&gt;\(1\ 0\ 0\ 1\ 1\)&lt;/span&gt;&lt;/strong&gt;）。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+同理，我们可以让Mask vector为&lt;span class=&#34;math inline&#34;&gt;\(0\ 1\)&lt;/span&gt;，不考虑CelebA label了而是考虑RaFD label，即考虑情绪的变换。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN14.PNG&#34; width = &#34;600&#34; height = &#34;700&#34; alt=&#34;Figure14&#34; /&gt;
+&lt;p&gt;
+图14. 来自原Paper的案例
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;projection-to-common-space&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;投影到共有的空间（Projection to Common Space）&lt;/h2&gt;
+&lt;p&gt;那如果想要&lt;strong&gt;转化的结果跟你原来输入的样本结果差别很大&lt;/strong&gt;，对于图片而言，可能&lt;strong&gt;画风突变&lt;/strong&gt;！比如从真人头像到二次元的漫画头像，这时没办法简单地进行Direct Transformation了，需要利用Projection这样的技术。如果我们先通过编码器获得latent variables，再通过解码器获得我们想要的输出，这样就有可能做到比较大的变换。&lt;/p&gt;
+&lt;strong&gt;问题&lt;/strong&gt;&lt;br /&gt;
+对于两个Domain的大变化的互转，我们希望可以先分别对两个不同Domain的样本做Auto-Encoder，同时最小化重建的误差（Minimizing reconstruction error）。我们假设Domain X是漫画版本闪电侠，我们希望直接通过图片转化成真人版本的闪电侠（Domain Y），我们按刚刚说的流程，实现的流程如下图所示。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN15.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure15&#34; /&gt;
+&lt;p&gt;
+图15. 漫画闪电侠与真人版的互换
+&lt;/div&gt;
+但是这样做存在问题就是Domain X做好的Auto-Encoder跟Domain Y做好的Auto-Encoder是完全没有联系的，这种情况下可能我输入一张闪电侠的漫画图片，通过Y的解码器（Decoder）之后，没办法得到闪电侠的真人图片，而是得到了绿箭侠的真人图片(๑•́ ₃ •̀)
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN16.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure16&#34; /&gt;
+&lt;p&gt;
+图16. 漫画闪电侠的变换结果出错的可能性
+&lt;/div&gt;
+【注：美剧闪电侠第五季的第九集和美剧绿箭第七季的第九集中，Oliver Queen变成了闪电侠。。。Barry Allen变成了绿箭侠。。。源自异世界的剧情_(:з」∠)_ 】
+&lt;div align=&#34;center&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;GAN21.PNG&#34; width = &#34;500&#34; height = &#34;700&#34;/&gt;&lt;/p&gt;
+&lt;/div&gt;
+回到正题！！！ &lt;strong&gt;方法1&lt;/strong&gt;&lt;br /&gt;
+那有一种方法呢，就是在获得中间的latent variables之前时，两个encoder最后有几层是共享相同参数的；同样在进入decoder部分时，前面几层也是共享相同参数的。这样在获得latent variables的时候，能够尽可能落在相同的latent space。这样的方法出现在文章&lt;a href=&#34;https://arxiv.org/abs/1606.07536&#34;&gt;Coupled Generative Adversarial Networks&lt;/a&gt;和文章&lt;a href=&#34;https://arxiv.org/abs/1703.00848&#34;&gt;Unsupervised Image-to-Image Translation Networks&lt;/a&gt;。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN17.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure17&#34; /&gt;
+&lt;p&gt;
+图17. 共享参数的方法示意图
+&lt;/div&gt;
+&lt;strong&gt;方法2&lt;/strong&gt;&lt;br /&gt;
+另外一种方法就是我们加一个Domain Discriminator，对中间产生的latent variables进行判定，判定产生的latent variables是来自&lt;span class=&#34;math inline&#34;&gt;\(EN_X\)&lt;/span&gt;还是来自&lt;span class=&#34;math inline&#34;&gt;\(EN_Y\)&lt;/span&gt;，那么两个Encoder就会训练使得产生的latent variables能够骗过Discriminator。这样相当于这个Domain Discriminator促使两个Encoder产生的latent variables来自相同的分布。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN18.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure18&#34; /&gt;
+&lt;p&gt;
+图18. 加入Domain Discriminator的示意图
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;方法3&lt;/strong&gt;&lt;br /&gt;
+利用Cycle GAN的想法，我们还可以输入一张我们想要转换的图片（比如输入是漫画闪电侠），通过Domain X的encoder和Domain Y的decoder得到目标输出结果；然后，将这个结果作为Domain Y的encoder的输入，再通过Domain X的decoder得到我们想要转换的图片，当然我们会希望重建误差尽可能小。&lt;/p&gt;
+另外，我们可以加入两个Discriminator来判断两个decoder生成的图片是否属于各自相对应的Domain，这样的想法就有用在ComboGAN上，ComboGAN的文章全名叫做&lt;a href=&#34;https://arxiv.org/abs/1712.06909&#34;&gt;ComboGAN: Unrestrained Scalability for Image Domain Translation&lt;/a&gt;。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN19.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure19&#34; /&gt;
+&lt;p&gt;
+图19. Cycle GAN想法下的流程示意图
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;方法4&lt;/strong&gt;&lt;br /&gt;
+除了最小化重建误差，我们也可以最小化从Domain X和Domain Y分别编码得到的latent variables。跟方法3有点相似，先输入一张我们想要转换的图片（比如输入是漫画闪电侠），通过Domain X的encoder得到latent variables，再通过Domain Y的decoder得到目标输出结果；然后，将这个结果作为Domain Y的encoder的输入，可以再次得到latent variables。其中这两次获得的latent variables，我们希望它们能够越接近越好。那这样的方法就有用在DTN和XGAN上，它们的文章全名分别为&lt;a href=&#34;https://arxiv.org/abs/1611.02200&#34;&gt;Unsupervised Cross-Domain Image Generation&lt;/a&gt;和&lt;a href=&#34;https://arxiv.org/abs/1711.05139&#34;&gt;XGAN: Unsupervised Image-to-Image Translation for Many-to-Many Mappings&lt;/a&gt;。&lt;/p&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;更多的应用！语音变换！&lt;/h3&gt;
+其实这项技术还可以用在语音变换上，可能生活中我们希望做一个变声器，我们说一句话但是扬声器出来的是另外一个人的声音。其实阿笠博士在20年前就已经给柯南一个变声器了，每次柯南都用来假装毛利小五郎的声音(..•˘_˘•..)
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN20.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure20&#34; /&gt;
+&lt;p&gt;
+图20. 柯南的蝴蝶结变声器
+&lt;/div&gt;
+&lt;p&gt;结束基础普及知识的第一Part！！！第二Part再从基础理论来看GAN！&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reference&lt;/h1&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;http://speech.ee.ntu.edu.tw/~tlkagk/index.html&#34;&gt;李宏毅个人主页&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://youtu.be/DQNNMiAP5lw&#34;&gt;李宏毅，Youtube：GAN Lecture 1 (2018): Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1406.2661v1&#34;&gt;I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley, S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial networks,” in Advances in Neural Information Processing Systems (NIPS), 2014. 1, 3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.09020&#34;&gt;Y. Choi, M. Choi, M. Kim, J.-W. Ha, S. Kim, and J. Choo, “Stargan: Unified generative adversarial networks for multi-domain image-toimage translation,” in IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018. 1, 3, 6, 7, 8, 9, 10&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>深度神经网络基础</title>
       <link>/post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
