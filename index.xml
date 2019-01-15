@@ -11,6 +11,171 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>生成对抗网络的第二Part</title>
+      <link>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/</link>
+      <pubDate>Tue, 15 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/</guid>
+      <description>
+
+
+&lt;p&gt;我们认为每张图片对应的是一个高维向量，我们希望能找出这一类图片所在的图像空间的分布&lt;span class=&#34;math inline&#34;&gt;\(P\)&lt;/span&gt;，GAN的目的其实就是在寻找这个分布&lt;span class=&#34;math inline&#34;&gt;\(P\)&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;传统的方法我们会想到用最大似然估计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先给定一些样本数据，可以得到它的分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;；接着我们假定有一个由参数&lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;决定的分布&lt;span class=&#34;math inline&#34;&gt;\(P_G(x;\theta)\)&lt;/span&gt;；我们希望能够找到&lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;，满足分布&lt;span class=&#34;math inline&#34;&gt;\(P_G(x;\theta)\)&lt;/span&gt;尽可能靠近分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;；假设&lt;span class=&#34;math inline&#34;&gt;\(P_G(x;\theta)\)&lt;/span&gt;是高斯分布（正态分布），那&lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;就是均值和方差。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;从分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;中进行抽样获得一组样本数据&lt;span class=&#34;math inline&#34;&gt;\(\{x_1,x_2,\dots,x_m\}\)&lt;/span&gt;，我们可以得到似然值的表达式 &lt;span class=&#34;math display&#34;&gt;\[L = \prod_{i=1}^{m} P_G(x^i;\theta)\]&lt;/span&gt;我们希望能够找到&lt;span class=&#34;math inline&#34;&gt;\(\theta^*\)&lt;/span&gt;能够使得似然值&lt;span class=&#34;math inline&#34;&gt;\(L\)&lt;/span&gt;最大。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;kl&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;最大似然估计与最小KL散度的等价性&lt;/h2&gt;
+&lt;p&gt;通过对&lt;span class=&#34;math inline&#34;&gt;\(L\)&lt;/span&gt;取对数，我们可以得到对数似然值，同时&lt;span class=&#34;math inline&#34;&gt;\(\theta^*\)&lt;/span&gt;可以通过下式得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\theta^* &amp;amp;=\ \arg \max_{\theta} \log L\\ 
+&amp;amp;=\ \arg \max_{\theta} \log \prod_{i=1}^{m} P_G(x^i;\theta)\\
+&amp;amp;=\ \arg \max_{\theta} \sum_{i=1}^m \log P_G(x^i;\theta)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;由于样本&lt;span class=&#34;math inline&#34;&gt;\(\{x^1,x^2,\dots,x^m\}\)&lt;/span&gt;是随机抽取来自于分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;，上式可以近似求&lt;span class=&#34;math inline&#34;&gt;\(\log P_G(x;\theta)\)&lt;/span&gt;的期望的最大点，可以表示为 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\theta^* &amp;amp;\approx\ \arg \max_{\theta} E_{x\sim P_{data}}[\log P_G(x;\theta)]\\
+&amp;amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;从式子中知道，我们所求的&lt;span class=&#34;math inline&#34;&gt;\(\theta^*\)&lt;/span&gt;只跟分布&lt;span class=&#34;math inline&#34;&gt;\(P_G(x;\theta)\)&lt;/span&gt;相关，我们可以在后面加上一项&lt;span class=&#34;math inline&#34;&gt;\(-\int\limits_x P_{data}(x) \log P_{data}(x)dx\)&lt;/span&gt;，这不影响求最大化下对应得&lt;span class=&#34;math inline&#34;&gt;\(\theta^*\)&lt;/span&gt;，那么由上式就可以得到 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\theta^* &amp;amp;\approx\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx - \int\limits_x P_{data}(x) \log P_{data}(x)dx\\
+&amp;amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \Big[\log P_G(x;\theta) - \log P_{data}(x)\Big] dx\\
+&amp;amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \Big[\log P_{data}(x) - \log P_G(x;\theta)\Big] dx\\
+&amp;amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \log \frac{P_{data}(x)}{P_G(x;\theta)} dx\\
+&amp;amp;=\ \arg \min_{\theta} KL(P_{data}||P_G)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;从上述推导可以发现&lt;strong&gt;最大似然估计实际上等价于最小化KL散度&lt;/strong&gt;。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;generatorp_g&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;用生成器Generator定义概率分布&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;&lt;/h2&gt;
+&lt;p&gt;如果&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;是很复杂的形式，那我们很难去直接计算我们的目标值。虽然我们可以假定一些简单的已知的分布来确定&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;，比如高斯分布；但是很多情况下，高斯分布的实验结果并不是很好；所以，我们希望用一个更generalized的函数来定义&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;我们用生成器Generator（一个网络结构）来定义概率分布&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;，我们希望输入某个已知分布（比如高斯分布）随机产生的一个数&lt;span class=&#34;math inline&#34;&gt;\(z\)&lt;/span&gt;，通过Generator之后可以得到&lt;span class=&#34;math inline&#34;&gt;\(x=G(z)\)&lt;/span&gt;，那么这些&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;可以构成某个复杂的分布，也可以说这个复杂的分布是我们希望得到的分布&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;，我们希望这个分布&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;能够和分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}\)&lt;/span&gt;越接近越好；从散度（Divergence）的角度来说，我们希望分布&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;和分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}\)&lt;/span&gt;的散度能够越小越好，即 &lt;span class=&#34;math display&#34;&gt;\[
+G^* = \arg \min_G \text{Div}(P_G,P_{data})
+\tag{1}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;如果是最大似然估计的话，我们会希望KL散度越小越好，即 &lt;span class=&#34;math display&#34;&gt;\[G^* = \arg \min_G KL(P_G,P_{data})\]&lt;/span&gt;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN1.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 生成器Generator流程示意图
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;divergence&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;如何获得我们需要的散度Divergence？&lt;/h2&gt;
+&lt;p&gt;由于我们无法确定&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;的分布，所以我们也无法直接计算得到他们的Divergence，当然就没办法直接用&lt;strong&gt;梯度下降&lt;/strong&gt;去找到最小的Divergence小对应的Generator。&lt;/p&gt;
+&lt;p&gt;虽然我们无法知道&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;的分布，但是利用重抽样（Resample）的想法，我们可以对它们这两个分布进行抽样；对于&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;而言，我们从原数据抽取样本；对于&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;而言，我们从高斯分布抽样再通过前面确定的Generator得到样本。&lt;/p&gt;
+&lt;p&gt;我们引入上一Part讲到的监督器Discriminator（我们说到Discriminator也是一个network），对于训练Discriminator的时候，假设我们的目标函数是 &lt;span class=&#34;math display&#34;&gt;\[
+V(G,D) = E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_{G}}[\log (1-D(x))]
+\tag{2}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;其中&lt;span class=&#34;math inline&#34;&gt;\(G\)&lt;/span&gt;代表Generator，它在这一步是固定不变的；我们希望最大化&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;，式（2）第一项&lt;span class=&#34;math inline&#34;&gt;\(E_{x\sim P_{data}}[\log D(x)]\)&lt;/span&gt;表示从&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;得到的&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;，我们希望&lt;span class=&#34;math inline&#34;&gt;\(D(x)\)&lt;/span&gt;能够尽可能大；而对于第二项&lt;span class=&#34;math inline&#34;&gt;\(E_{x\sim P_{G}}[\log (1-D(x))]\)&lt;/span&gt;，表示从&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;得到的&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;，我们希望&lt;span class=&#34;math inline&#34;&gt;\(D(x)\)&lt;/span&gt;能够尽可能小，因为这样&lt;span class=&#34;math inline&#34;&gt;\(1-D(x)\)&lt;/span&gt;才能尽可能大；整体两部分加起来才能够做到尽可能大，实现&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;的最大化。由于抽取的样本&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;在这个环节是固定的，相当于我们需要找到一个Discriminator满足最大化&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;，即 &lt;span class=&#34;math display&#34;&gt;\[
+D^* = \arg \max_D V(G,D)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;【注：使用式（2）作为目标函数相当于训练一个二分类器】&lt;/p&gt;
+&lt;p&gt;当抽取的样本分散的很开的时候，即它们的散度很大的时候，我们很容易训练得到一个Discriminator能够容易区分来自两个不同分布的样本（很容易使我们的目标函数变大）；但如果抽取的样本分散的不开的时候，即它们的散度比较小时，我们训练得到的Discriminator是很难区分来自两个不同分布的样本的（很难使我们的目标函数变大）。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN2.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. 生成器Discriminator流程示意图
+&lt;/div&gt;
+&lt;div id=&#34;vdgdivergence&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;最大化目标函数&lt;span class=&#34;math inline&#34;&gt;\(V(D,G)\)&lt;/span&gt;与散度Divergence的联系&lt;/h3&gt;
+&lt;p&gt;在给定Generator情况下，我们想要找到一个Discriminator使得我们的目标函数&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;最大，依据上面式（2），我们可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+V(G,D) &amp;amp;=\ E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_G}[\log (1-D(x))]\\
+&amp;amp;=\ \int\limits_x P_{data}(x) \log D(x) dx + \int\limits_x P_G(x) \log (1-D(x)) dx\\
+&amp;amp;=\ \int\limits_x \Big[P_{data}(x) \log D(x) + P_G(x) \log (1-D(x))\Big] dx
+\end{align}
+\tag{3}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;给定&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;的情况下，最大化式（3）等价于最大化 &lt;span class=&#34;math display&#34;&gt;\[
+P_{data}(x) \log D(x) + P_G(x) \log (1-D(x))
+\tag{4}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;那么，原优化问题等价于找一个最优Discriminator使得式（4）最大。由于&lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt;固定了，那么&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;是确定的；我们将&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;记作&lt;span class=&#34;math inline&#34;&gt;\(a\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;记作&lt;span class=&#34;math inline&#34;&gt;\(b\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(D(x)\)&lt;/span&gt;记作&lt;span class=&#34;math inline&#34;&gt;\(D\)&lt;/span&gt;，那式（4）可以变化为： &lt;span class=&#34;math display&#34;&gt;\[
+f(D) = a\log(D) + b\log (1-D)
+\tag{5}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;对式（5）求导并赋值为0，可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+&amp;amp; \ \frac{df(D)}{dD} = \frac{a}{D} - \frac{b}{1-D} = 0\\
+\Rightarrow&amp;amp; \ \frac{a}{D} = \frac{b}{1-D}\\
+\Rightarrow&amp;amp; \ a\times (1-D) = b\times D\\
+\Rightarrow&amp;amp; \ D = \frac{a}{a+b}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;将符号复原，我们知道满足式（4）最大的&lt;span class=&#34;math inline&#34;&gt;\(D^*\)&lt;/span&gt;满足 &lt;span class=&#34;math display&#34;&gt;\[
+D^* = \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;将&lt;span class=&#34;math inline&#34;&gt;\(D^*\)&lt;/span&gt;带入&lt;span class=&#34;math inline&#34;&gt;\(V(G,D) = E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_{G}}[\log (1-D(x))]\)&lt;/span&gt;，我们可以得到 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\max_D V(G,D) &amp;amp;=\ V(G,D^*)\\
+&amp;amp;=\ E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_G}[\log (1-D(x))]\\
+&amp;amp;=\ E_{x\sim P_{data}}[\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}] + E_{x\sim P_G}[\log (1-\frac{P_{data}(x)}{P_{data}(x)+P_G(x)})]\\
+&amp;amp;=\ E_{x\sim P_{data}}[\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}] + E_{x\sim P_G}[\log \frac{P_G(x)}{P_{data}(x)+P_G(x)}]\\
+&amp;amp;=\ \int\limits_x P_{data}(x)\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}dx + \int\limits_x P_G(x)\log \frac{P_G(x)}{P_{data}(x)+P_G(x)}dx\\
+&amp;amp;=\ \int\limits_x P_{data}(x)\log \frac{\frac{1}{2}P_{data}(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx + \int\limits_x P_G(x)\log \frac{\frac{1}{2}P_G(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx\\
+&amp;amp;=\ \int\limits_x P_{data}(x)\log \frac{P_{data}(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx + \int\limits_x P_G(x)\log \frac{P_G(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx - 2\log2\\
+&amp;amp;=\ KL(P_{data} || \frac{P_{data}+P_G}{2}) + KL(P_G || \frac{P_{data}+P_G}{2}) - 2\log2
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;JS散度（Jensen-Shannon Divergence）是这样定义的： &lt;span class=&#34;math display&#34;&gt;\[
+JS(P_1||P_2)=\frac{1}{2}KL(P_1||\frac{P_1+P_2}{2})+\frac{1}{2}KL(P_2||\frac{P_1+P_2}{2})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;因此，我们可以推得 &lt;span class=&#34;math display&#34;&gt;\[
+\max_D V(G,D) = V(G,D^*) = -2\log 2 + 2JS(P_{data}||P_G)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;从上面可以看出，我们在固定Generator之后，对&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;的最大化相当于计算&lt;span class=&#34;math inline&#34;&gt;\(P_{data}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;之间的JS散度再减去2倍&lt;span class=&#34;math inline&#34;&gt;\(\log2\)&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;在式（1）中散度Divergence是无法直接计算的，但是从刚刚的推导中，我们知道最大化目标函数&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;可以得到散度的值，我们进一步用最大化&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;替代&lt;span class=&#34;math inline&#34;&gt;\(P_{data}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_G\)&lt;/span&gt;之间的散度，可以得到一个Min-Max的优化问题。 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+G^* &amp;amp;=\ \arg \min_G \text{Div}(P_G,P_{data})\\
+&amp;amp;=\ \arg \min_G \max_D V(G,D)
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;min-max&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;求解Min-Max问题&lt;/h3&gt;
+&lt;p&gt;上面我们最终得到了一个Min-Max最优化问题 &lt;span class=&#34;math display&#34;&gt;\[G^* = \arg \min_G \max_D V(G,D)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;如果我们手中没有Generator的话，我们无法得到&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;的最大值，在解决这个优化问题之时，我们可以按一下步骤进行：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初始化一个带随机参数的Generator &lt;span class=&#34;math inline&#34;&gt;\(G_0\)&lt;/span&gt;；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于&lt;span class=&#34;math inline&#34;&gt;\(i = 0,1,\dots,n\)&lt;/span&gt;，重复进行下列步骤：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;通过梯度上升（Gradient Ascent）方法找到满足最大化&lt;span class=&#34;math inline&#34;&gt;\(V(G_i,D)\)&lt;/span&gt;的&lt;span class=&#34;math inline&#34;&gt;\(D_i\)&lt;/span&gt;；（这一步等价于获得了&lt;span class=&#34;math inline&#34;&gt;\(P_{data}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(P_{G_i}\)&lt;/span&gt;之间的JS散度）&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;通过梯度下降（Gradient Descent）方法得到&lt;span class=&#34;math inline&#34;&gt;\(G_{i+1}\)&lt;/span&gt;：&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\theta_{G_{i+1}} = \theta_{G_i} - \eta\frac{\partial V(G,D_i)}{\partial \theta_G}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;算法的大致框架得到了，但是对于细节&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;的形式我们只有式（2）；对于式（2）中的期望，实际上我们是很难得到的，在实践中，我们用样本均值来代替期望值；因此最大化&lt;span class=&#34;math inline&#34;&gt;\(V(G,D)\)&lt;/span&gt;可以转换为最大化 &lt;span class=&#34;math display&#34;&gt;\[ \tilde{V} = \frac{1}{m}\sum_{i=1}^m\log D(x^i) + \frac{1}{m}\sum_{i=1}^m\log (1-D(\tilde{x}^i)) \]&lt;/span&gt; 其中样本&lt;span class=&#34;math inline&#34;&gt;\(\{x^1,x^2,\dots,x^m\}\)&lt;/span&gt;来自分布&lt;span class=&#34;math inline&#34;&gt;\(P_{data}(x)\)&lt;/span&gt;，样本&lt;span class=&#34;math inline&#34;&gt;\(\{\tilde{x}^1,\tilde{x}^2,\dots,\tilde{x}^m\}\)&lt;/span&gt;来自分布&lt;span class=&#34;math inline&#34;&gt;\(P_G(x)\)&lt;/span&gt;。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;gan&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;GAN的算法&lt;/h3&gt;
+通过上面的推导介绍，我们可以总结出GAN的算法框架出来：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;GAN3.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. GAN的算法框架
+&lt;/div&gt;
+&lt;p&gt;可以注意到，在训练Generator的时候，其中&lt;span class=&#34;math inline&#34;&gt;\(\tilde{V}\)&lt;/span&gt;的第一项实际上是与Generator是无关的，去掉第一项不影响我们最小化目标函数&lt;span class=&#34;math inline&#34;&gt;\(\tilde{V}\)&lt;/span&gt;。显然，整个GAN算法分为两部分，我们可以这么理解：第一步训练Discriminator实际上是度量两个分布间JS散度，而训练Generator是在最小化JS散度。&lt;/p&gt;
+&lt;p&gt;从数学推导可以帮助我们更好理解GAN，这一Part就结束啦๑乛◡乛๑&lt;/p&gt;
+&lt;p&gt;下一Part我们尝试用Tensorflow实现GAN！！！&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reference&lt;/h1&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;http://speech.ee.ntu.edu.tw/~tlkagk/index.html&#34;&gt;李宏毅个人主页&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>生成对抗网络的第一Part</title>
       <link>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>

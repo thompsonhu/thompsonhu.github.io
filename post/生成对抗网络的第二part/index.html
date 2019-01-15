@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.3.0">
+  <meta name="generator" content="Hugo 0.52" />
+  <meta name="author" content="Thompson Hu">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="我们认为每张图片对应的是一个高维向量，我们希望能找出这一类图片所在的图像空间的分布\(P\)，GAN的目的其实就是在寻找这个分布\(P\)。
+传统的方法我们会想到用最大似然估计：
+ 首先给定一些样本数据，可以得到它的分布\(P_{data}(x)\)；接着我们假定有一个由参数\(\theta\)决定的分布\(P_G(x;\theta)\)；我们希望能够找到\(\theta\)，满足分布\(P_G(x;\theta)\)尽可能靠近分布\(P_{data}(x)\)；假设\(P_G(x;\theta)\)是高斯分布（正态分布），那\(\theta\)就是均值和方差。
+ 从分布\(P_{data}(x)\)中进行抽样获得一组样本数据\(\{x_1,x_2,\dots,x_m\}\)，我们可以得到似然值的表达式 \[L = \prod_{i=1}^{m} P_G(x^i;\theta)\]我们希望能够找到\(\theta^*\)能够使得似然值\(L\)最大。
+  最大似然估计与最小KL散度的等价性 通过对\(L\)取对数，我们可以得到对数似然值，同时\(\theta^*\)可以通过下式得到： \[ \begin{align} \theta^* &amp;=\ \arg \max_{\theta} \log L\\ &amp;=\ \arg \max_{\theta} \log \prod_{i=1}^{m} P_G(x^i;\theta)\\ &amp;=\ \arg \max_{\theta} \sum_{i=1}^m \log P_G(x^i;\theta) \end{align} \]
+由于样本\(\{x^1,x^2,\dots,x^m\}\)是随机抽取来自于分布\(P_{data}(x)\)，上式可以近似求\(\log P_G(x;\theta)\)的期望的最大点，可以表示为 \[ \begin{align} \theta^* &amp;\approx\ \arg \max_{\theta} E_{x\sim P_{data}}[\log P_G(x;\theta)]\\ &amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx \end{align} \]
+从式子中知道，我们所求的\(\theta^*\)只跟分布\(P_G(x;\theta)\)相关，我们可以在后面加上一项\(-\int\limits_x P_{data}(x) \log P_{data}(x)dx\)，这不影响求最大化下对应得\(\theta^*\)，那么由上式就可以得到 \[ \begin{align} \theta^* &amp;\approx\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx - \int\limits_x P_{data}(x) \log P_{data}(x)dx\\ &amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \Big[\log P_G(x;\theta) - \log P_{data}(x)\Big] dx\\ &amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \Big[\log P_{data}(x) - \log P_G(x;\theta)\Big] dx\\ &amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \log \frac{P_{data}(x)}{P_G(x;\theta)} dx\\ &amp;=\ \arg \min_{\theta} KL(P_{data}||P_G) \end{align} \]">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="../../styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bonbon Blog">
+  <meta property="og:url" content="/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/">
+  <meta property="og:title" content="生成对抗网络的第二Part | Bonbon Blog">
+  <meta property="og:description" content="我们认为每张图片对应的是一个高维向量，我们希望能找出这一类图片所在的图像空间的分布\(P\)，GAN的目的其实就是在寻找这个分布\(P\)。
+传统的方法我们会想到用最大似然估计：
+ 首先给定一些样本数据，可以得到它的分布\(P_{data}(x)\)；接着我们假定有一个由参数\(\theta\)决定的分布\(P_G(x;\theta)\)；我们希望能够找到\(\theta\)，满足分布\(P_G(x;\theta)\)尽可能靠近分布\(P_{data}(x)\)；假设\(P_G(x;\theta)\)是高斯分布（正态分布），那\(\theta\)就是均值和方差。
+ 从分布\(P_{data}(x)\)中进行抽样获得一组样本数据\(\{x_1,x_2,\dots,x_m\}\)，我们可以得到似然值的表达式 \[L = \prod_{i=1}^{m} P_G(x^i;\theta)\]我们希望能够找到\(\theta^*\)能够使得似然值\(L\)最大。
+  最大似然估计与最小KL散度的等价性 通过对\(L\)取对数，我们可以得到对数似然值，同时\(\theta^*\)可以通过下式得到： \[ \begin{align} \theta^* &amp;=\ \arg \max_{\theta} \log L\\ &amp;=\ \arg \max_{\theta} \log \prod_{i=1}^{m} P_G(x^i;\theta)\\ &amp;=\ \arg \max_{\theta} \sum_{i=1}^m \log P_G(x^i;\theta) \end{align} \]
+由于样本\(\{x^1,x^2,\dots,x^m\}\)是随机抽取来自于分布\(P_{data}(x)\)，上式可以近似求\(\log P_G(x;\theta)\)的期望的最大点，可以表示为 \[ \begin{align} \theta^* &amp;\approx\ \arg \max_{\theta} E_{x\sim P_{data}}[\log P_G(x;\theta)]\\ &amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx \end{align} \]
+从式子中知道，我们所求的\(\theta^*\)只跟分布\(P_G(x;\theta)\)相关，我们可以在后面加上一项\(-\int\limits_x P_{data}(x) \log P_{data}(x)dx\)，这不影响求最大化下对应得\(\theta^*\)，那么由上式就可以得到 \[ \begin{align} \theta^* &amp;\approx\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx - \int\limits_x P_{data}(x) \log P_{data}(x)dx\\ &amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \Big[\log P_G(x;\theta) - \log P_{data}(x)\Big] dx\\ &amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \Big[\log P_{data}(x) - \log P_G(x;\theta)\Big] dx\\ &amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \log \frac{P_{data}(x)}{P_G(x;\theta)} dx\\ &amp;=\ \arg \min_{\theta} KL(P_{data}||P_G) \end{align} \]"><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-01-15T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-01-15T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>生成对抗网络的第二Part | Bonbon Blog</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">生成对抗网络的第二Part</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2019-01-15 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2019-01-15 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      Jan 15, 2019
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <a href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/#disqus_thread"></a>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="../../categories/deep-learning/">Deep Learning</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%ba%8cPart&amp;url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25BA%258Cpart%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25BA%258Cpart%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25BA%258Cpart%2f&amp;title=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%ba%8cPart"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25BA%258Cpart%2f&amp;title=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%ba%8cPart"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%e7%94%9f%e6%88%90%e5%af%b9%e6%8a%97%e7%bd%91%e7%bb%9c%e7%9a%84%e7%ac%ac%e4%ba%8cPart&amp;body=%2fpost%2f%25E7%2594%259F%25E6%2588%2590%25E5%25AF%25B9%25E6%258A%2597%25E7%25BD%2591%25E7%25BB%259C%25E7%259A%2584%25E7%25AC%25AC%25E4%25BA%258Cpart%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>我们认为每张图片对应的是一个高维向量，我们希望能找出这一类图片所在的图像空间的分布<span class="math inline">\(P\)</span>，GAN的目的其实就是在寻找这个分布<span class="math inline">\(P\)</span>。</p>
+<p>传统的方法我们会想到用最大似然估计：</p>
+<ul>
+<li><p>首先给定一些样本数据，可以得到它的分布<span class="math inline">\(P_{data}(x)\)</span>；接着我们假定有一个由参数<span class="math inline">\(\theta\)</span>决定的分布<span class="math inline">\(P_G(x;\theta)\)</span>；我们希望能够找到<span class="math inline">\(\theta\)</span>，满足分布<span class="math inline">\(P_G(x;\theta)\)</span>尽可能靠近分布<span class="math inline">\(P_{data}(x)\)</span>；假设<span class="math inline">\(P_G(x;\theta)\)</span>是高斯分布（正态分布），那<span class="math inline">\(\theta\)</span>就是均值和方差。</p></li>
+<li><p>从分布<span class="math inline">\(P_{data}(x)\)</span>中进行抽样获得一组样本数据<span class="math inline">\(\{x_1,x_2,\dots,x_m\}\)</span>，我们可以得到似然值的表达式 <span class="math display">\[L = \prod_{i=1}^{m} P_G(x^i;\theta)\]</span>我们希望能够找到<span class="math inline">\(\theta^*\)</span>能够使得似然值<span class="math inline">\(L\)</span>最大。</p></li>
+</ul>
+<div id="kl" class="section level2">
+<h2>最大似然估计与最小KL散度的等价性</h2>
+<p>通过对<span class="math inline">\(L\)</span>取对数，我们可以得到对数似然值，同时<span class="math inline">\(\theta^*\)</span>可以通过下式得到： <span class="math display">\[
+\begin{align}
+\theta^* &amp;=\ \arg \max_{\theta} \log L\\ 
+&amp;=\ \arg \max_{\theta} \log \prod_{i=1}^{m} P_G(x^i;\theta)\\
+&amp;=\ \arg \max_{\theta} \sum_{i=1}^m \log P_G(x^i;\theta)
+\end{align}
+\]</span></p>
+<p>由于样本<span class="math inline">\(\{x^1,x^2,\dots,x^m\}\)</span>是随机抽取来自于分布<span class="math inline">\(P_{data}(x)\)</span>，上式可以近似求<span class="math inline">\(\log P_G(x;\theta)\)</span>的期望的最大点，可以表示为 <span class="math display">\[
+\begin{align}
+\theta^* &amp;\approx\ \arg \max_{\theta} E_{x\sim P_{data}}[\log P_G(x;\theta)]\\
+&amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx
+\end{align}
+\]</span></p>
+<p>从式子中知道，我们所求的<span class="math inline">\(\theta^*\)</span>只跟分布<span class="math inline">\(P_G(x;\theta)\)</span>相关，我们可以在后面加上一项<span class="math inline">\(-\int\limits_x P_{data}(x) \log P_{data}(x)dx\)</span>，这不影响求最大化下对应得<span class="math inline">\(\theta^*\)</span>，那么由上式就可以得到 <span class="math display">\[
+\begin{align}
+\theta^* &amp;\approx\ \arg \max_{\theta} \int\limits_x P_{data}(x) \log P_G(x;\theta) dx - \int\limits_x P_{data}(x) \log P_{data}(x)dx\\
+&amp;=\ \arg \max_{\theta} \int\limits_x P_{data}(x) \Big[\log P_G(x;\theta) - \log P_{data}(x)\Big] dx\\
+&amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \Big[\log P_{data}(x) - \log P_G(x;\theta)\Big] dx\\
+&amp;=\ \arg \min_{\theta} \int\limits_x P_{data}(x) \log \frac{P_{data}(x)}{P_G(x;\theta)} dx\\
+&amp;=\ \arg \min_{\theta} KL(P_{data}||P_G)
+\end{align}
+\]</span></p>
+<p>从上述推导可以发现<strong>最大似然估计实际上等价于最小化KL散度</strong>。</p>
+</div>
+<div id="generatorp_g" class="section level2">
+<h2>用生成器Generator定义概率分布<span class="math inline">\(P_G\)</span></h2>
+<p>如果<span class="math inline">\(P_G\)</span>是很复杂的形式，那我们很难去直接计算我们的目标值。虽然我们可以假定一些简单的已知的分布来确定<span class="math inline">\(P_G\)</span>，比如高斯分布；但是很多情况下，高斯分布的实验结果并不是很好；所以，我们希望用一个更generalized的函数来定义<span class="math inline">\(P_G\)</span>。</p>
+<p>我们用生成器Generator（一个网络结构）来定义概率分布<span class="math inline">\(P_G\)</span>，我们希望输入某个已知分布（比如高斯分布）随机产生的一个数<span class="math inline">\(z\)</span>，通过Generator之后可以得到<span class="math inline">\(x=G(z)\)</span>，那么这些<span class="math inline">\(x\)</span>可以构成某个复杂的分布，也可以说这个复杂的分布是我们希望得到的分布<span class="math inline">\(P_G\)</span>，我们希望这个分布<span class="math inline">\(P_G\)</span>能够和分布<span class="math inline">\(P_{data}\)</span>越接近越好；从散度（Divergence）的角度来说，我们希望分布<span class="math inline">\(P_G\)</span>和分布<span class="math inline">\(P_{data}\)</span>的散度能够越小越好，即 <span class="math display">\[
+G^* = \arg \min_G \text{Div}(P_G,P_{data})
+\tag{1}
+\]</span></p>
+<p>如果是最大似然估计的话，我们会希望KL散度越小越好，即 <span class="math display">\[G^* = \arg \min_G KL(P_G,P_{data})\]</span></p>
+<div align="center">
+<img src="GAN1.PNG" width = "500" height = "500" alt="Figure1" />
+<p>
+图1. 生成器Generator流程示意图
+</div>
+</div>
+<div id="divergence" class="section level2">
+<h2>如何获得我们需要的散度Divergence？</h2>
+<p>由于我们无法确定<span class="math inline">\(P_{data}(x)\)</span>和<span class="math inline">\(P_G(x)\)</span>的分布，所以我们也无法直接计算得到他们的Divergence，当然就没办法直接用<strong>梯度下降</strong>去找到最小的Divergence小对应的Generator。</p>
+<p>虽然我们无法知道<span class="math inline">\(P_{data}(x)\)</span>和<span class="math inline">\(P_G(x)\)</span>的分布，但是利用重抽样（Resample）的想法，我们可以对它们这两个分布进行抽样；对于<span class="math inline">\(P_{data}(x)\)</span>而言，我们从原数据抽取样本；对于<span class="math inline">\(P_G(x)\)</span>而言，我们从高斯分布抽样再通过前面确定的Generator得到样本。</p>
+<p>我们引入上一Part讲到的监督器Discriminator（我们说到Discriminator也是一个network），对于训练Discriminator的时候，假设我们的目标函数是 <span class="math display">\[
+V(G,D) = E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_{G}}[\log (1-D(x))]
+\tag{2}
+\]</span></p>
+<p>其中<span class="math inline">\(G\)</span>代表Generator，它在这一步是固定不变的；我们希望最大化<span class="math inline">\(V(G,D)\)</span>，式（2）第一项<span class="math inline">\(E_{x\sim P_{data}}[\log D(x)]\)</span>表示从<span class="math inline">\(P_{data}(x)\)</span>得到的<span class="math inline">\(x\)</span>，我们希望<span class="math inline">\(D(x)\)</span>能够尽可能大；而对于第二项<span class="math inline">\(E_{x\sim P_{G}}[\log (1-D(x))]\)</span>，表示从<span class="math inline">\(P_G(x)\)</span>得到的<span class="math inline">\(x\)</span>，我们希望<span class="math inline">\(D(x)\)</span>能够尽可能小，因为这样<span class="math inline">\(1-D(x)\)</span>才能尽可能大；整体两部分加起来才能够做到尽可能大，实现<span class="math inline">\(V(G,D)\)</span>的最大化。由于抽取的样本<span class="math inline">\(x\)</span>在这个环节是固定的，相当于我们需要找到一个Discriminator满足最大化<span class="math inline">\(V(G,D)\)</span>，即 <span class="math display">\[
+D^* = \arg \max_D V(G,D)
+\]</span></p>
+<p>【注：使用式（2）作为目标函数相当于训练一个二分类器】</p>
+<p>当抽取的样本分散的很开的时候，即它们的散度很大的时候，我们很容易训练得到一个Discriminator能够容易区分来自两个不同分布的样本（很容易使我们的目标函数变大）；但如果抽取的样本分散的不开的时候，即它们的散度比较小时，我们训练得到的Discriminator是很难区分来自两个不同分布的样本的（很难使我们的目标函数变大）。</p>
+<div align="center">
+<img src="GAN2.PNG" width = "500" height = "500" alt="Figure2" />
+<p>
+图2. 生成器Discriminator流程示意图
+</div>
+<div id="vdgdivergence" class="section level3">
+<h3>最大化目标函数<span class="math inline">\(V(D,G)\)</span>与散度Divergence的联系</h3>
+<p>在给定Generator情况下，我们想要找到一个Discriminator使得我们的目标函数<span class="math inline">\(V(G,D)\)</span>最大，依据上面式（2），我们可以得到： <span class="math display">\[
+\begin{align}
+V(G,D) &amp;=\ E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_G}[\log (1-D(x))]\\
+&amp;=\ \int\limits_x P_{data}(x) \log D(x) dx + \int\limits_x P_G(x) \log (1-D(x)) dx\\
+&amp;=\ \int\limits_x \Big[P_{data}(x) \log D(x) + P_G(x) \log (1-D(x))\Big] dx
+\end{align}
+\tag{3}
+\]</span></p>
+<p>给定<span class="math inline">\(x\)</span>的情况下，最大化式（3）等价于最大化 <span class="math display">\[
+P_{data}(x) \log D(x) + P_G(x) \log (1-D(x))
+\tag{4}
+\]</span></p>
+<p>那么，原优化问题等价于找一个最优Discriminator使得式（4）最大。由于<span class="math inline">\(x\)</span>固定了，那么<span class="math inline">\(P_{data}(x)\)</span>和<span class="math inline">\(P_G(x)\)</span>是确定的；我们将<span class="math inline">\(P_{data}(x)\)</span>记作<span class="math inline">\(a\)</span>，<span class="math inline">\(P_G(x)\)</span>记作<span class="math inline">\(b\)</span>，<span class="math inline">\(D(x)\)</span>记作<span class="math inline">\(D\)</span>，那式（4）可以变化为： <span class="math display">\[
+f(D) = a\log(D) + b\log (1-D)
+\tag{5}
+\]</span></p>
+<p>对式（5）求导并赋值为0，可以得到： <span class="math display">\[
+\begin{align}
+&amp; \ \frac{df(D)}{dD} = \frac{a}{D} - \frac{b}{1-D} = 0\\
+\Rightarrow&amp; \ \frac{a}{D} = \frac{b}{1-D}\\
+\Rightarrow&amp; \ a\times (1-D) = b\times D\\
+\Rightarrow&amp; \ D = \frac{a}{a+b}
+\end{align}
+\]</span></p>
+<p>将符号复原，我们知道满足式（4）最大的<span class="math inline">\(D^*\)</span>满足 <span class="math display">\[
+D^* = \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}
+\]</span></p>
+<p>将<span class="math inline">\(D^*\)</span>带入<span class="math inline">\(V(G,D) = E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_{G}}[\log (1-D(x))]\)</span>，我们可以得到 <span class="math display">\[
+\begin{align}
+\max_D V(G,D) &amp;=\ V(G,D^*)\\
+&amp;=\ E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_G}[\log (1-D(x))]\\
+&amp;=\ E_{x\sim P_{data}}[\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}] + E_{x\sim P_G}[\log (1-\frac{P_{data}(x)}{P_{data}(x)+P_G(x)})]\\
+&amp;=\ E_{x\sim P_{data}}[\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}] + E_{x\sim P_G}[\log \frac{P_G(x)}{P_{data}(x)+P_G(x)}]\\
+&amp;=\ \int\limits_x P_{data}(x)\log \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}dx + \int\limits_x P_G(x)\log \frac{P_G(x)}{P_{data}(x)+P_G(x)}dx\\
+&amp;=\ \int\limits_x P_{data}(x)\log \frac{\frac{1}{2}P_{data}(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx + \int\limits_x P_G(x)\log \frac{\frac{1}{2}P_G(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx\\
+&amp;=\ \int\limits_x P_{data}(x)\log \frac{P_{data}(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx + \int\limits_x P_G(x)\log \frac{P_G(x)}{\frac{1}{2} [P_{data}(x)+P_G(x)]}dx - 2\log2\\
+&amp;=\ KL(P_{data} || \frac{P_{data}+P_G}{2}) + KL(P_G || \frac{P_{data}+P_G}{2}) - 2\log2
+\end{align}
+\]</span></p>
+<p>JS散度（Jensen-Shannon Divergence）是这样定义的： <span class="math display">\[
+JS(P_1||P_2)=\frac{1}{2}KL(P_1||\frac{P_1+P_2}{2})+\frac{1}{2}KL(P_2||\frac{P_1+P_2}{2})
+\]</span></p>
+<p>因此，我们可以推得 <span class="math display">\[
+\max_D V(G,D) = V(G,D^*) = -2\log 2 + 2JS(P_{data}||P_G)
+\]</span></p>
+<p>从上面可以看出，我们在固定Generator之后，对<span class="math inline">\(V(G,D)\)</span>的最大化相当于计算<span class="math inline">\(P_{data}\)</span>和<span class="math inline">\(P_G\)</span>之间的JS散度再减去2倍<span class="math inline">\(\log2\)</span>。</p>
+<p>在式（1）中散度Divergence是无法直接计算的，但是从刚刚的推导中，我们知道最大化目标函数<span class="math inline">\(V(G,D)\)</span>可以得到散度的值，我们进一步用最大化<span class="math inline">\(V(G,D)\)</span>替代<span class="math inline">\(P_{data}\)</span>和<span class="math inline">\(P_G\)</span>之间的散度，可以得到一个Min-Max的优化问题。 <span class="math display">\[
+\begin{align}
+G^* &amp;=\ \arg \min_G \text{Div}(P_G,P_{data})\\
+&amp;=\ \arg \min_G \max_D V(G,D)
+\end{align}
+\]</span></p>
+</div>
+<div id="min-max" class="section level3">
+<h3>求解Min-Max问题</h3>
+<p>上面我们最终得到了一个Min-Max最优化问题 <span class="math display">\[G^* = \arg \min_G \max_D V(G,D)\]</span></p>
+<p>如果我们手中没有Generator的话，我们无法得到<span class="math inline">\(V(G,D)\)</span>的最大值，在解决这个优化问题之时，我们可以按一下步骤进行：</p>
+<ul>
+<li>初始化一个带随机参数的Generator <span class="math inline">\(G_0\)</span>；</li>
+</ul>
+<p>对于<span class="math inline">\(i = 0,1,\dots,n\)</span>，重复进行下列步骤：</p>
+<ul>
+<li><p>通过梯度上升（Gradient Ascent）方法找到满足最大化<span class="math inline">\(V(G_i,D)\)</span>的<span class="math inline">\(D_i\)</span>；（这一步等价于获得了<span class="math inline">\(P_{data}\)</span>和<span class="math inline">\(P_{G_i}\)</span>之间的JS散度）</p></li>
+<li><p>通过梯度下降（Gradient Descent）方法得到<span class="math inline">\(G_{i+1}\)</span>：</p></li>
+</ul>
+<p><span class="math display">\[\theta_{G_{i+1}} = \theta_{G_i} - \eta\frac{\partial V(G,D_i)}{\partial \theta_G}\]</span></p>
+<p>算法的大致框架得到了，但是对于细节<span class="math inline">\(V(G,D)\)</span>的形式我们只有式（2）；对于式（2）中的期望，实际上我们是很难得到的，在实践中，我们用样本均值来代替期望值；因此最大化<span class="math inline">\(V(G,D)\)</span>可以转换为最大化 <span class="math display">\[ \tilde{V} = \frac{1}{m}\sum_{i=1}^m\log D(x^i) + \frac{1}{m}\sum_{i=1}^m\log (1-D(\tilde{x}^i)) \]</span> 其中样本<span class="math inline">\(\{x^1,x^2,\dots,x^m\}\)</span>来自分布<span class="math inline">\(P_{data}(x)\)</span>，样本<span class="math inline">\(\{\tilde{x}^1,\tilde{x}^2,\dots,\tilde{x}^m\}\)</span>来自分布<span class="math inline">\(P_G(x)\)</span>。</p>
+</div>
+<div id="gan" class="section level3">
+<h3>GAN的算法</h3>
+通过上面的推导介绍，我们可以总结出GAN的算法框架出来：
+<div align="center">
+<img src="GAN3.PNG" width = "500" height = "500" alt="Figure3" />
+<p>
+图3. GAN的算法框架
+</div>
+<p>可以注意到，在训练Generator的时候，其中<span class="math inline">\(\tilde{V}\)</span>的第一项实际上是与Generator是无关的，去掉第一项不影响我们最小化目标函数<span class="math inline">\(\tilde{V}\)</span>。显然，整个GAN算法分为两部分，我们可以这么理解：第一步训练Discriminator实际上是度量两个分布间JS散度，而训练Generator是在最小化JS散度。</p>
+<p>从数学推导可以帮助我们更好理解GAN，这一Part就结束啦๑乛◡乛๑</p>
+<p>下一Part我们尝试用Tensorflow实现GAN！！！</p>
+</div>
+</div>
+<div id="reference" class="section level1">
+<h1>Reference</h1>
+<ol style="list-style-type: decimal">
+<li><a href="http://speech.ee.ntu.edu.tw/~tlkagk/index.html">李宏毅个人主页</a></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="../../tags/algorithm/">Algorithm</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="../../img/portrait.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="../../">Thompson Hu</a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:ttxinlinhu@qq.com" >
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a itemprop="sameAs" href="https://github.com/thompsonhu" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/">生成对抗网络的第一Part</a></li>
+        
+        <li><a href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">深度神经网络基础</a></li>
+        
+        <li><a href="../../post/expectation-maximization-algorithm/">Expectation-Maximization Algorithm</a></li>
+        
+        <li><a href="../../post/coordinate-descent-algorithm/">Coordinate Descent Algorithm</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+<section id="comments">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "thompsonhu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="../../privacy/">Made by Thompson</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    <script id="dsq-count-scr" src="//thompsonhu.disqus.com/count.js" async></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+
+    
+
+  </body>
+</html>
+
