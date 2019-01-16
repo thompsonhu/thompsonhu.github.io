@@ -1170,7 +1170,7 @@ conda config --set show_channel_urls yes&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;conda activate python35
 pip install tensorflow&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入&lt;code&gt;python&lt;/code&gt;运行python，然后输入下面的命令。&lt;/p&gt;
-&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import tensorflow as tf
+&lt;pre&gt;&lt;code&gt;import tensorflow as tf
 hello = tf.constant(&amp;#39;Hello, TensorFlow!&amp;#39;)
 sess = tf.Session()
 print(sess.run(hello))
@@ -1193,7 +1193,7 @@ print(&amp;quot;1 + 2 = %d&amp;quot; % c)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;高级矢量扩展（AVX）是英特尔在2008年3月提出的英特尔和AMD微处理器的x86指令集体系结构的扩展，英特尔首先通过Sandy Bridge处理器在2011年第一季度推出，随后由AMD推出Bulldozer处理器在2011年第三季度.AVX提供了新功能，新指令和新编码方案。 特别是，AVX引入了融合乘法累加（FMA）操作，加速了线性代数计算，即点积，矩阵乘法，卷积等。几乎所有机器学习训练都涉及大量这些操作，因此将会支持AVX和FMA的CPU（最高达300％）更快。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;而对话框想告诉我，我的CPU支持AVX，让我赶紧用上它！&lt;/p&gt;
-&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import tensorflow as tf
+&lt;pre&gt;&lt;code&gt;import tensorflow as tf
 import os
 os.environ[&amp;#39;TF_CPP_MIN_LOG_LEVEL&amp;#39;] = &amp;#39;2&amp;#39;
 sess = tf.Session()&lt;/code&gt;&lt;/pre&gt;
@@ -1215,6 +1215,10 @@ sess = tf.Session()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;简单提及安装GPU版本TensorFlow&lt;/strong&gt;&lt;br /&gt;
 如果你觉得运行的速度不满足你的需求，那么你可以选择用上GPU版本的TensorFlow，那将帮助你火箭般的速度运行！下面简单带过如何安装TensorFlow的GPU版本~由于具体操作复杂，暂且跳过~&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;pip install tensorflow-gpu&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;—— —— —— —— —— —— —— 这是一条分割线 —— —— —— —— —— —— ——&lt;/p&gt;
+&lt;p&gt;上面操作呢…有时候jupyter和spyder会出现一些路径的问题_(:з」∠)_&lt;/p&gt;
+&lt;p&gt;所以我还是建议直接下载带Python3.5的&lt;a href=&#34;https://repo.anaconda.com/archive/Anaconda3-4.2.0-Windows-x86_64.exe&#34;&gt;Anaconda&lt;/a&gt;吧~&lt;/p&gt;
+&lt;p&gt;点击上面Anaconda即可下载(..•˘_˘•..)&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
