@@ -112,6 +112,14 @@ f(D) = a\log(D) + b\log (1-D)
 &lt;p&gt;将符号复原，我们知道满足式（4）最大的&lt;span class=&#34;math inline&#34;&gt;\(D^*\)&lt;/span&gt;满足 &lt;span class=&#34;math display&#34;&gt;\[
 D^* = \frac{P_{data}(x)}{P_{data}(x)+P_G(x)}
 \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;由二阶导数我们可以知道该点为极大值点： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{d^2f(D)}{dD^2} &amp;amp;=\ -\frac{a}{D^2} - \frac{b}{1-D^2}\\
+&amp;amp;=\ -\frac{a}{(\frac{a}{a+b})^2}-\frac{b}{1-(\frac{a}{a+b})^2}\\
+&amp;amp;=\ -\frac{(a+b)^2}{a}-\frac{(a+b)^2}{b}\\
+&amp;amp;&amp;lt;\ 0
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;将&lt;span class=&#34;math inline&#34;&gt;\(D^*\)&lt;/span&gt;带入&lt;span class=&#34;math inline&#34;&gt;\(V(G,D) = E_{x\sim P_{data}}[\log D(x)] + E_{x\sim P_{G}}[\log (1-D(x))]\)&lt;/span&gt;，我们可以得到 &lt;span class=&#34;math display&#34;&gt;\[
 \begin{align}
 \max_D V(G,D) &amp;amp;=\ V(G,D^*)\\
@@ -163,7 +171,6 @@ G^* &amp;amp;=\ \arg \min_G \text{Div}(P_G,P_{data})\\
 &lt;/div&gt;
 &lt;p&gt;可以注意到，在训练Generator的时候，其中&lt;span class=&#34;math inline&#34;&gt;\(\tilde{V}\)&lt;/span&gt;的第一项实际上是与Generator是无关的，去掉第一项不影响我们最小化目标函数&lt;span class=&#34;math inline&#34;&gt;\(\tilde{V}\)&lt;/span&gt;。显然，整个GAN算法分为两部分，我们可以这么理解：第一步训练Discriminator实际上是度量两个分布间JS散度，而训练Generator是在最小化JS散度。&lt;/p&gt;
 &lt;p&gt;从数学推导可以帮助我们更好理解GAN，这一Part就结束啦๑乛◡乛๑&lt;/p&gt;
-&lt;p&gt;下一Part我们尝试用Tensorflow实现GAN！！！&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reference&#34; class=&#34;section level1&#34;&gt;
