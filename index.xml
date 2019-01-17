@@ -1135,7 +1135,7 @@ conda config --set show_channel_urls yes&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;python3.5&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;创建python3.5环境&lt;/h3&gt;
-&lt;p&gt;首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。&lt;/p&gt;
+&lt;p&gt;首先，由于目前TensoFlow官方Only支持python3.5版本，而且在写本文的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。&lt;/p&gt;
 &lt;p&gt;首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：&lt;/p&gt;
 &lt;div align=&#34;center&#34;&gt;
 &lt;img src=&#34;TS2.PNG&#34; width = &#34;650&#34; height = &#34;330&#34; alt=&#34;Figure2&#34; /&gt;
@@ -1167,7 +1167,7 @@ conda config --set show_channel_urls yes&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;piptensorflow-&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;通过pip安装我们的主角TensorFlow ٩(๑&amp;gt; ₃ &amp;lt;)۶з&lt;/h3&gt;
 &lt;p&gt;搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;conda activate python35
+&lt;pre&gt;&lt;code&gt;conda activate tensorflow
 pip install tensorflow&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入&lt;code&gt;python&lt;/code&gt;运行python，然后输入下面的命令。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import tensorflow as tf
@@ -1217,8 +1217,30 @@ sess = tf.Session()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;pip install tensorflow-gpu&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;—— —— —— —— —— —— —— 这是一条分割线 —— —— —— —— —— —— ——&lt;/p&gt;
 &lt;p&gt;上面操作呢…有时候jupyter和spyder会出现一些路径的问题_(:з」∠)_&lt;/p&gt;
-&lt;p&gt;所以我还是建议直接下载带Python3.5的&lt;a href=&#34;https://repo.anaconda.com/archive/Anaconda3-4.2.0-Windows-x86_64.exe&#34;&gt;Anaconda&lt;/a&gt;吧~&lt;/p&gt;
+&lt;p&gt;所以我还是直接下载带Python3.5的&lt;a href=&#34;https://repo.anaconda.com/archive/Anaconda3-4.2.0-Windows-x86_64.exe&#34;&gt;Anaconda&lt;/a&gt;吧~&lt;/p&gt;
 &lt;p&gt;点击上面Anaconda即可下载(..•˘_˘•..)&lt;/p&gt;
+&lt;p&gt;—— —— —— —— —— —— —— 这是另一条分割线 —— —— —— —— —— —— ——&lt;/p&gt;
+&lt;p&gt;下载Python3.5的Anaconda可能也有乱七八糟的错误_(:з」∠)_&lt;/p&gt;
+&lt;p&gt;所以直接稳妥的方法就是用Anaconda prompt执行下面的命令~&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda create --name python35 python=3.5&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装完成后会提示你&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# To activate this environment, use
+#
+#     $ conda activate python35
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;接着先激活python3.5的环境，就可以用pip安装tensorflow&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda activate python35
+pip install tensorflow&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Jupyter下设置python3.5的内核&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果不做一些设置操作，默认Jupyter打开还是会以默认Anaconda下的python版本，由于目前已经到了python3.7的版本了，那在Jupyter下使用Tensorflow必定会出问题。&lt;/p&gt;
+&lt;p&gt;首先打开Anaconda Prompt并安装&lt;code&gt;ipykernel&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip install ipykernel&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装成功后，执行下面命令就可以了~&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python  -m ipykernel install --user&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;打开Jupyter就会发现可以运行Tensorflow了！&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

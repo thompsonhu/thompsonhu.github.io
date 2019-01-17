@@ -19,7 +19,7 @@
  图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
 conda 4.5.12 那么，Anaconda安装成功！
 下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在写本文的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
 首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：
  图2. Environments界面  我们命名为tensorflow，并选择python3.5的版本：
  图3. 创建新环境窗口  安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。
@@ -27,7 +27,7 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/f
  图5. 安装jupyter和spyder成功后的Home界面  如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！
 conda activate tensorflow 这里的tensorflow其实是我们的python3.5环境的命名~
  通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з 搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow
-conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.">
+conda activate tensorflow pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.">
 
   
   <link rel="alternate" hreflang="en-us" href="../../post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/">
@@ -122,7 +122,7 @@ conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼�
  图1. 下载Anaconda  设置水土不服的Anaconda 首先，在安装Anaconda后，先打开Anaconda Prompt（一般在你的应用目录可以找到），打开后是一个跟CMD一样黑乎乎的界面 ╮(๑•́ ₃•̀๑)╭ 打开后呢~通过conda --version看看是否成功安装了Anaconda。一般会得到版本信息，如下所示
 conda 4.5.12 那么，Anaconda安装成功！
 下一步我们设置下Anaconda的仓库(Repository)镜像，因为默认连接的是境外镜像地址，会超慢（我记得我当时只有10kb的网速T_T），我们把镜像地址改为境内的清华大学开源软件镜像站，所以通过下面指令就可以提高你的下载速度(´•灬•‘)。
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ conda config --set show_channel_urls yes  创建python3.5环境 首先，由于目前TensoFlow官方Only支持python3.5版本，而且在写本文的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。
 首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：
  图2. Environments界面  我们命名为tensorflow，并选择python3.5的版本：
  图3. 创建新环境窗口  安装成功后，Environments界面多了一个我们创建的命名为tensorflow的python3.5的环境，并自动预先安装一些基础的库。
@@ -130,7 +130,7 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/f
  图5. 安装jupyter和spyder成功后的Home界面  如果要在Anaconda prompt界面启动python3.5环境，很简单，一行命令！
 conda activate tensorflow 这里的tensorflow其实是我们的python3.5环境的命名~
  通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з 搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow
-conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3."><meta property="og:image" content="/img/portrait.jpg">
+conda activate tensorflow pip install tensorflow 旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3."><meta property="og:image" content="/img/portrait.jpg">
   <meta property="og:locale" content="en-us">
   
   <meta property="article:published_time" content="2018-12-26T00:00:00&#43;00:00">
@@ -312,7 +312,7 @@ conda activate python35 pip install tensorflow 旋转跳跃~闭着眼~睁开眼�
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 min read
+    2 min read
   </span>
   
 
@@ -429,7 +429,7 @@ conda config --set show_channel_urls yes</code></pre>
 </div>
 <div id="python3.5" class="section level3">
 <h3>创建python3.5环境</h3>
-<p>首先，由于目前TensoFlow官方Only支持python3.5版本，而且在文章写的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。</p>
+<p>首先，由于目前TensoFlow官方Only支持python3.5版本，而且在写本文的这个时候，Anaconda官方最新版本中的python是3.7版本，所以我们需要创建一个python3.5的新环境。</p>
 <p>首先在系统菜单栏找到并点击Anaconda Navigator，然后选择Enviroments（如图2所示），然后点击Create创建新环境：</p>
 <div align="center">
 <img src="TS2.PNG" width = "650" height = "330" alt="Figure2" />
@@ -461,7 +461,7 @@ conda config --set show_channel_urls yes</code></pre>
 <div id="piptensorflow-" class="section level3">
 <h3>通过pip安装我们的主角TensorFlow ٩(๑&gt; ₃ &lt;)۶з</h3>
 <p>搞定一切基础的部分后，接下来就开始用pip安装我们TensorFlow的CPU版本了~我们先激活python3.5的环境并用pip安装tensorflow</p>
-<pre><code>conda activate python35
+<pre><code>conda activate tensorflow
 pip install tensorflow</code></pre>
 <p>旋转跳跃~闭着眼~睁开眼后就搞定了你要的TensorFlow (●´▽｀●) 下面我们先测试一下，在激活python3.5之后，输入<code>python</code>运行python，然后输入下面的命令。</p>
 <pre><code>import tensorflow as tf
@@ -511,8 +511,30 @@ sess = tf.Session()</code></pre>
 <pre><code>pip install tensorflow-gpu</code></pre>
 <p>—— —— —— —— —— —— —— 这是一条分割线 —— —— —— —— —— —— ——</p>
 <p>上面操作呢…有时候jupyter和spyder会出现一些路径的问题_(:з」∠)_</p>
-<p>所以我还是建议直接下载带Python3.5的<a href="https://repo.anaconda.com/archive/Anaconda3-4.2.0-Windows-x86_64.exe">Anaconda</a>吧~</p>
+<p>所以我还是直接下载带Python3.5的<a href="https://repo.anaconda.com/archive/Anaconda3-4.2.0-Windows-x86_64.exe">Anaconda</a>吧~</p>
 <p>点击上面Anaconda即可下载(..•˘_˘•..)</p>
+<p>—— —— —— —— —— —— —— 这是另一条分割线 —— —— —— —— —— —— ——</p>
+<p>下载Python3.5的Anaconda可能也有乱七八糟的错误_(:з」∠)_</p>
+<p>所以直接稳妥的方法就是用Anaconda prompt执行下面的命令~</p>
+<pre><code>conda create --name python35 python=3.5</code></pre>
+<p>安装完成后会提示你</p>
+<pre><code># To activate this environment, use
+#
+#     $ conda activate python35
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate</code></pre>
+<p>接着先激活python3.5的环境，就可以用pip安装tensorflow</p>
+<pre><code>conda activate python35
+pip install tensorflow</code></pre>
+<p><strong>Jupyter下设置python3.5的内核</strong></p>
+<p>如果不做一些设置操作，默认Jupyter打开还是会以默认Anaconda下的python版本，由于目前已经到了python3.7的版本了，那在Jupyter下使用Tensorflow必定会出问题。</p>
+<p>首先打开Anaconda Prompt并安装<code>ipykernel</code>：</p>
+<pre><code>pip install ipykernel</code></pre>
+<p>安装成功后，执行下面命令就可以了~</p>
+<pre><code>python  -m ipykernel install --user</code></pre>
+<p>打开Jupyter就会发现可以运行Tensorflow了！</p>
 </div>
 </div>
 </div>
