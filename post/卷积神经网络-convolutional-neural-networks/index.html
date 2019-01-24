@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.3.0">
+  <meta name="generator" content="Hugo 0.52" />
+  <meta name="author" content="Thompson Hu">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="简介 Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
+ Convolutional Neural Networks开始正文！ CNN的“卷积”介绍 我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
+ 图1. \(4\times 4\times 3\)RGB图像  卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
+ 首先，假设我们选取的卷积核为： \[ \begin{vmatrix} 1 &amp; 0 &amp; 1\\ 0 &amp; 1 &amp; 0\\ 1 &amp; 0 &amp; 1 \end{vmatrix} \]  我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
+ 通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[ \begin{vmatrix} 4 &amp; 3 &amp; 4\\ 2 &amp; 4 &amp; 3\\ 2 &amp; 3 &amp; 4 \end{vmatrix} \]   图2.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="../../styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../index.xml" type="application/rss+xml" title="Bonbon Blog">
+  
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bonbon Blog">
+  <meta property="og:url" content="/post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/">
+  <meta property="og:title" content="卷积神经网络 Convolutional Neural Networks | Bonbon Blog">
+  <meta property="og:description" content="简介 Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
+ Convolutional Neural Networks开始正文！ CNN的“卷积”介绍 我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
+ 图1. \(4\times 4\times 3\)RGB图像  卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
+ 首先，假设我们选取的卷积核为： \[ \begin{vmatrix} 1 &amp; 0 &amp; 1\\ 0 &amp; 1 &amp; 0\\ 1 &amp; 0 &amp; 1 \end{vmatrix} \]  我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
+ 通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[ \begin{vmatrix} 4 &amp; 3 &amp; 4\\ 2 &amp; 4 &amp; 3\\ 2 &amp; 3 &amp; 4 \end{vmatrix} \]   图2."><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-01-21T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-01-21T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>卷积神经网络 Convolutional Neural Networks | Bonbon Blog</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="../../#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">卷积神经网络 Convolutional Neural Networks</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2019-01-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2019-01-21 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      Jan 21, 2019
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Thompson Hu">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <a href="../../post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/#disqus_thread"></a>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="../../categories/deep-learning/">Deep Learning</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%e5%8d%b7%e7%a7%af%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%20Convolutional%20Neural%20Networks&amp;url=%2fpost%2f%25E5%258D%25B7%25E7%25A7%25AF%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C-convolutional-neural-networks%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2f%25E5%258D%25B7%25E7%25A7%25AF%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C-convolutional-neural-networks%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2f%25E5%258D%25B7%25E7%25A7%25AF%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C-convolutional-neural-networks%2f&amp;title=%e5%8d%b7%e7%a7%af%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%20Convolutional%20Neural%20Networks"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2f%25E5%258D%25B7%25E7%25A7%25AF%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C-convolutional-neural-networks%2f&amp;title=%e5%8d%b7%e7%a7%af%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%20Convolutional%20Neural%20Networks"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%e5%8d%b7%e7%a7%af%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%20Convolutional%20Neural%20Networks&amp;body=%2fpost%2f%25E5%258D%25B7%25E7%25A7%25AF%25E7%25A5%259E%25E7%25BB%258F%25E7%25BD%2591%25E7%25BB%259C-convolutional-neural-networks%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<div class="section level2">
+<h2>简介</h2>
+<p>Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家<a href="http://yann.lecun.com/">Yann LeCun</a>，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题<a href="https://www.zhihu.com/question/52668301">“CNN(卷积神经网络)是什么？有入门简介或文章吗？”</a>的回答来进行介绍~</p>
+</div>
+<div id="convolutional-neural-networks" class="section level2">
+<h2>Convolutional Neural Networks开始正文！</h2>
+<div id="cnn" class="section level3">
+<h3>CNN的“卷积”介绍</h3>
+<p>我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是<span class="math inline">\(n\times m\times 3\)</span>的RGB图像，下面图中是<span class="math inline">\(4\times 4\times 3\)</span>RGB图像的示例；其中的数字代表着图片的原始像素值。</p>
+<div align="center">
+<img src="CNN1.PNG" width = "500" height = "500" alt="Figure1" />
+<p>
+图1. <span class="math inline">\(4\times 4\times 3\)</span>RGB图像
+</div>
+<p>卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。</p>
+<ul>
+<li>首先，假设我们选取的卷积核为： <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 1
+\end{vmatrix}
+\]</span></li>
+</ul>
+<p>我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。</p>
+<ul>
+<li>通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 <span class="math display">\[
+\begin{vmatrix}
+4 &amp; 3 &amp; 4\\
+2 &amp; 4 &amp; 3\\
+2 &amp; 3 &amp; 4
+\end{vmatrix}
+\]</span></li>
+</ul>
+<div align="center">
+<img src="CNN2.gif" width = "500" height = "500" alt="Figure2" />
+<p>
+图2. 卷积过程示例
+</div>
+<p>由此，一个<span class="math inline">\(5\times 5\)</span>的图像矩阵经过卷积得到了一个<span class="math inline">\(3\times 3\)</span>的矩阵，生成的这个矩阵我们称为Convolved Feature或Feature Map。</p>
+<ul>
+<li>有时候为了不让新生成的图片缩小，可以给原始的图像进行0元素的填充（padding）。</li>
+</ul>
+<div align="center">
+<img src="CNN3.PNG" width = "200" height = "200" alt="Figure3" />
+<p>
+图3. 填充（padding）示意图
+</div>
+<p>如图所示，原来的<span class="math inline">\(4\times 4\)</span>矩阵如果通过<span class="math inline">\(3\times 3\)</span>的卷积核处理会得到<span class="math inline">\(2\times 2\)</span>的Convolved Feature，但是在周围加一圈0元素，从<span class="math inline">\(4\times 4\)</span>矩阵扩充到<span class="math inline">\(5\times 5\)</span>的矩阵的话，经过<span class="math inline">\(3\times 3\)</span>的卷积核处理会得到<span class="math inline">\(4\times 4\)</span>的Convolved Feature。</p>
+</div>
+<div id="cnn" class="section level3">
+<h3>CNN的“池化”介绍</h3>
+<p>池化（pooling）实际上是对上个操作（卷积）得到的Convolved Feature进行降维，池化有很多方法（比如取最大值，求平均，求和等等），但常用的方法有“最大池化”（池化区域内所有值的平均值作为池化结果）和“平均池化”（池化区域内所有值的最大值作为池化结果）这两种。</p>
+<p>池化的具体操作是让一个池化窗口在图片上移动，每次取窗口内的平均值或者最大值；窗口的水平和垂直移动，它移动步长取窗口本身的大小；下图是最大池化的示意图。</p>
+<div align="center">
+<img src="CNN4.PNG" width = "400" height = "400" alt="Figure4" />
+<p>
+图4. 最大池化示意图
+</div>
+<p><strong>为什么要池化层？</strong></p>
+<p>假设输入了一张<span class="math inline">\(1000\times 1000\)</span>的图像，我们采用100个卷积核进行提取不同的特征，其中卷积核大小为<span class="math inline">\(3\times 3\)</span>，卷积核在原图像上移动的步长为1；若不考虑填充（padding），那么我们会得到一个<span class="math inline">\(998\times 998=996004\)</span>的Convolved feature，那100个卷积核便会得到100个996004大小的Convolved feature；所以，一张图片最终会得到一个<span class="math inline">\(996004\times 100\)</span>的卷积特征向量。这样上千万个特征进行图片的分类，很容易造成过拟合（overfitting）。</p>
+<p>由于图像具有空间相关性，即一个像素点和它周围的像素点在很大概率上是相似的。通过相邻的像素点进行合并（即池化），可以缩小最后得到的特征数量。</p>
+</div>
+<div class="section level3">
+<h3>反向传播和参数更新</h3>
+<p><strong>CNN</strong>的训练过程和<strong>全连接网络</strong>的训练过程比较类似，都是先将参数随机初始化，再进行前向计算；得到最后的输出结果之后，再计算最后一层每个神经元的残差；通过<strong>反向传播</strong>方法，可以得到所有节点的残差和损失函数对所有参数的偏导数；最后对参数进行更新。两者的架构区别主要在于卷积层和池化层。</p>
+<div class="section level4">
+<h4>卷积层的反向传播</h4>
+<p>我们先定义，</p>
+<p>卷积之前的矩阵： <span class="math display">\[
+\begin{vmatrix}
+x_{00} &amp; x_{01} &amp; x_{02}\\
+x_{10} &amp; x_{11} &amp; x_{12}\\
+x_{20} &amp; x_{21} &amp; x_{22}
+\end{vmatrix}
+\]</span> 卷积核的矩阵： <span class="math display">\[
+\begin{vmatrix}
+k_{00} &amp; k_{01}\\
+k_{10} &amp; k_{11}
+\end{vmatrix}
+\]</span> 卷积之后的矩阵： <span class="math display">\[
+\begin{vmatrix}
+y_{00} &amp; y_{01}\\
+y_{10} &amp; y_{11}
+\end{vmatrix}
+\]</span> 卷积之后的残差矩阵： <span class="math display">\[
+\begin{vmatrix}
+\delta^{l+1}_{00} &amp; \delta^{l+1}_{01}\\
+\delta^{l+1}_{10} &amp; \delta^{l+1}_{11}
+\end{vmatrix}
+\]</span> 卷积之前的残差矩阵： <span class="math display">\[
+\begin{vmatrix}
+\delta^l_{00} &amp; \delta^l_{01} &amp; \delta^l_{02}\\
+\delta^l_{10} &amp; \delta^l_{11} &amp; \delta^l_{12}\\
+\delta^l_{20} &amp; \delta^l_{21} &amp; \delta^l_{22}
+\end{vmatrix}
+\]</span></p>
+<p>我们在前向计算中，卷积操作的计算过程如下： <span class="math display">\[
+y_{00} = x_{00}\times k_{00} + x_{01}\times k_{01} + x_{10}\times k_{10} + x_{11}\times k_{11}\\
+y_{01} = x_{01}\times k_{00} + x_{02}\times k_{01} + x_{11}\times k_{10} + x_{12}\times k_{11}\\
+y_{10} = x_{10}\times k_{00} + x_{11}\times k_{01} + x_{20}\times k_{10} + x_{21}\times k_{11}\\
+y_{11} = x_{11}\times k_{00} + x_{12}\times k_{01} + x_{21}\times k_{10} + x_{22}\times k_{11}\\
+\]</span></p>
+<p>又卷积之后的残差可以由反向传播计算得到，我们可以得到： <span class="math display">\[
+\begin{align}
+\delta^l_{00} &amp;= \frac{\partial L}{\partial x_{00}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{00}}\\
+&amp;=\ \delta^{l+1}_{00}\times k_{00}\\
+\delta^l_{01} &amp;= \frac{\partial L}{\partial x_{01}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{01}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{01}}\\
+&amp;=\ \delta^{l+1}_{00}\times k_{01} + \delta^{l+1}_{01}\times k_{00}\\
+\delta^l_{02} &amp;= \frac{\partial L}{\partial x_{02}} = \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{02}}\\
+&amp;=\ \delta^{l+1}_{01}\times k_{01}\\
+\delta^l_{10} &amp;= \frac{\partial L}{\partial x_{10}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{10}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{10}}\\
+&amp;=\ \delta^{l+1}_{00}\times k_{10} + \delta^{l+1}_{10}\times k_{00}\\
+\delta^l_{11} &amp;= \frac{\partial L}{\partial x_{11}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{11}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{11}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{11}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{11}}\\
+&amp;=\ \delta^{l+1}_{00}\times k_{11} + \delta^{l+1}_{01}\times k_{10} + \delta^{l+1}_{10}\times k_{01} + \delta^{l+1}_{11}\times k_{00}\\
+\delta^l_{12} &amp;= \frac{\partial L}{\partial x_{12}} = \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{12}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{12}}\\
+&amp;=\ \delta^{l+1}_{01}\times k_{11} + \delta^{l+1}_{11}\times k_{01}\\
+\delta^l_{20} &amp;= \frac{\partial L}{\partial x_{20}} = \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{20}}\\
+&amp;=\ \delta^{l+1}_{10}\times k_{10}\\
+\delta^l_{21} &amp;= \frac{\partial L}{\partial x_{21}} = \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{21}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{21}}\\
+&amp;=\ \delta^{l+1}_{10}\times k_{11} + \delta^{l+1}_{11}\times k_{10}\\
+\delta^l_{22} &amp;= \frac{\partial L}{\partial x_{22}} = \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{22}}\\
+&amp;=\ \delta^{l+1}_{11}\times k_{11}
+\end{align}
+\]</span> 通过上述等式，我们可以将残差通过卷积层反向得到上一层的残差，接下来通过残差推导损失函数对卷积核中参数的偏导数。 <span class="math display">\[
+\begin{align}
+\frac{\partial L}{\partial k_{00}} &amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{00}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{00}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{00}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{00}}\\
+&amp;=\ \delta^{l+1}_{00}\times x_{00} + \delta^{l+1}_{01}\times x_{01} + \delta^{l+1}_{10}\times x_{10} + \delta^{l+1}_{11}\times x_{11}\\
+\frac{\partial L}{\partial k_{01}} &amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{01}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{01}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{01}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{01}}\\
+&amp;=\ \delta^{l+1}_{00}\times x_{01} + \delta^{l+1}_{02}\times x_{01} + \delta^{l+1}_{10}\times x_{11} + \delta^{l+1}_{11}\times x_{12}\\
+\frac{\partial L}{\partial k_{10}} &amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{10}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{10}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{10}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{10}}\\
+&amp;=\ \delta^{l+1}_{00}\times x_{010} + \delta^{l+1}_{01}\times x_{11} + \delta^{l+1}_{10}\times x_{20} + \delta^{l+1}_{11}\times x_{21}\\
+\frac{\partial L}{\partial k_{11}} &amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{11}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{11}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{11}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{11}}\\
+&amp;=\ \delta^{l+1}_{00}\times x_{11} + \delta^{l+1}_{01}\times x_{12} + \delta^{l+1}_{10}\times x_{21} + \delta^{l+1}_{11}\times x_{22}\\
+\end{align}
+\]</span></p>
+<p><strong>举个实例体会下！</strong></p>
+<p>输入的数据是<span class="math inline">\(3\times 3\)</span>的矩阵： <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 2 &amp; 1\\
+3 &amp; 2 &amp; 1\\
+2 &amp; 1 &amp; 1
+\end{vmatrix}
+\]</span></p>
+<p>假设有两个卷积核分别为： <span class="math display">\[
+\begin{vmatrix}
+0.1 &amp; 0.2\\
+0.2 &amp; 0.4
+\end{vmatrix}
+和
+\begin{vmatrix}
+-0.3 &amp; 0.1\\
+0.1 &amp; 0.2
+\end{vmatrix}
+\]</span></p>
+<p>假设经过两个卷积核卷积之后的残差值分别为： <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 3\\
+2 &amp; 2
+\end{vmatrix}
+和
+\begin{vmatrix}
+2 &amp; 1\\
+1 &amp; 1
+\end{vmatrix}
+\]</span></p>
+<p>那么，第一个卷积核卷积之前各个节点的残差为： <span class="math display">\[
+\begin{align}
+\delta^l_{00} &amp;= \delta^{l+1}_{00}\times k_{00}\\
+&amp;=\ 1\times 0.1 = 0.1\\
+\delta^l_{01} &amp;= \delta^{l+1}_{00}\times k_{01} + \delta^{l+1}_{01}\times k_{00}\\
+&amp;=\ 1\times 0.2 + 3\times  0.1 = 0.5\\
+\delta^l_{02} &amp;= \delta^{l+1}_{01}\times k_{01}\\
+&amp;=\ 3\times 0.2 = 0.6\\
+\delta^l_{10} &amp;= \delta^{l+1}_{00}\times k_{10} + \delta^{l+1}_{10}\times k_{00}\\
+&amp;=\ 1\times 0.2 + 2\times 0.1 = 0.4\\
+\delta^l_{11} &amp;= \delta^{l+1}_{00}\times k_{11} + \delta^{l+1}_{01}\times k_{10} + \delta^{l+1}_{10}\times k_{01} + \delta^{l+1}_{11}\times k_{00}\\
+&amp;=\ 1\times 0.4 + 3\times 0.2 + 2\times 0.2 + 2\times 0.1 = 1.6\\
+\delta^l_{12} &amp;= \delta^{l+1}_{01}\times k_{11} + \delta^{l+1}_{11}\times k_{01}\\
+&amp;=\ 3\times 0.4 + 2\times 0.2 = 1.6\\
+\delta^l_{20} &amp;= \delta^{l+1}_{10}\times k_{10}\\
+&amp;=\ 2\times 0.2 = 0.4\\
+\delta^l_{21} &amp;= \delta^{l+1}_{10}\times k_{11} + \delta^{l+1}_{11}\times k_{10}\\
+&amp;=\ 2\times 0.4 + 2\times 0.2 = 1.2\\
+\delta^l_{22} &amp;= \delta^{l+1}_{11}\times k_{11}\\
+&amp;=\ 2\times 0.4 = 0.8
+\end{align}
+\]</span></p>
+<p>即第一个卷积核反向传播计算过程中卷积之前的残差为： <span class="math display">\[
+\begin{vmatrix}
+0.1 &amp; 0.5 &amp; 0.6\\
+0.4 &amp; 1.6 &amp; 1.6\\
+0.4 &amp; 1.2 &amp; 0.8
+\end{vmatrix}
+\]</span></p>
+<p>同理可以得到第二个卷积核反向传播计算过程中卷积之前的残差为： <span class="math display">\[
+\begin{vmatrix}
+-0.6 &amp; -0.1 &amp; 0.1\\
+-0.1 &amp; 0.3 &amp; 0.3\\
+0.1 &amp; 0.3 &amp; 0.2
+\end{vmatrix}
+\]</span></p>
+<p>对于第一个卷积核，通过上面推导的公式可以计算： <span class="math display">\[
+\begin{align}
+\frac{\partial L}{\partial k_{00}} &amp;= \delta^{l+1}_{00}\times x_{00} + \delta^{l+1}_{01}\times x_{01} + \delta^{l+1}_{10}\times x_{10} + \delta^{l+1}_{11}\times x_{11}\\
+&amp;=\ 1\times 1 + 3\times 2 + 2\times 3 + 2\times 2 = 17\\
+\frac{\partial L}{\partial k_{01}} &amp;= \delta^{l+1}_{00}\times x_{01} + \delta^{l+1}_{02}\times x_{01} + \delta^{l+1}_{10}\times x_{11} + \delta^{l+1}_{11}\times x_{12}\\
+&amp;=\ 1\times 2 + 3\times 1 + 2\times 2 + 2\times 1 = 11\\
+\frac{\partial L}{\partial k_{10}} &amp;= \delta^{l+1}_{00}\times x_{010} + \delta^{l+1}_{01}\times x_{11} + \delta^{l+1}_{10}\times x_{20} + \delta^{l+1}_{11}\times x_{21}\\
+&amp;=\ 1\times 3 + 3\times 2 + 2\times 2 + 2\times 1 = 15\\
+\frac{\partial L}{\partial k_{11}} &amp;= \delta^{l+1}_{00}\times x_{11} + \delta^{l+1}_{01}\times x_{12} + \delta^{l+1}_{10}\times x_{21} + \delta^{l+1}_{11}\times x_{22}\\
+&amp;=\ 1\times 2 + 3\times 1 + 2\times 1 + 2\times 1 = 9
+\end{align}
+\]</span></p>
+<p>则第一个卷积核的更新计算为： <span class="math display">\[
+\begin{vmatrix}
+k&#39;_{00} &amp; k&#39;_{01}\\
+k&#39;_{10} &amp; k&#39;_{11}
+\end{vmatrix}
+=
+\begin{vmatrix}
+0.1 &amp; 0.2\\
+0.2 &amp; 0.4
+\end{vmatrix}
+-\alpha\times 
+\begin{vmatrix}
+17 &amp; 11\\
+15 &amp; 9
+\end{vmatrix}
+\]</span> 其中<span class="math inline">\(\alpha\)</span>为学习率，<span class="math inline">\(k&#39;_{ij}\)</span>为更新之后的第一个卷积核的参数。同理，可更新第二个卷积核的参数</p>
+</div>
+<div class="section level4">
+<h4>池化层的反向传播</h4>
+<p><strong>平均池化</strong></p>
+<p>假设输入的是一个<span class="math inline">\(4\times 4\)</span>的矩阵，池化区域是<span class="math inline">\(2\times 2\)</span>的矩阵，经过池化后得到的是<span class="math inline">\(2\times 2\)</span>的矩阵。我们假设在反向传播计算过程中，最后一层4个节点的残差值为： <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 3\\
+2 &amp; 4
+\end{vmatrix}
+\]</span> 那么由于一个节点对应池化之前的4个节点，同时需要满足反向传播过程中各层的残差总和不变，所以池化之前的神经元的残差值是池化之后的残差值得平均；在这个例子中，池化之前<span class="math inline">\(4\times 4\)</span>的神经元的残差值为： <span class="math display">\[
+\begin{vmatrix}
+0.25 &amp; 0.25 &amp; 0.75 &amp; 0.75\\
+0.25 &amp; 0.25 &amp; 0.75 &amp; 0.75\\
+0.5 &amp; 0.5 &amp; 1 &amp; 1\\
+0.5 &amp; 0.5 &amp; 1 &amp; 1
+\end{vmatrix}
+\]</span></p>
+<p><strong>最大池化</strong></p>
+<p>在这里也用和<strong>平均池化</strong>一样的例子，我们假设在反向传播计算过程中，最后一层4个节点的残差值为： <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 3\\
+2 &amp; 4
+\end{vmatrix}
+\]</span></p>
+<p>最大池化在前向计算的过程中，需要记录被池化的<span class="math inline">\(2\times 2\)</span>区域中哪个位置被选取（即最大值），我们假设被选中的最大值所在的位置就是下面星星所在位置： <span class="math display">\[
+\begin{vmatrix}
+* &amp; - &amp; - &amp; -\\
+- &amp; - &amp; * &amp; -\\
+- &amp; - &amp; - &amp; *\\
+- &amp; * &amp; - &amp; -
+\end{vmatrix}
+\]</span> 在反向传播中，将残差直接给上述星星位置，其他位置则赋为0，即 <span class="math display">\[
+\begin{vmatrix}
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 2 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 4\\
+0 &amp; 3 &amp; 0 &amp; 0
+\end{vmatrix}
+\]</span></p>
+</div>
+</div>
+<div class="section level3">
+<h3>代码与实现</h3>
+<p>在知乎<a href="https://www.zhihu.com/question/52668301">“CNN(卷积神经网络)是什么？有入门简介或文章吗？”</a>这个问题上，<a href="https://www.zhihu.com/question/52668301/answer/536176496">“阿里云云栖社区”</a>在它的答案中给出了CNN实现的代码ヾ(<em>´▽‘</em>)ﾉ</p>
+<pre class="python"><code># Import the deep learning library
+import tensorflow as tf
+import time
+# Import the MNIST dataset
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets(&quot;/tmp/data/&quot;, one_hot=True)
+# Network inputs and outputs
+# The network&#39;s input is a 28×28 dimensional input
+n = 28
+m = 28
+num_input = n * m # MNIST data input 
+num_classes = 10 # MNIST total classes (0-9 digits)
+# tf Graph input
+X = tf.placeholder(tf.float32, [None, num_input])
+Y = tf.placeholder(tf.float32, [None, num_classes])
+# Storing the parameters of our LeNET-5 inspired Convolutional Neural Network
+weights = {
+   &quot;W_ij&quot;: tf.Variable(tf.random_normal([5, 5, 1, 32])),
+   &quot;W_jk&quot;: tf.Variable(tf.random_normal([5, 5, 32, 64])),
+   &quot;W_kl&quot;: tf.Variable(tf.random_normal([7 * 7 * 64, 1024])),
+   &quot;W_lm&quot;: tf.Variable(tf.random_normal([1024, num_classes]))
+    }
+biases = {
+   &quot;b_ij&quot;: tf.Variable(tf.random_normal([32])),
+   &quot;b_jk&quot;: tf.Variable(tf.random_normal([64])),
+   &quot;b_kl&quot;: tf.Variable(tf.random_normal([1024])),
+   &quot;b_lm&quot;: tf.Variable(tf.random_normal([num_classes]))
+    }
+# The hyper-parameters of our Convolutional Neural Network
+learning_rate = 1e-3
+num_steps = 500
+batch_size = 128
+display_step = 10
+def ConvolutionLayer(x, W, b, strides=1):
+    # Convolution Layer
+    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding=&#39;SAME&#39;)
+    x = tf.nn.bias_add(x, b)
+    return x
+def ReLU(x):
+    # ReLU activation function
+    return tf.nn.relu(x)
+def PoolingLayer(x, k=2, strides=2):
+    # Max Pooling layer
+    return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, strides, strides, 1],
+                          padding=&#39;SAME&#39;)
+def Softmax(x):
+    # Softmax activation function for the CNN&#39;s final output
+    return tf.nn.softmax(x)
+# Create model
+def ConvolutionalNeuralNetwork(x, weights, biases):
+    # MNIST data input is a 1-D row vector of 784 features (28×28 pixels)
+    # Reshape to match picture format [Height x Width x Channel]
+    # Tensor input become 4-D: [Batch Size, Height, Width, Channel]
+    x = tf.reshape(x, shape=[-1, 28, 28, 1])
+    # Convolution Layer
+    Conv1 = ConvolutionLayer(x, weights[&quot;W_ij&quot;], biases[&quot;b_ij&quot;])
+    # Non-Linearity
+    ReLU1 = ReLU(Conv1)
+    # Max Pooling (down-sampling)
+    Pool1 = PoolingLayer(ReLU1, k=2)
+    # Convolution Layer
+    Conv2 = ConvolutionLayer(Pool1, weights[&quot;W_jk&quot;], biases[&quot;b_jk&quot;])
+    # Non-Linearity
+    ReLU2 = ReLU(Conv2)
+    # Max Pooling (down-sampling)
+    Pool2 = PoolingLayer(ReLU2, k=2)
+    # Fully connected layer
+    # Reshape conv2 output to fit fully connected layer input
+    FC = tf.reshape(Pool2, [-1, weights[&quot;W_kl&quot;].get_shape().as_list()[0]])
+    FC = tf.add(tf.matmul(FC, weights[&quot;W_kl&quot;]), biases[&quot;b_kl&quot;])
+    FC = ReLU(FC)
+    # Output, class prediction
+    output = tf.add(tf.matmul(FC, weights[&quot;W_lm&quot;]), biases[&quot;b_lm&quot;])
+    return output
+# Construct model
+logits = ConvolutionalNeuralNetwork(X, weights, biases)
+prediction = Softmax(logits)
+# Softamx cross entropy loss function
+loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+    logits=logits, labels=Y))
+# Optimization using the Adam Gradient Descent optimizer
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+training_process = optimizer.minimize(loss_function)
+# Evaluate model
+correct_pred = tf.equal(tf.argmax(prediction, 1), tf.argmax(Y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+# recording how the loss functio varies over time during training
+cost = tf.summary.scalar(&quot;cost&quot;, loss_function)
+training_accuracy = tf.summary.scalar(&quot;accuracy&quot;, accuracy)
+train_summary_op = tf.summary.merge([cost,training_accuracy])
+train_writer = tf.summary.FileWriter(&quot;./Desktop/logs&quot;,
+                                        graph=tf.get_default_graph())
+# Initialize the variables (i.e. assign their default value)
+init = tf.global_variables_initializer()
+# Start training
+with tf.Session() as sess:
+    # Run the initializer
+    sess.run(init)
+    start_time = time.time()
+    for step in range(1, num_steps+1):
+        batch_x, batch_y = mnist.train.next_batch(batch_size)
+        # Run optimization op (backprop)
+        sess.run(training_process, feed_dict={X: batch_x, Y: batch_y})
+        if step % display_step == 0 or step == 1:
+            # Calculate batch loss and accuracy
+            loss, acc, summary = sess.run([loss_function, accuracy, train_summary_op], feed_dict={X: batch_x,
+                                                                 Y: batch_y})
+            train_writer.add_summary(summary, step)
+            print(&quot;Step &quot; + str(step) + &quot;, Minibatch Loss= &quot; + \
+                  &quot;{:.4f}&quot;.format(loss) + &quot;, Training Accuracy= &quot; + \
+                  &quot;{:.3f}&quot;.format(acc))
+    end_time = time.time() 
+    print(&quot;Time duration: &quot; + str(int(end_time-start_time)) + &quot; seconds&quot;)
+    print(&quot;Optimization Finished!&quot;)
+    # Calculate accuracy for 256 MNIST test images
+    print(&quot;Testing Accuracy:&quot;, \
+        sess.run(accuracy, feed_dict={X: mnist.test.images[:256],
+                                      Y: mnist.test.labels[:256]}))</code></pre>
+</div>
+</div>
+<div id="reference" class="section level2">
+<h2>Reference</h2>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.zhihu.com/question/52668301">知乎. CNN(卷积神经网络)是什么？有入门简介或文章吗？</a></li>
+<li>罗冬日. Tensorflow入门与实战</li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="../../tags/tensorflow/">TensorFlow</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="../../img/portrait.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="../../">Thompson Hu</a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:ttxinlinhu@qq.com" >
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a itemprop="sameAs" href="https://github.com/thompsonhu" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/">生成对抗网络的第二Part</a></li>
+        
+        <li><a href="../../post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80part/">生成对抗网络的第一Part</a></li>
+        
+        <li><a href="../../post/%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">深度神经网络基础</a></li>
+        
+        <li><a href="../../post/variational-auto-encoder/">Variational Auto-Encoder</a></li>
+        
+        <li><a href="../../post/%E5%B0%8F%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8tensorflow/">小菜鸟的入门TensorFlow</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+<section id="comments">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "thompsonhu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="../../privacy/">Made by Thompson</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    <script id="dsq-count-scr" src="//thompsonhu.disqus.com/count.js" async></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+
+    
+
+  </body>
+</html>
+

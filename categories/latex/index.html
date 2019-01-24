@@ -20,7 +20,7 @@
   <meta name="description" content="">
 
   
-  <link rel="alternate" hreflang="en-us" href="../tags/">
+  <link rel="alternate" hreflang="en-us" href="../../categories/latex/">
 
   
 
@@ -78,7 +78,7 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
   
 
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../../styles.css">
   
 
   
@@ -86,15 +86,15 @@
   
 
   
-  <link rel="alternate" href="../tags/index.xml" type="application/rss+xml" title="Bonbon Blog">
-  <link rel="feed" href="../tags/index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="alternate" href="../../categories/latex/index.xml" type="application/rss+xml" title="Bonbon Blog">
+  <link rel="feed" href="../../categories/latex/index.xml" type="application/rss+xml" title="Bonbon Blog">
   
 
-  <link rel="manifest" href="../site.webmanifest">
-  <link rel="icon" type="image/png" href="../img/icon.png">
-  <link rel="apple-touch-icon" type="image/png" href="../img/icon-192.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
 
-  <link rel="canonical" href="../tags/">
+  <link rel="canonical" href="../../categories/latex/">
 
   
   
@@ -106,19 +106,19 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Bonbon Blog">
-  <meta property="og:url" content="/tags/">
-  <meta property="og:title" content="Tags | Bonbon Blog">
+  <meta property="og:url" content="/categories/latex/">
+  <meta property="og:title" content="LaTeX | Bonbon Blog">
   <meta property="og:description" content=""><meta property="og:image" content="/img/portrait.jpg">
   <meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2019-01-15T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2019-01-24T00:00:00&#43;00:00">
   
 
   
 
   
 
-  <title>Tags | Bonbon Blog</title>
+  <title>LaTeX | Bonbon Blog</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
@@ -158,7 +158,7 @@
   <div class="container">
 
     
-      <a class="navbar-brand" href="../">Bonbon Blog</a>
+      <a class="navbar-brand" href="../../">Bonbon Blog</a>
       
       <button type="button" class="navbar-toggler" data-toggle="collapse"
               data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -183,7 +183,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link" href="../#about">
+          <a class="nav-link" href="../../#about">
             
             <span>Home</span>
             
@@ -202,7 +202,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link" href="../#posts">
+          <a class="nav-link" href="../../#posts">
             
             <span>Posts</span>
             
@@ -258,7 +258,7 @@
     
   
 <div class="universal-wrapper pt-3">
-  <h1 itemprop="name">Tags</h1>
+  <h1 itemprop="name">LaTeX</h1>
 
   
 
@@ -273,50 +273,21 @@
   
   
   <div>
-    <h2><a href="../tags/algorithm/">Algorithm</a></h2>
+    <h2><a href="../../post/%E5%85%A5%E9%97%A8texlive-texstudio/">入门TeXLive&#43;TeXStudio</a></h2>
     <div class="article-style">
       
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/deep-learning/">Deep Learning</a></h2>
-    <div class="article-style">
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/latex/">LaTeX</a></h2>
-    <div class="article-style">
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/r/">R</a></h2>
-    <div class="article-style">
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/rmarkdown/">Rmarkdown</a></h2>
-    <div class="article-style">
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/tensorflow/">TensorFlow</a></h2>
-    <div class="article-style">
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../tags/vae/">VAE</a></h2>
-    <div class="article-style">
+       Liam Huang曾说过：
+ 选择TeX Live，选择简单的人生；
+选择MiKTeX，选择麻烦的人生；
+选择CTeX套装，选择崩溃的人生。
+ 意外重新接触LaTeX之后，发现CTeX确实是个麻烦事。最开始接触LaTeX，就不断被LaTeX各种问题绊倒，可以说相当厌恶了╮(๑•́ ₃•̀๑)╭还好有友好的Markdown语法~
+删掉自己电脑中的CTeX套装，实践记录下如何开始TexLive+TexStudio的完美生活(*•̀ㅂ•́)و
+安装TeXLive 2018 TeXLive的官网是https://tug.org/texlive/，按指引也可以完成下载；但我觉得用中国科技大学的镜像站会比较方便高效~所以从中科大这边下载： https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/texlive2018.iso
+整个文件3.2GB还是相当大~完成下载后，以管理员身份运行install-tl-advanced.bat，然后点击continue（如图1所示），随后点击安装TeXLive即可。  图1. 安装TeXLive页面   安装TexStudio 安装完TexLive后，可以说完成百分之80的工作了，TexStudio的安装相比前面的快很多（因为只有74.1MB(..•˘_˘•..)）。
+TexStudio的官网网址是： http://texstudio.sourceforge.net/
+点击网址打开后，对于Windows平台的，点击Download now下载即可。
+两个安装后，就完成啦！ฅ(๑˙o˙๑)ฅ
+ 
       
     </div>
   </div>
@@ -329,7 +300,7 @@
   <footer class="site-footer">
   
   <p class="powered-by">
-    <a href="../privacy/">Made by Thompson</a>
+    <a href="../../privacy/">Made by Thompson</a>
   </p>
   
 
@@ -385,7 +356,7 @@
     
     
     
-    <script src="../js/mathjax-config.js"></script>
+    <script src="../../js/mathjax-config.js"></script>
     
 
     
@@ -476,7 +447,7 @@
     
     
     
-    <script src="../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
+    <script src="../../js/academic.min.70f0041f5a24c6a675ac218c98d7ef71.js"></script>
 
     
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LaTeX on Bonbon Blog</title>
+    <link>/tags/latex/</link>
+    <description>Recent content in LaTeX on Bonbon Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/latex/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>入门TeXLive&#43;TeXStudio</title>
+      <link>/post/%E5%85%A5%E9%97%A8texlive-texstudio/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E5%85%A5%E9%97%A8texlive-texstudio/</guid>
+      <description> Liam Huang曾说过：
+ 选择TeX Live，选择简单的人生；
+选择MiKTeX，选择麻烦的人生；
+选择CTeX套装，选择崩溃的人生。
+ 意外重新接触LaTeX之后，发现CTeX确实是个麻烦事。最开始接触LaTeX，就不断被LaTeX各种问题绊倒，可以说相当厌恶了╮(๑•́ ₃•̀๑)╭还好有友好的Markdown语法~
+删掉自己电脑中的CTeX套装，实践记录下如何开始TexLive+TexStudio的完美生活(*•̀ㅂ•́)و
+安装TeXLive 2018 TeXLive的官网是https://tug.org/texlive/，按指引也可以完成下载；但我觉得用中国科技大学的镜像站会比较方便高效~所以从中科大这边下载： https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/texlive2018.iso
+整个文件3.2GB还是相当大~完成下载后，以管理员身份运行install-tl-advanced.bat，然后点击continue（如图1所示），随后点击安装TeXLive即可。  图1. 安装TeXLive页面   安装TexStudio 安装完TexLive后，可以说完成百分之80的工作了，TexStudio的安装相比前面的快很多（因为只有74.1MB(..•˘_˘•..)）。
+TexStudio的官网网址是： http://texstudio.sourceforge.net/
+点击网址打开后，对于Windows平台的，点击Download now下载即可。
+两个安装后，就完成啦！ฅ(๑˙o˙๑)ฅ
+ </description>
+    </item>
+    
+  </channel>
+</rss>

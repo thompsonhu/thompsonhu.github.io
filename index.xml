@@ -11,6 +11,456 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>入门TeXLive&#43;TeXStudio</title>
+      <link>/post/%E5%85%A5%E9%97%A8texlive-texstudio/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E5%85%A5%E9%97%A8texlive-texstudio/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;https://liam.page/&#34;&gt;Liam Huang&lt;/a&gt;曾说过：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;选择TeX Live，选择简单的人生；&lt;br /&gt;
+选择MiKTeX，选择麻烦的人生；&lt;br /&gt;
+选择CTeX套装，选择崩溃的人生。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;意外重新接触LaTeX之后，发现CTeX确实是个麻烦事。最开始接触LaTeX，就不断被LaTeX各种问题绊倒，可以说相当厌恶了╮(๑•́ ₃•̀๑)╭还好有友好的Markdown语法~&lt;/p&gt;
+&lt;p&gt;删掉自己电脑中的CTeX套装，实践记录下如何开始TexLive+TexStudio的完美生活(*•̀ㅂ•́)و&lt;/p&gt;
+&lt;div id=&#34;texlive-2018&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;安装TeXLive 2018&lt;/h2&gt;
+&lt;p&gt;TeXLive的官网是&lt;a href=&#34;https://tug.org/texlive/&#34; class=&#34;uri&#34;&gt;https://tug.org/texlive/&lt;/a&gt;，按指引也可以完成下载；但我觉得用中国科技大学的镜像站会比较方便高效~所以从中科大这边下载： &lt;a href=&#34;https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/texlive2018.iso&#34; class=&#34;uri&#34;&gt;https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/texlive2018.iso&lt;/a&gt;&lt;/p&gt;
+整个文件3.2GB还是相当大~完成下载后，以管理员身份运行&lt;strong&gt;install-tl-advanced.bat&lt;/strong&gt;，然后点击&lt;strong&gt;continue&lt;/strong&gt;（如图1所示），随后点击&lt;strong&gt;安装TeXLive&lt;/strong&gt;即可。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;TEX1.PNG&#34; width = &#34;600&#34; height = &#34;600&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 安装TeXLive页面
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;texstudio&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;安装TexStudio&lt;/h2&gt;
+&lt;p&gt;安装完TexLive后，可以说完成百分之80的工作了，TexStudio的安装相比前面的快很多（因为只有74.1MB(..•˘_˘•..)）。&lt;/p&gt;
+&lt;p&gt;TexStudio的官网网址是： &lt;a href=&#34;http://texstudio.sourceforge.net/&#34; class=&#34;uri&#34;&gt;http://texstudio.sourceforge.net/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;点击网址打开后，对于Windows平台的，点击&lt;strong&gt;Download now&lt;/strong&gt;下载即可。&lt;/p&gt;
+&lt;p&gt;两个安装后，就完成啦！ฅ(๑˙o˙๑)ฅ&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>卷积神经网络 Convolutional Neural Networks</title>
+      <link>/post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/</link>
+      <pubDate>Mon, 21 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/</guid>
+      <description>
+
+
+&lt;div class=&#34;section level2&#34;&gt;
+&lt;h2&gt;简介&lt;/h2&gt;
+&lt;p&gt;Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家&lt;a href=&#34;http://yann.lecun.com/&#34;&gt;Yann LeCun&lt;/a&gt;，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题&lt;a href=&#34;https://www.zhihu.com/question/52668301&#34;&gt;“CNN(卷积神经网络)是什么？有入门简介或文章吗？”&lt;/a&gt;的回答来进行介绍~&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;convolutional-neural-networks&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Convolutional Neural Networks开始正文！&lt;/h2&gt;
+&lt;div id=&#34;cnn&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;CNN的“卷积”介绍&lt;/h3&gt;
+&lt;p&gt;我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是&lt;span class=&#34;math inline&#34;&gt;\(n\times m\times 3\)&lt;/span&gt;的RGB图像，下面图中是&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\times 3\)&lt;/span&gt;RGB图像的示例；其中的数字代表着图片的原始像素值。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN1.PNG&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. &lt;span class=&#34;math inline&#34;&gt;\(4\times 4\times 3\)&lt;/span&gt;RGB图像
+&lt;/div&gt;
+&lt;p&gt;卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先，假设我们选取的卷积核为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 0 &amp;amp; 1\\
+0 &amp;amp; 1 &amp;amp; 0\\
+1 &amp;amp; 0 &amp;amp; 1
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+4 &amp;amp; 3 &amp;amp; 4\\
+2 &amp;amp; 4 &amp;amp; 3\\
+2 &amp;amp; 3 &amp;amp; 4
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN2.gif&#34; width = &#34;500&#34; height = &#34;500&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. 卷积过程示例
+&lt;/div&gt;
+&lt;p&gt;由此，一个&lt;span class=&#34;math inline&#34;&gt;\(5\times 5\)&lt;/span&gt;的图像矩阵经过卷积得到了一个&lt;span class=&#34;math inline&#34;&gt;\(3\times 3\)&lt;/span&gt;的矩阵，生成的这个矩阵我们称为Convolved Feature或Feature Map。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有时候为了不让新生成的图片缩小，可以给原始的图像进行0元素的填充（padding）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN3.PNG&#34; width = &#34;200&#34; height = &#34;200&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. 填充（padding）示意图
+&lt;/div&gt;
+&lt;p&gt;如图所示，原来的&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\)&lt;/span&gt;矩阵如果通过&lt;span class=&#34;math inline&#34;&gt;\(3\times 3\)&lt;/span&gt;的卷积核处理会得到&lt;span class=&#34;math inline&#34;&gt;\(2\times 2\)&lt;/span&gt;的Convolved Feature，但是在周围加一圈0元素，从&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\)&lt;/span&gt;矩阵扩充到&lt;span class=&#34;math inline&#34;&gt;\(5\times 5\)&lt;/span&gt;的矩阵的话，经过&lt;span class=&#34;math inline&#34;&gt;\(3\times 3\)&lt;/span&gt;的卷积核处理会得到&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\)&lt;/span&gt;的Convolved Feature。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cnn&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;CNN的“池化”介绍&lt;/h3&gt;
+&lt;p&gt;池化（pooling）实际上是对上个操作（卷积）得到的Convolved Feature进行降维，池化有很多方法（比如取最大值，求平均，求和等等），但常用的方法有“最大池化”（池化区域内所有值的平均值作为池化结果）和“平均池化”（池化区域内所有值的最大值作为池化结果）这两种。&lt;/p&gt;
+&lt;p&gt;池化的具体操作是让一个池化窗口在图片上移动，每次取窗口内的平均值或者最大值；窗口的水平和垂直移动，它移动步长取窗口本身的大小；下图是最大池化的示意图。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN4.PNG&#34; width = &#34;400&#34; height = &#34;400&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 最大池化示意图
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;为什么要池化层？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;假设输入了一张&lt;span class=&#34;math inline&#34;&gt;\(1000\times 1000\)&lt;/span&gt;的图像，我们采用100个卷积核进行提取不同的特征，其中卷积核大小为&lt;span class=&#34;math inline&#34;&gt;\(3\times 3\)&lt;/span&gt;，卷积核在原图像上移动的步长为1；若不考虑填充（padding），那么我们会得到一个&lt;span class=&#34;math inline&#34;&gt;\(998\times 998=996004\)&lt;/span&gt;的Convolved feature，那100个卷积核便会得到100个996004大小的Convolved feature；所以，一张图片最终会得到一个&lt;span class=&#34;math inline&#34;&gt;\(996004\times 100\)&lt;/span&gt;的卷积特征向量。这样上千万个特征进行图片的分类，很容易造成过拟合（overfitting）。&lt;/p&gt;
+&lt;p&gt;由于图像具有空间相关性，即一个像素点和它周围的像素点在很大概率上是相似的。通过相邻的像素点进行合并（即池化），可以缩小最后得到的特征数量。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;反向传播和参数更新&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;CNN&lt;/strong&gt;的训练过程和&lt;strong&gt;全连接网络&lt;/strong&gt;的训练过程比较类似，都是先将参数随机初始化，再进行前向计算；得到最后的输出结果之后，再计算最后一层每个神经元的残差；通过&lt;strong&gt;反向传播&lt;/strong&gt;方法，可以得到所有节点的残差和损失函数对所有参数的偏导数；最后对参数进行更新。两者的架构区别主要在于卷积层和池化层。&lt;/p&gt;
+&lt;div class=&#34;section level4&#34;&gt;
+&lt;h4&gt;卷积层的反向传播&lt;/h4&gt;
+&lt;p&gt;我们先定义，&lt;/p&gt;
+&lt;p&gt;卷积之前的矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+x_{00} &amp;amp; x_{01} &amp;amp; x_{02}\\
+x_{10} &amp;amp; x_{11} &amp;amp; x_{12}\\
+x_{20} &amp;amp; x_{21} &amp;amp; x_{22}
+\end{vmatrix}
+\]&lt;/span&gt; 卷积核的矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+k_{00} &amp;amp; k_{01}\\
+k_{10} &amp;amp; k_{11}
+\end{vmatrix}
+\]&lt;/span&gt; 卷积之后的矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+y_{00} &amp;amp; y_{01}\\
+y_{10} &amp;amp; y_{11}
+\end{vmatrix}
+\]&lt;/span&gt; 卷积之后的残差矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+\delta^{l+1}_{00} &amp;amp; \delta^{l+1}_{01}\\
+\delta^{l+1}_{10} &amp;amp; \delta^{l+1}_{11}
+\end{vmatrix}
+\]&lt;/span&gt; 卷积之前的残差矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+\delta^l_{00} &amp;amp; \delta^l_{01} &amp;amp; \delta^l_{02}\\
+\delta^l_{10} &amp;amp; \delta^l_{11} &amp;amp; \delta^l_{12}\\
+\delta^l_{20} &amp;amp; \delta^l_{21} &amp;amp; \delta^l_{22}
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;我们在前向计算中，卷积操作的计算过程如下： &lt;span class=&#34;math display&#34;&gt;\[
+y_{00} = x_{00}\times k_{00} + x_{01}\times k_{01} + x_{10}\times k_{10} + x_{11}\times k_{11}\\
+y_{01} = x_{01}\times k_{00} + x_{02}\times k_{01} + x_{11}\times k_{10} + x_{12}\times k_{11}\\
+y_{10} = x_{10}\times k_{00} + x_{11}\times k_{01} + x_{20}\times k_{10} + x_{21}\times k_{11}\\
+y_{11} = x_{11}\times k_{00} + x_{12}\times k_{01} + x_{21}\times k_{10} + x_{22}\times k_{11}\\
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;又卷积之后的残差可以由反向传播计算得到，我们可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta^l_{00} &amp;amp;= \frac{\partial L}{\partial x_{00}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{00}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times k_{00}\\
+\delta^l_{01} &amp;amp;= \frac{\partial L}{\partial x_{01}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{01}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{01}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times k_{01} + \delta^{l+1}_{01}\times k_{00}\\
+\delta^l_{02} &amp;amp;= \frac{\partial L}{\partial x_{02}} = \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{02}}\\
+&amp;amp;=\ \delta^{l+1}_{01}\times k_{01}\\
+\delta^l_{10} &amp;amp;= \frac{\partial L}{\partial x_{10}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{10}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{10}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times k_{10} + \delta^{l+1}_{10}\times k_{00}\\
+\delta^l_{11} &amp;amp;= \frac{\partial L}{\partial x_{11}} = \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial x_{11}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{11}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{11}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{11}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times k_{11} + \delta^{l+1}_{01}\times k_{10} + \delta^{l+1}_{10}\times k_{01} + \delta^{l+1}_{11}\times k_{00}\\
+\delta^l_{12} &amp;amp;= \frac{\partial L}{\partial x_{12}} = \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial x_{12}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{12}}\\
+&amp;amp;=\ \delta^{l+1}_{01}\times k_{11} + \delta^{l+1}_{11}\times k_{01}\\
+\delta^l_{20} &amp;amp;= \frac{\partial L}{\partial x_{20}} = \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{20}}\\
+&amp;amp;=\ \delta^{l+1}_{10}\times k_{10}\\
+\delta^l_{21} &amp;amp;= \frac{\partial L}{\partial x_{21}} = \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial x_{21}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{21}}\\
+&amp;amp;=\ \delta^{l+1}_{10}\times k_{11} + \delta^{l+1}_{11}\times k_{10}\\
+\delta^l_{22} &amp;amp;= \frac{\partial L}{\partial x_{22}} = \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial x_{22}}\\
+&amp;amp;=\ \delta^{l+1}_{11}\times k_{11}
+\end{align}
+\]&lt;/span&gt; 通过上述等式，我们可以将残差通过卷积层反向得到上一层的残差，接下来通过残差推导损失函数对卷积核中参数的偏导数。 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial L}{\partial k_{00}} &amp;amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{00}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{00}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{00}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{00}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times x_{00} + \delta^{l+1}_{01}\times x_{01} + \delta^{l+1}_{10}\times x_{10} + \delta^{l+1}_{11}\times x_{11}\\
+\frac{\partial L}{\partial k_{01}} &amp;amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{01}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{01}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{01}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{01}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times x_{01} + \delta^{l+1}_{02}\times x_{01} + \delta^{l+1}_{10}\times x_{11} + \delta^{l+1}_{11}\times x_{12}\\
+\frac{\partial L}{\partial k_{10}} &amp;amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{10}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{10}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{10}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{10}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times x_{010} + \delta^{l+1}_{01}\times x_{11} + \delta^{l+1}_{10}\times x_{20} + \delta^{l+1}_{11}\times x_{21}\\
+\frac{\partial L}{\partial k_{11}} &amp;amp;= \frac{\partial L}{\partial y_{00}}\times \frac{\partial y_{00}}{\partial k_{11}} + \frac{\partial L}{\partial y_{01}}\times \frac{\partial y_{01}}{\partial k_{11}} + \frac{\partial L}{\partial y_{10}}\times \frac{\partial y_{10}}{\partial k_{11}} + \frac{\partial L}{\partial y_{11}}\times \frac{\partial y_{11}}{\partial k_{11}}\\
+&amp;amp;=\ \delta^{l+1}_{00}\times x_{11} + \delta^{l+1}_{01}\times x_{12} + \delta^{l+1}_{10}\times x_{21} + \delta^{l+1}_{11}\times x_{22}\\
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;举个实例体会下！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;输入的数据是&lt;span class=&#34;math inline&#34;&gt;\(3\times 3\)&lt;/span&gt;的矩阵： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 2 &amp;amp; 1\\
+3 &amp;amp; 2 &amp;amp; 1\\
+2 &amp;amp; 1 &amp;amp; 1
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;假设有两个卷积核分别为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+0.1 &amp;amp; 0.2\\
+0.2 &amp;amp; 0.4
+\end{vmatrix}
+和
+\begin{vmatrix}
+-0.3 &amp;amp; 0.1\\
+0.1 &amp;amp; 0.2
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;假设经过两个卷积核卷积之后的残差值分别为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 3\\
+2 &amp;amp; 2
+\end{vmatrix}
+和
+\begin{vmatrix}
+2 &amp;amp; 1\\
+1 &amp;amp; 1
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;那么，第一个卷积核卷积之前各个节点的残差为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta^l_{00} &amp;amp;= \delta^{l+1}_{00}\times k_{00}\\
+&amp;amp;=\ 1\times 0.1 = 0.1\\
+\delta^l_{01} &amp;amp;= \delta^{l+1}_{00}\times k_{01} + \delta^{l+1}_{01}\times k_{00}\\
+&amp;amp;=\ 1\times 0.2 + 3\times  0.1 = 0.5\\
+\delta^l_{02} &amp;amp;= \delta^{l+1}_{01}\times k_{01}\\
+&amp;amp;=\ 3\times 0.2 = 0.6\\
+\delta^l_{10} &amp;amp;= \delta^{l+1}_{00}\times k_{10} + \delta^{l+1}_{10}\times k_{00}\\
+&amp;amp;=\ 1\times 0.2 + 2\times 0.1 = 0.4\\
+\delta^l_{11} &amp;amp;= \delta^{l+1}_{00}\times k_{11} + \delta^{l+1}_{01}\times k_{10} + \delta^{l+1}_{10}\times k_{01} + \delta^{l+1}_{11}\times k_{00}\\
+&amp;amp;=\ 1\times 0.4 + 3\times 0.2 + 2\times 0.2 + 2\times 0.1 = 1.6\\
+\delta^l_{12} &amp;amp;= \delta^{l+1}_{01}\times k_{11} + \delta^{l+1}_{11}\times k_{01}\\
+&amp;amp;=\ 3\times 0.4 + 2\times 0.2 = 1.6\\
+\delta^l_{20} &amp;amp;= \delta^{l+1}_{10}\times k_{10}\\
+&amp;amp;=\ 2\times 0.2 = 0.4\\
+\delta^l_{21} &amp;amp;= \delta^{l+1}_{10}\times k_{11} + \delta^{l+1}_{11}\times k_{10}\\
+&amp;amp;=\ 2\times 0.4 + 2\times 0.2 = 1.2\\
+\delta^l_{22} &amp;amp;= \delta^{l+1}_{11}\times k_{11}\\
+&amp;amp;=\ 2\times 0.4 = 0.8
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;即第一个卷积核反向传播计算过程中卷积之前的残差为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+0.1 &amp;amp; 0.5 &amp;amp; 0.6\\
+0.4 &amp;amp; 1.6 &amp;amp; 1.6\\
+0.4 &amp;amp; 1.2 &amp;amp; 0.8
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;同理可以得到第二个卷积核反向传播计算过程中卷积之前的残差为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+-0.6 &amp;amp; -0.1 &amp;amp; 0.1\\
+-0.1 &amp;amp; 0.3 &amp;amp; 0.3\\
+0.1 &amp;amp; 0.3 &amp;amp; 0.2
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;对于第一个卷积核，通过上面推导的公式可以计算： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial L}{\partial k_{00}} &amp;amp;= \delta^{l+1}_{00}\times x_{00} + \delta^{l+1}_{01}\times x_{01} + \delta^{l+1}_{10}\times x_{10} + \delta^{l+1}_{11}\times x_{11}\\
+&amp;amp;=\ 1\times 1 + 3\times 2 + 2\times 3 + 2\times 2 = 17\\
+\frac{\partial L}{\partial k_{01}} &amp;amp;= \delta^{l+1}_{00}\times x_{01} + \delta^{l+1}_{02}\times x_{01} + \delta^{l+1}_{10}\times x_{11} + \delta^{l+1}_{11}\times x_{12}\\
+&amp;amp;=\ 1\times 2 + 3\times 1 + 2\times 2 + 2\times 1 = 11\\
+\frac{\partial L}{\partial k_{10}} &amp;amp;= \delta^{l+1}_{00}\times x_{010} + \delta^{l+1}_{01}\times x_{11} + \delta^{l+1}_{10}\times x_{20} + \delta^{l+1}_{11}\times x_{21}\\
+&amp;amp;=\ 1\times 3 + 3\times 2 + 2\times 2 + 2\times 1 = 15\\
+\frac{\partial L}{\partial k_{11}} &amp;amp;= \delta^{l+1}_{00}\times x_{11} + \delta^{l+1}_{01}\times x_{12} + \delta^{l+1}_{10}\times x_{21} + \delta^{l+1}_{11}\times x_{22}\\
+&amp;amp;=\ 1\times 2 + 3\times 1 + 2\times 1 + 2\times 1 = 9
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;则第一个卷积核的更新计算为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+k&amp;#39;_{00} &amp;amp; k&amp;#39;_{01}\\
+k&amp;#39;_{10} &amp;amp; k&amp;#39;_{11}
+\end{vmatrix}
+=
+\begin{vmatrix}
+0.1 &amp;amp; 0.2\\
+0.2 &amp;amp; 0.4
+\end{vmatrix}
+-\alpha\times 
+\begin{vmatrix}
+17 &amp;amp; 11\\
+15 &amp;amp; 9
+\end{vmatrix}
+\]&lt;/span&gt; 其中&lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt;为学习率，&lt;span class=&#34;math inline&#34;&gt;\(k&amp;#39;_{ij}\)&lt;/span&gt;为更新之后的第一个卷积核的参数。同理，可更新第二个卷积核的参数&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level4&#34;&gt;
+&lt;h4&gt;池化层的反向传播&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;平均池化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;假设输入的是一个&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\)&lt;/span&gt;的矩阵，池化区域是&lt;span class=&#34;math inline&#34;&gt;\(2\times 2\)&lt;/span&gt;的矩阵，经过池化后得到的是&lt;span class=&#34;math inline&#34;&gt;\(2\times 2\)&lt;/span&gt;的矩阵。我们假设在反向传播计算过程中，最后一层4个节点的残差值为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 3\\
+2 &amp;amp; 4
+\end{vmatrix}
+\]&lt;/span&gt; 那么由于一个节点对应池化之前的4个节点，同时需要满足反向传播过程中各层的残差总和不变，所以池化之前的神经元的残差值是池化之后的残差值得平均；在这个例子中，池化之前&lt;span class=&#34;math inline&#34;&gt;\(4\times 4\)&lt;/span&gt;的神经元的残差值为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+0.25 &amp;amp; 0.25 &amp;amp; 0.75 &amp;amp; 0.75\\
+0.25 &amp;amp; 0.25 &amp;amp; 0.75 &amp;amp; 0.75\\
+0.5 &amp;amp; 0.5 &amp;amp; 1 &amp;amp; 1\\
+0.5 &amp;amp; 0.5 &amp;amp; 1 &amp;amp; 1
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最大池化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在这里也用和&lt;strong&gt;平均池化&lt;/strong&gt;一样的例子，我们假设在反向传播计算过程中，最后一层4个节点的残差值为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 3\\
+2 &amp;amp; 4
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;最大池化在前向计算的过程中，需要记录被池化的&lt;span class=&#34;math inline&#34;&gt;\(2\times 2\)&lt;/span&gt;区域中哪个位置被选取（即最大值），我们假设被选中的最大值所在的位置就是下面星星所在位置： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+* &amp;amp; - &amp;amp; - &amp;amp; -\\
+- &amp;amp; - &amp;amp; * &amp;amp; -\\
+- &amp;amp; - &amp;amp; - &amp;amp; *\\
+- &amp;amp; * &amp;amp; - &amp;amp; -
+\end{vmatrix}
+\]&lt;/span&gt; 在反向传播中，将残差直接给上述星星位置，其他位置则赋为0，即 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{vmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0\\
+0 &amp;amp; 0 &amp;amp; 2 &amp;amp; 0\\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 4\\
+0 &amp;amp; 3 &amp;amp; 0 &amp;amp; 0
+\end{vmatrix}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;代码与实现&lt;/h3&gt;
+&lt;p&gt;在知乎&lt;a href=&#34;https://www.zhihu.com/question/52668301&#34;&gt;“CNN(卷积神经网络)是什么？有入门简介或文章吗？”&lt;/a&gt;这个问题上，&lt;a href=&#34;https://www.zhihu.com/question/52668301/answer/536176496&#34;&gt;“阿里云云栖社区”&lt;/a&gt;在它的答案中给出了CNN实现的代码ヾ(&lt;em&gt;´▽‘&lt;/em&gt;)ﾉ&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Import the deep learning library
+import tensorflow as tf
+import time
+# Import the MNIST dataset
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets(&amp;quot;/tmp/data/&amp;quot;, one_hot=True)
+# Network inputs and outputs
+# The network&amp;#39;s input is a 28×28 dimensional input
+n = 28
+m = 28
+num_input = n * m # MNIST data input 
+num_classes = 10 # MNIST total classes (0-9 digits)
+# tf Graph input
+X = tf.placeholder(tf.float32, [None, num_input])
+Y = tf.placeholder(tf.float32, [None, num_classes])
+# Storing the parameters of our LeNET-5 inspired Convolutional Neural Network
+weights = {
+   &amp;quot;W_ij&amp;quot;: tf.Variable(tf.random_normal([5, 5, 1, 32])),
+   &amp;quot;W_jk&amp;quot;: tf.Variable(tf.random_normal([5, 5, 32, 64])),
+   &amp;quot;W_kl&amp;quot;: tf.Variable(tf.random_normal([7 * 7 * 64, 1024])),
+   &amp;quot;W_lm&amp;quot;: tf.Variable(tf.random_normal([1024, num_classes]))
+    }
+biases = {
+   &amp;quot;b_ij&amp;quot;: tf.Variable(tf.random_normal([32])),
+   &amp;quot;b_jk&amp;quot;: tf.Variable(tf.random_normal([64])),
+   &amp;quot;b_kl&amp;quot;: tf.Variable(tf.random_normal([1024])),
+   &amp;quot;b_lm&amp;quot;: tf.Variable(tf.random_normal([num_classes]))
+    }
+# The hyper-parameters of our Convolutional Neural Network
+learning_rate = 1e-3
+num_steps = 500
+batch_size = 128
+display_step = 10
+def ConvolutionLayer(x, W, b, strides=1):
+    # Convolution Layer
+    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding=&amp;#39;SAME&amp;#39;)
+    x = tf.nn.bias_add(x, b)
+    return x
+def ReLU(x):
+    # ReLU activation function
+    return tf.nn.relu(x)
+def PoolingLayer(x, k=2, strides=2):
+    # Max Pooling layer
+    return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, strides, strides, 1],
+                          padding=&amp;#39;SAME&amp;#39;)
+def Softmax(x):
+    # Softmax activation function for the CNN&amp;#39;s final output
+    return tf.nn.softmax(x)
+# Create model
+def ConvolutionalNeuralNetwork(x, weights, biases):
+    # MNIST data input is a 1-D row vector of 784 features (28×28 pixels)
+    # Reshape to match picture format [Height x Width x Channel]
+    # Tensor input become 4-D: [Batch Size, Height, Width, Channel]
+    x = tf.reshape(x, shape=[-1, 28, 28, 1])
+    # Convolution Layer
+    Conv1 = ConvolutionLayer(x, weights[&amp;quot;W_ij&amp;quot;], biases[&amp;quot;b_ij&amp;quot;])
+    # Non-Linearity
+    ReLU1 = ReLU(Conv1)
+    # Max Pooling (down-sampling)
+    Pool1 = PoolingLayer(ReLU1, k=2)
+    # Convolution Layer
+    Conv2 = ConvolutionLayer(Pool1, weights[&amp;quot;W_jk&amp;quot;], biases[&amp;quot;b_jk&amp;quot;])
+    # Non-Linearity
+    ReLU2 = ReLU(Conv2)
+    # Max Pooling (down-sampling)
+    Pool2 = PoolingLayer(ReLU2, k=2)
+    # Fully connected layer
+    # Reshape conv2 output to fit fully connected layer input
+    FC = tf.reshape(Pool2, [-1, weights[&amp;quot;W_kl&amp;quot;].get_shape().as_list()[0]])
+    FC = tf.add(tf.matmul(FC, weights[&amp;quot;W_kl&amp;quot;]), biases[&amp;quot;b_kl&amp;quot;])
+    FC = ReLU(FC)
+    # Output, class prediction
+    output = tf.add(tf.matmul(FC, weights[&amp;quot;W_lm&amp;quot;]), biases[&amp;quot;b_lm&amp;quot;])
+    return output
+# Construct model
+logits = ConvolutionalNeuralNetwork(X, weights, biases)
+prediction = Softmax(logits)
+# Softamx cross entropy loss function
+loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+    logits=logits, labels=Y))
+# Optimization using the Adam Gradient Descent optimizer
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+training_process = optimizer.minimize(loss_function)
+# Evaluate model
+correct_pred = tf.equal(tf.argmax(prediction, 1), tf.argmax(Y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+# recording how the loss functio varies over time during training
+cost = tf.summary.scalar(&amp;quot;cost&amp;quot;, loss_function)
+training_accuracy = tf.summary.scalar(&amp;quot;accuracy&amp;quot;, accuracy)
+train_summary_op = tf.summary.merge([cost,training_accuracy])
+train_writer = tf.summary.FileWriter(&amp;quot;./Desktop/logs&amp;quot;,
+                                        graph=tf.get_default_graph())
+# Initialize the variables (i.e. assign their default value)
+init = tf.global_variables_initializer()
+# Start training
+with tf.Session() as sess:
+    # Run the initializer
+    sess.run(init)
+    start_time = time.time()
+    for step in range(1, num_steps+1):
+        batch_x, batch_y = mnist.train.next_batch(batch_size)
+        # Run optimization op (backprop)
+        sess.run(training_process, feed_dict={X: batch_x, Y: batch_y})
+        if step % display_step == 0 or step == 1:
+            # Calculate batch loss and accuracy
+            loss, acc, summary = sess.run([loss_function, accuracy, train_summary_op], feed_dict={X: batch_x,
+                                                                 Y: batch_y})
+            train_writer.add_summary(summary, step)
+            print(&amp;quot;Step &amp;quot; + str(step) + &amp;quot;, Minibatch Loss= &amp;quot; + \
+                  &amp;quot;{:.4f}&amp;quot;.format(loss) + &amp;quot;, Training Accuracy= &amp;quot; + \
+                  &amp;quot;{:.3f}&amp;quot;.format(acc))
+    end_time = time.time() 
+    print(&amp;quot;Time duration: &amp;quot; + str(int(end_time-start_time)) + &amp;quot; seconds&amp;quot;)
+    print(&amp;quot;Optimization Finished!&amp;quot;)
+    # Calculate accuracy for 256 MNIST test images
+    print(&amp;quot;Testing Accuracy:&amp;quot;, \
+        sess.run(accuracy, feed_dict={X: mnist.test.images[:256],
+                                      Y: mnist.test.labels[:256]}))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/question/52668301&#34;&gt;知乎. CNN(卷积神经网络)是什么？有入门简介或文章吗？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;罗冬日. Tensorflow入门与实战&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>生成对抗网络的第二Part</title>
       <link>/post/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%BA%8Cpart/</link>
       <pubDate>Tue, 15 Jan 2019 00:00:00 +0000</pubDate>
