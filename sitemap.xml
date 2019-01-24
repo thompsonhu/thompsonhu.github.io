@@ -126,15 +126,6 @@
     
     <url>
     
-      <loc>/tags/deep-learning/</loc>
-      <lastmod>2019-01-21T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/categories/deep-learning/</loc>
       <lastmod>2019-01-21T00:00:00+00:00</lastmod>
       <priority>0</priority>
@@ -144,8 +135,8 @@
     
     <url>
     
-      <loc>/tags/latex/</loc>
-      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      <loc>/tags/deep-learning/</loc>
+      <lastmod>2019-01-21T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -154,6 +145,15 @@
     <url>
     
       <loc>/categories/latex/</loc>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/latex/</loc>
       <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -188,7 +188,7 @@
     
     <url>
     
-      <loc>/tags/rmarkdown/</loc>
+      <loc>/categories/rmarkdown/</loc>
       <lastmod>2019-01-02T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -197,7 +197,7 @@
     
     <url>
     
-      <loc>/categories/rmarkdown/</loc>
+      <loc>/tags/rmarkdown/</loc>
       <lastmod>2019-01-02T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>

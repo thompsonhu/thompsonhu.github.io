@@ -296,7 +296,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    8 min read
+    10 min read
   </span>
   
 
@@ -671,7 +671,7 @@ import tensorflow as tf
 import time
 # Import the MNIST dataset
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets(&quot;/tmp/data/&quot;, one_hot=True)
+mnist = input_data.read_data_sets(&quot;./mnist&quot;, one_hot=True)
 # Network inputs and outputs
 # The network&#39;s input is a 28×28 dimensional input
 n = 28
@@ -701,6 +701,7 @@ batch_size = 128
 display_step = 10
 def ConvolutionLayer(x, W, b, strides=1):
     # Convolution Layer
+    # &#39;SAME&#39; in padding parameter represents that the size of pics will not change
     x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding=&#39;SAME&#39;)
     x = tf.nn.bias_add(x, b)
     return x
@@ -756,8 +757,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 cost = tf.summary.scalar(&quot;cost&quot;, loss_function)
 training_accuracy = tf.summary.scalar(&quot;accuracy&quot;, accuracy)
 train_summary_op = tf.summary.merge([cost,training_accuracy])
-train_writer = tf.summary.FileWriter(&quot;./Desktop/logs&quot;,
-                                        graph=tf.get_default_graph())
+train_writer = tf.summary.FileWriter(&quot;./logs&quot;, graph=tf.get_default_graph())
 # Initialize the variables (i.e. assign their default value)
 init = tf.global_variables_initializer()
 # Start training
@@ -784,6 +784,86 @@ with tf.Session() as sess:
     print(&quot;Testing Accuracy:&quot;, \
         sess.run(accuracy, feed_dict={X: mnist.test.images[:256],
                                       Y: mnist.test.labels[:256]}))</code></pre>
+<p>计算结果中可以得到Testing accuracy为94.53125%</p>
+<p>计算输出如下：</p>
+<p>Step 1, Minibatch Loss= 48469.1758, Training Accuracy= 0.125<br />
+Step 10, Minibatch Loss= 20853.4180, Training Accuracy= 0.273<br />
+Step 20, Minibatch Loss= 7270.9775, Training Accuracy= 0.539<br />
+Step 30, Minibatch Loss= 6032.3340, Training Accuracy= 0.625<br />
+Step 40, Minibatch Loss= 3758.7192, Training Accuracy= 0.727<br />
+Step 50, Minibatch Loss= 2683.9473, Training Accuracy= 0.805<br />
+Step 60, Minibatch Loss= 2468.1599, Training Accuracy= 0.836<br />
+Step 70, Minibatch Loss= 1618.9688, Training Accuracy= 0.852<br />
+Step 80, Minibatch Loss= 1811.2744, Training Accuracy= 0.836<br />
+Step 90, Minibatch Loss= 2332.1758, Training Accuracy= 0.836<br />
+Step 100, Minibatch Loss= 2061.6094, Training Accuracy= 0.875<br />
+Step 110, Minibatch Loss= 1141.6943, Training Accuracy= 0.914<br />
+Step 120, Minibatch Loss= 1826.9503, Training Accuracy= 0.867<br />
+Step 130, Minibatch Loss= 2125.6672, Training Accuracy= 0.875<br />
+Step 140, Minibatch Loss= 1881.3708, Training Accuracy= 0.867<br />
+Step 150, Minibatch Loss= 1131.6064, Training Accuracy= 0.867<br />
+Step 160, Minibatch Loss= 691.9032, Training Accuracy= 0.938<br />
+Step 170, Minibatch Loss= 1885.9514, Training Accuracy= 0.844<br />
+Step 180, Minibatch Loss= 1068.9915, Training Accuracy= 0.914<br />
+Step 190, Minibatch Loss= 1600.2179, Training Accuracy= 0.906<br />
+Step 200, Minibatch Loss= 618.6491, Training Accuracy= 0.930<br />
+Step 210, Minibatch Loss= 1556.0098, Training Accuracy= 0.836<br />
+Step 220, Minibatch Loss= 894.7733, Training Accuracy= 0.922<br />
+Step 230, Minibatch Loss= 1324.5962, Training Accuracy= 0.930<br />
+Step 240, Minibatch Loss= 906.6990, Training Accuracy= 0.914<br />
+Step 250, Minibatch Loss= 997.3357, Training Accuracy= 0.906<br />
+Step 260, Minibatch Loss= 411.8199, Training Accuracy= 0.953<br />
+Step 270, Minibatch Loss= 1174.1459, Training Accuracy= 0.938<br />
+Step 280, Minibatch Loss= 1530.4811, Training Accuracy= 0.930<br />
+Step 290, Minibatch Loss= 1549.0024, Training Accuracy= 0.883<br />
+Step 300, Minibatch Loss= 871.0544, Training Accuracy= 0.945<br />
+Step 310, Minibatch Loss= 596.3419, Training Accuracy= 0.953<br />
+Step 320, Minibatch Loss= 760.7213, Training Accuracy= 0.922<br />
+Step 330, Minibatch Loss= 1059.3221, Training Accuracy= 0.891<br />
+Step 340, Minibatch Loss= 918.7598, Training Accuracy= 0.922<br />
+Step 350, Minibatch Loss= 1347.2892, Training Accuracy= 0.914<br />
+Step 360, Minibatch Loss= 854.8413, Training Accuracy= 0.922<br />
+Step 370, Minibatch Loss= 938.9316, Training Accuracy= 0.930<br />
+Step 380, Minibatch Loss= 963.6599, Training Accuracy= 0.914<br />
+Step 390, Minibatch Loss= 443.7957, Training Accuracy= 0.922<br />
+Step 400, Minibatch Loss= 899.7906, Training Accuracy= 0.922<br />
+Step 410, Minibatch Loss= 754.6378, Training Accuracy= 0.906<br />
+Step 420, Minibatch Loss= 25.4618, Training Accuracy= 0.992<br />
+Step 430, Minibatch Loss= 1071.7233, Training Accuracy= 0.914<br />
+Step 440, Minibatch Loss= 67.5639, Training Accuracy= 0.961<br />
+Step 450, Minibatch Loss= 805.5145, Training Accuracy= 0.906<br />
+Step 460, Minibatch Loss= 555.4743, Training Accuracy= 0.930<br />
+Step 470, Minibatch Loss= 505.9941, Training Accuracy= 0.930<br />
+Step 480, Minibatch Loss= 358.9708, Training Accuracy= 0.961<br />
+Step 490, Minibatch Loss= 633.9738, Training Accuracy= 0.930<br />
+Step 500, Minibatch Loss= 259.1246, Training Accuracy= 0.969<br />
+Time duration: 148 seconds<br />
+Optimization Finished!<br />
+Testing Accuracy: 0.9453125</p>
+<div id="tensorboard" class="section level4">
+<h4>利用TensorBoard查看过程</h4>
+上述代码<br />
+<code>train_writer = tf.summary.FileWriter(&quot;./logs&quot;,graph=tf.get_default_graph())</code><br />
+中会在文件夹目录下新建文件夹<strong>logs</strong>，并在里面生成名为<strong>events.out.tfevents.{time}.{machine-name}</strong>的文件。通过打开Anaconda prompt并启动python3.5，打开TensorBoard，如图所示：
+<div align="center">
+<img src="CNN5.PNG" width = "600" height = "500" alt="Figure5" />
+<p>
+图5. 通过Anaconda prompt打开TensorBoard
+</div>
+<p>打开浏览器，地址栏输入**<a href="http://localhost:6006**即可打开TensorBoard" class="uri">http://localhost:6006**即可打开TensorBoard</a>。</p>
+在TensorBoard中可以查看cost和accuracy的变化
+<div align="center">
+<img src="CNN6.PNG" width = "700" height = "600" alt="Figure6" />
+<p>
+图6. TensorBoard中cost和accuracy的变化图
+</div>
+同时可以查看Graphs
+<div align="center">
+<img src="CNN7.PNG" width = "800" height = "1000" alt="Figure7" />
+<p>
+图7. TensorFlow定义的计算图
+</div>
+</div>
 </div>
 </div>
 <div id="reference" class="section level2">

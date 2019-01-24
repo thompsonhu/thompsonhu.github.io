@@ -335,7 +335,7 @@ import tensorflow as tf
 import time
 # Import the MNIST dataset
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets(&amp;quot;/tmp/data/&amp;quot;, one_hot=True)
+mnist = input_data.read_data_sets(&amp;quot;./mnist&amp;quot;, one_hot=True)
 # Network inputs and outputs
 # The network&amp;#39;s input is a 28×28 dimensional input
 n = 28
@@ -365,6 +365,7 @@ batch_size = 128
 display_step = 10
 def ConvolutionLayer(x, W, b, strides=1):
     # Convolution Layer
+    # &amp;#39;SAME&amp;#39; in padding parameter represents that the size of pics will not change
     x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding=&amp;#39;SAME&amp;#39;)
     x = tf.nn.bias_add(x, b)
     return x
@@ -420,8 +421,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 cost = tf.summary.scalar(&amp;quot;cost&amp;quot;, loss_function)
 training_accuracy = tf.summary.scalar(&amp;quot;accuracy&amp;quot;, accuracy)
 train_summary_op = tf.summary.merge([cost,training_accuracy])
-train_writer = tf.summary.FileWriter(&amp;quot;./Desktop/logs&amp;quot;,
-                                        graph=tf.get_default_graph())
+train_writer = tf.summary.FileWriter(&amp;quot;./logs&amp;quot;, graph=tf.get_default_graph())
 # Initialize the variables (i.e. assign their default value)
 init = tf.global_variables_initializer()
 # Start training
@@ -448,6 +448,86 @@ with tf.Session() as sess:
     print(&amp;quot;Testing Accuracy:&amp;quot;, \
         sess.run(accuracy, feed_dict={X: mnist.test.images[:256],
                                       Y: mnist.test.labels[:256]}))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;计算结果中可以得到Testing accuracy为94.53125%&lt;/p&gt;
+&lt;p&gt;计算输出如下：&lt;/p&gt;
+&lt;p&gt;Step 1, Minibatch Loss= 48469.1758, Training Accuracy= 0.125&lt;br /&gt;
+Step 10, Minibatch Loss= 20853.4180, Training Accuracy= 0.273&lt;br /&gt;
+Step 20, Minibatch Loss= 7270.9775, Training Accuracy= 0.539&lt;br /&gt;
+Step 30, Minibatch Loss= 6032.3340, Training Accuracy= 0.625&lt;br /&gt;
+Step 40, Minibatch Loss= 3758.7192, Training Accuracy= 0.727&lt;br /&gt;
+Step 50, Minibatch Loss= 2683.9473, Training Accuracy= 0.805&lt;br /&gt;
+Step 60, Minibatch Loss= 2468.1599, Training Accuracy= 0.836&lt;br /&gt;
+Step 70, Minibatch Loss= 1618.9688, Training Accuracy= 0.852&lt;br /&gt;
+Step 80, Minibatch Loss= 1811.2744, Training Accuracy= 0.836&lt;br /&gt;
+Step 90, Minibatch Loss= 2332.1758, Training Accuracy= 0.836&lt;br /&gt;
+Step 100, Minibatch Loss= 2061.6094, Training Accuracy= 0.875&lt;br /&gt;
+Step 110, Minibatch Loss= 1141.6943, Training Accuracy= 0.914&lt;br /&gt;
+Step 120, Minibatch Loss= 1826.9503, Training Accuracy= 0.867&lt;br /&gt;
+Step 130, Minibatch Loss= 2125.6672, Training Accuracy= 0.875&lt;br /&gt;
+Step 140, Minibatch Loss= 1881.3708, Training Accuracy= 0.867&lt;br /&gt;
+Step 150, Minibatch Loss= 1131.6064, Training Accuracy= 0.867&lt;br /&gt;
+Step 160, Minibatch Loss= 691.9032, Training Accuracy= 0.938&lt;br /&gt;
+Step 170, Minibatch Loss= 1885.9514, Training Accuracy= 0.844&lt;br /&gt;
+Step 180, Minibatch Loss= 1068.9915, Training Accuracy= 0.914&lt;br /&gt;
+Step 190, Minibatch Loss= 1600.2179, Training Accuracy= 0.906&lt;br /&gt;
+Step 200, Minibatch Loss= 618.6491, Training Accuracy= 0.930&lt;br /&gt;
+Step 210, Minibatch Loss= 1556.0098, Training Accuracy= 0.836&lt;br /&gt;
+Step 220, Minibatch Loss= 894.7733, Training Accuracy= 0.922&lt;br /&gt;
+Step 230, Minibatch Loss= 1324.5962, Training Accuracy= 0.930&lt;br /&gt;
+Step 240, Minibatch Loss= 906.6990, Training Accuracy= 0.914&lt;br /&gt;
+Step 250, Minibatch Loss= 997.3357, Training Accuracy= 0.906&lt;br /&gt;
+Step 260, Minibatch Loss= 411.8199, Training Accuracy= 0.953&lt;br /&gt;
+Step 270, Minibatch Loss= 1174.1459, Training Accuracy= 0.938&lt;br /&gt;
+Step 280, Minibatch Loss= 1530.4811, Training Accuracy= 0.930&lt;br /&gt;
+Step 290, Minibatch Loss= 1549.0024, Training Accuracy= 0.883&lt;br /&gt;
+Step 300, Minibatch Loss= 871.0544, Training Accuracy= 0.945&lt;br /&gt;
+Step 310, Minibatch Loss= 596.3419, Training Accuracy= 0.953&lt;br /&gt;
+Step 320, Minibatch Loss= 760.7213, Training Accuracy= 0.922&lt;br /&gt;
+Step 330, Minibatch Loss= 1059.3221, Training Accuracy= 0.891&lt;br /&gt;
+Step 340, Minibatch Loss= 918.7598, Training Accuracy= 0.922&lt;br /&gt;
+Step 350, Minibatch Loss= 1347.2892, Training Accuracy= 0.914&lt;br /&gt;
+Step 360, Minibatch Loss= 854.8413, Training Accuracy= 0.922&lt;br /&gt;
+Step 370, Minibatch Loss= 938.9316, Training Accuracy= 0.930&lt;br /&gt;
+Step 380, Minibatch Loss= 963.6599, Training Accuracy= 0.914&lt;br /&gt;
+Step 390, Minibatch Loss= 443.7957, Training Accuracy= 0.922&lt;br /&gt;
+Step 400, Minibatch Loss= 899.7906, Training Accuracy= 0.922&lt;br /&gt;
+Step 410, Minibatch Loss= 754.6378, Training Accuracy= 0.906&lt;br /&gt;
+Step 420, Minibatch Loss= 25.4618, Training Accuracy= 0.992&lt;br /&gt;
+Step 430, Minibatch Loss= 1071.7233, Training Accuracy= 0.914&lt;br /&gt;
+Step 440, Minibatch Loss= 67.5639, Training Accuracy= 0.961&lt;br /&gt;
+Step 450, Minibatch Loss= 805.5145, Training Accuracy= 0.906&lt;br /&gt;
+Step 460, Minibatch Loss= 555.4743, Training Accuracy= 0.930&lt;br /&gt;
+Step 470, Minibatch Loss= 505.9941, Training Accuracy= 0.930&lt;br /&gt;
+Step 480, Minibatch Loss= 358.9708, Training Accuracy= 0.961&lt;br /&gt;
+Step 490, Minibatch Loss= 633.9738, Training Accuracy= 0.930&lt;br /&gt;
+Step 500, Minibatch Loss= 259.1246, Training Accuracy= 0.969&lt;br /&gt;
+Time duration: 148 seconds&lt;br /&gt;
+Optimization Finished!&lt;br /&gt;
+Testing Accuracy: 0.9453125&lt;/p&gt;
+&lt;div id=&#34;tensorboard&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;利用TensorBoard查看过程&lt;/h4&gt;
+上述代码&lt;br /&gt;
+&lt;code&gt;train_writer = tf.summary.FileWriter(&amp;quot;./logs&amp;quot;,graph=tf.get_default_graph())&lt;/code&gt;&lt;br /&gt;
+中会在文件夹目录下新建文件夹&lt;strong&gt;logs&lt;/strong&gt;，并在里面生成名为&lt;strong&gt;events.out.tfevents.{time}.{machine-name}&lt;/strong&gt;的文件。通过打开Anaconda prompt并启动python3.5，打开TensorBoard，如图所示：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN5.PNG&#34; width = &#34;600&#34; height = &#34;500&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. 通过Anaconda prompt打开TensorBoard
+&lt;/div&gt;
+&lt;p&gt;打开浏览器，地址栏输入**&lt;a href=&#34;http://localhost:6006**即可打开TensorBoard&#34; class=&#34;uri&#34;&gt;http://localhost:6006**即可打开TensorBoard&lt;/a&gt;。&lt;/p&gt;
+在TensorBoard中可以查看cost和accuracy的变化
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN6.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. TensorBoard中cost和accuracy的变化图
+&lt;/div&gt;
+同时可以查看Graphs
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;CNN7.PNG&#34; width = &#34;800&#34; height = &#34;1000&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. TensorFlow定义的计算图
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reference&#34; class=&#34;section level2&#34;&gt;
