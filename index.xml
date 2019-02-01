@@ -11,6 +11,405 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Recurrent Nerual Network 循环神经网络</title>
+      <link>/post/recurrent-nerual-network-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/recurrent-nerual-network-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+      <description>
+
+
+&lt;div class=&#34;section level2&#34;&gt;
+&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;循环神经网络（Recurrent Nerual Network, RNN）在Deep Learning领域中是一个经典有很重要的神经网络模型。RNN是在&lt;strong&gt;自然语言处理（Natural Language Processing, NLP）&lt;/strong&gt;领域最先被使用发展起来的。在NLP中通常会处理一些文字句子，比如我们想做一个机器翻译，把中文转换成英文。初中生可能在翻译的时候只会逐个中文词翻译成英文，但高中生就可能会对翻译中的词进行调整，结合前后的词汇，那我们也希望机器这样做。&lt;/p&gt;
+&lt;p&gt;假设有一段对话：&lt;/p&gt;
+&lt;p&gt;A：你好吗？&lt;br /&gt;
+B：我很好。&lt;/p&gt;
+&lt;p&gt;我们想让机器翻译成英文，对于A而言，机器可能在一些训练后很容易翻译成“How are you?”，但对于B可能就翻译成了“I’m ok.”。那就相当尴尬了~（想起某军的Are you ok?╭(●｀∀´●)╯）机器其实需要参考A问了什么，再来对B的回答进行翻译，才能获得比较好的回答翻译“I’m fine.”&lt;/p&gt;
+&lt;p&gt;RNN就是专门解决了处理序列化数据的问题，像上面这样的小例子。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level2&#34;&gt;
+&lt;h2&gt;简单循环神经网络&lt;/h2&gt;
+对于简单RNN，它由输入层，一个隐藏层和一个输出层构成的，像这样子：
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN1.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 简单RNN示意图
+&lt;/div&gt;
+&lt;p&gt;先看左边的图时会觉得不能理解，但是如果将其展开得到右边的图，就比较好理解了。在&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻，&lt;span class=&#34;math inline&#34;&gt;\(x_t\)&lt;/span&gt;作为输入的同时，还有上一个时刻隐藏层的&lt;span class=&#34;math inline&#34;&gt;\(h_{t-1}\)&lt;/span&gt;，以&lt;span class=&#34;math inline&#34;&gt;\(V\)&lt;/span&gt;为权重作为第&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻的输入。我们用计算公式来表示，可以表示为： &lt;span class=&#34;math display&#34;&gt;\[
+h_t = f (U x_t + V h_{t-1})\\
+o_t = \sigma (W h_t)
+\]&lt;/span&gt; 其中&lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;是激活函数（Activation function）。&lt;/p&gt;
+&lt;p&gt;如果将上面两个式子联合可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+o_t &amp;amp;= \sigma (W h_t)\\
+&amp;amp;= \sigma (W f (U x_t + V h_{t-1}))\\
+&amp;amp;= \sigma (W f (U x_t + V f (U x_{t-1} + V h_{t-2})))\\
+&amp;amp;=\ ...
+\end{align}
+\]&lt;/span&gt; 可以看到我们会得到一个循环向前的公式，循环神经网络的输出值&lt;span class=&#34;math inline&#34;&gt;\(o_t\)&lt;/span&gt;是受到前面历次输入值&lt;span class=&#34;math inline&#34;&gt;\(x_t, x_{t-1}, x_{t-2}, \dots\)&lt;/span&gt;的影响的。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rnn-&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;深度RNN &amp;amp; 梯度消失与爆炸&lt;/h2&gt;
+在介绍完简单RNN后，我们会考虑添加更多的隐藏层，那就可以得到深度RNN（如图2）；在这样多个隐藏层的神经网络结构中，我们通过&lt;strong&gt;反向传播&lt;/strong&gt;就可以计算更新网络的参数。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN2.PNG&#34; width = &#34;400&#34; height = &#34;500&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. 深度RNN示意图
+&lt;/div&gt;
+&lt;p&gt;当神经网络中层数太多的话，可能就会出现&lt;strong&gt;梯度消失&lt;/strong&gt;。举个例子：&lt;/p&gt;
+&lt;p&gt;假设我们用了激活函数sigmoid函数 &lt;span class=&#34;math display&#34;&gt;\[
+f(x) = \frac{1}{1+e^{-x}}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;它的导数为 &lt;span class=&#34;math display&#34;&gt;\[
+f&amp;#39;(x) = f(x)(1-f(x))
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;我们知道&lt;span class=&#34;math inline&#34;&gt;\(1 + e^{-x} &amp;gt; 1\)&lt;/span&gt;，所以可以得到&lt;span class=&#34;math inline&#34;&gt;\(0 &amp;lt; f(x) &amp;lt; 1\)&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;对于导数&lt;span class=&#34;math inline&#34;&gt;\(f&amp;#39;(x)\)&lt;/span&gt;，我们可以通过&lt;span class=&#34;math inline&#34;&gt;\(-\frac{b}{2a}\)&lt;/span&gt;计算得到，当&lt;span class=&#34;math inline&#34;&gt;\(f(x) = 0.5\)&lt;/span&gt;时，&lt;span class=&#34;math inline&#34;&gt;\(f&amp;#39;(x)\)&lt;/span&gt;取得最大值为&lt;span class=&#34;math inline&#34;&gt;\(0.25\)&lt;/span&gt;。 &lt;img src=&#34;./post/2019-02-01-recurrent-nerual-network-循环神经网络_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在反向传播计算过程中，每经过一个sigmoid函数，便需要乘以一个sigmoid函数的导数值，那残差就至少会被削减变为原来的0.25倍；如果整个循环神经网络的时间长度很长，那么可能残差传递到前面的某一时刻就基本为0了；这样会导致在往前的时刻中无法更新参数，这就是&lt;strong&gt;梯度消失&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;同理，如果导数的最小值是不小于1的，那么残差在传递中就会一次比一次大，如果整个循环神经网络的时间长度很长，那每次参数的更新就会非常剧烈，这就是&lt;strong&gt;梯度爆炸&lt;/strong&gt;。下面用数学推导表示梯度消失与梯度爆炸。&lt;/p&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;数学推导下的梯度消失与梯度爆炸&lt;/h3&gt;
+&lt;p&gt;我们在前面的时候用计算公式表达了简单RNN： &lt;span class=&#34;math display&#34;&gt;\[
+h_t = f (U x_t + V h_{t-1})\\
+o_t = \sigma (W h_t)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;如果将公式写的更明细的话，可以表达为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{bmatrix}
+h_1^t\\ h_2^t\\ .\\ .\\ h_n^t 
+\end{bmatrix}
+=
+f\bigg(
+\begin{bmatrix}
+u_{11} &amp;amp; u_{12} &amp;amp; \cdots &amp;amp; u_{1m}\\
+u_{21} &amp;amp; u_{22} &amp;amp; \cdots &amp;amp; u_{2m}\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+u_{n1} &amp;amp; u_{n2} &amp;amp; \cdots &amp;amp; u_{nm}\\
+\end{bmatrix}
+\begin{bmatrix}
+x_1\\ x_2\\ .\\ .\\ x_m 
+\end{bmatrix}
++
+\begin{bmatrix}
+v_{11} &amp;amp; v_{12} &amp;amp; \cdots &amp;amp; v_{1n}\\
+v_{21} &amp;amp; v_{22} &amp;amp; \cdots &amp;amp; v_{2n}\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+v_{n1} &amp;amp; v_{n2} &amp;amp; \cdots &amp;amp; v_{nn}\\
+\end{bmatrix}
+\begin{bmatrix}
+h_1^{t-1}\\ h_2^{t-1}\\ .\\ .\\ h_n^{t-1} 
+\end{bmatrix}
+\bigg)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;其中，&lt;span class=&#34;math inline&#34;&gt;\(h_j^t\)&lt;/span&gt;表示向量&lt;span class=&#34;math inline&#34;&gt;\(h\)&lt;/span&gt;的第&lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;个元素在&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻的值；&lt;span class=&#34;math inline&#34;&gt;\(u_ji\)&lt;/span&gt;表示输入层第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个神经元到循环层第&lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;个神经元的权重；&lt;span class=&#34;math inline&#34;&gt;\(w_ij\)&lt;/span&gt;表示循环层第&lt;span class=&#34;math inline&#34;&gt;\(t-1\)&lt;/span&gt;时刻的第&lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;个神经元到循环层第&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;个时刻的第&lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;个神经元的权重。&lt;/p&gt;
+&lt;p&gt;我们用向量&lt;span class=&#34;math inline&#34;&gt;\(net_t\)&lt;/span&gt;来表示神经元在&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻的&lt;strong&gt;加权输入&lt;/strong&gt;： &lt;span class=&#34;math display&#34;&gt;\[
+net_t = Ux_t + Vh_{t-1}\\
+h_t = f(net_t)
+\]&lt;/span&gt; 同样有： &lt;span class=&#34;math display&#34;&gt;\[
+h_{t-1} = f(net_{t-1})
+\]&lt;/span&gt; 因此： &lt;span class=&#34;math display&#34;&gt;\[
+\frac{\partial net_t}{\partial net_{t-1}} = \frac{\partial net_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial net_{t-1}}
+\]&lt;/span&gt; 由&lt;span class=&#34;math inline&#34;&gt;\(net_t = Ux_t + Vh_{t-1}\)&lt;/span&gt;式子，右边等式的第一部分可以推导得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial net_t}{\partial h_{t-1}} &amp;amp; = \begin{bmatrix}
+\frac{\partial net_1^t}{\partial h_1^{t-1}} &amp;amp; \frac{\partial net_1^t}{\partial h_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial net_1^t}{\partial h_n^{t-1}}\\
+\frac{\partial net_2^t}{\partial h_1^{t-1}} &amp;amp; \frac{\partial net_2^t}{\partial h_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial net_2^t}{\partial h_n^{t-1}}\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+\frac{\partial net_n^t}{\partial h_1^{t-1}} &amp;amp; \frac{\partial net_n^t}{\partial h_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial net_n^t}{\partial h_n^{t-1}}\\
+\end{bmatrix}\\
+&amp;amp;= \begin{bmatrix}
+v_{11} &amp;amp; v_{12} &amp;amp; \cdots &amp;amp; v_{1n}\\
+v_{21} &amp;amp; v_{22} &amp;amp; \cdots &amp;amp; v_{2n}\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+v_{n1} &amp;amp; v_{n2} &amp;amp; \cdots &amp;amp; v_{nn}\\
+\end{bmatrix}\\
+&amp;amp;= V
+\end{align}
+\]&lt;/span&gt; 同理由&lt;span class=&#34;math inline&#34;&gt;\(h_{t-1} = f(net_{t-1})\)&lt;/span&gt;式子，右边等式的第二部分可以推导得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial h_{t-1}}{\partial net_{t-1}} &amp;amp;= \begin{bmatrix}
+\frac{\partial h_1^{t-1}}{\partial net_1^{t-1}} &amp;amp; \frac{\partial h_1^{t-1}}{\partial net_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial h_1^{t-1}}{\partial net_n^{t-1}}\\
+\frac{\partial h_2^{t-1}}{\partial net_1^{t-1}} &amp;amp; \frac{\partial h_2^{t-1}}{\partial net_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial h_2^{t-1}}{\partial net_n^{t-1}}\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+\frac{\partial h_n^{t-1}}{\partial net_1^{t-1}} &amp;amp; \frac{\partial h_n^{t-1}}{\partial net_2^{t-1}} &amp;amp; \cdots &amp;amp; \frac{\partial h_n^{t-1}}{\partial net_n^{t-1}}\\
+\end{bmatrix}\\
+&amp;amp;= \begin{bmatrix}
+f&amp;#39;(net_1^{t-1}) &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0\\
+0 &amp;amp; f&amp;#39;(net_2^{t-1}) &amp;amp; \cdots &amp;amp; 0\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; f&amp;#39;(net_n^{t-1})\\
+\end{bmatrix}\\
+&amp;amp;= diag[f&amp;#39;(net_{t-1})]
+\end{align}
+\]&lt;/span&gt; 因此我们可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial net_t}{\partial net_{t-1}} &amp;amp;= \frac{\partial net_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial net_{t-1}}\\
+&amp;amp;= V diag[f&amp;#39;(net_{t-1})]\\
+&amp;amp;= \begin{bmatrix}
+v_{11}f&amp;#39;(net_1^{t-1}) &amp;amp; v_{12}f&amp;#39;(net_2^{t-1}) &amp;amp; \cdots &amp;amp; v_{1n}f&amp;#39;(net_n^{t-1})\\
+v_{21}f&amp;#39;(net_1^{t-1}) &amp;amp; v_{22}f&amp;#39;(net_2^{t-1}) &amp;amp; \cdots &amp;amp; v_{2n}f&amp;#39;(net_n^{t-1})\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+. &amp;amp; . &amp;amp; . &amp;amp; .\\
+v_{n1}f&amp;#39;(net_1^{t-1}) &amp;amp; v_{n2}f&amp;#39;(net_2^{t-1}) &amp;amp; \cdots &amp;amp; v_{nn}f&amp;#39;(net_n^{t-1})\\
+\end{bmatrix}\\
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;我们可以求得任意时刻&lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;的残差值&lt;span class=&#34;math inline&#34;&gt;\(\delta_k\)&lt;/span&gt;： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_k &amp;amp;= \frac{\partial E}{\partial net_k}\\
+&amp;amp;= \frac{\partial E}{\partial net_t}\frac{\partial net_t}{\partial net_k}\\
+&amp;amp;= \frac{\partial E}{\partial net_t}\frac{\partial net_t}{\partial net_{t-1}}\frac{\partial net_{t-1}}{\partial net_{t-2}}\cdots\frac{\partial net_{k+1}}{\partial net_k}\\
+&amp;amp;= \delta_t V diag[f&amp;#39;(net_{t-1})]V diag[f&amp;#39;(net_{t-2})]\cdots V diag[f&amp;#39;(net_k)]\\
+&amp;amp;= \delta_t \prod_{i=k}^{t-1}V diag[f&amp;#39;(net_i)]
+\end{align}
+\]&lt;/span&gt; 从上面式子我们可以得到： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+&amp;amp; \delta_k = \delta_t \prod_{i=k}^{t-1}V diag[f&amp;#39;(net_i)]\\
+\Rightarrow\ \ &amp;amp; ||\delta_k|| \leq ||\delta_t|| \prod_{i=k}^{t-1} ||V|| \cdot ||diag[f&amp;#39;(net_i)]||\\
+\end{align}
+\]&lt;/span&gt; 其中模可以看作对&lt;span class=&#34;math inline&#34;&gt;\(\delta_k\)&lt;/span&gt;中每一项值得大小的度量，假定&lt;span class=&#34;math inline&#34;&gt;\(\beta_f\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(\beta_W\)&lt;/span&gt;分别是&lt;span class=&#34;math inline&#34;&gt;\(||diag[f&amp;#39;(net_i)]||\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(||V||\)&lt;/span&gt;的上界，那么 &lt;span class=&#34;math display&#34;&gt;\[
+||\delta_k|| \leq ||\delta_t|| (\beta_f \beta_W)^{t-k}
+\]&lt;/span&gt; 显然，如果&lt;span class=&#34;math inline&#34;&gt;\(\beta_f \beta_W\)&lt;/span&gt;的乘积比1小或者比1大时，由于指数的缘故，那么残差就可能会变得很小几乎为0或者变得很大。前者就是&lt;strong&gt;梯度消失&lt;/strong&gt;，后者就是&lt;strong&gt;梯度爆炸&lt;/strong&gt;。所以，普通的RNN是无法处理长距离依赖的原因。经过科学家们的努力，终于在1997年，由Sepp Hochreiter和Jürgen Schmidhuber两位科学家提出了长短时间记忆（LSTM），解决了RNN这样的问题。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;long-short-term-memory-lstm&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;长短时间记忆（Long Short Term Memory, LSTM）&lt;/h2&gt;
+长短时间记忆网络在原来普通RNN的基础上再加了一个状态&lt;span class=&#34;math inline&#34;&gt;\(c\)&lt;/span&gt;，用来保存长期的状态，这个状态也称为&lt;strong&gt;单元状态（cell state）&lt;/strong&gt;。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN3.PNG&#34; width = &#34;700&#34; height = &#34;500&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. 普通RNN和LSTM
+&lt;/div&gt;
+&lt;p&gt;LSTM中输入有三个：&lt;span class=&#34;math inline&#34;&gt;\(x_t\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(h_{t-1}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(c_{t-1}\)&lt;/span&gt;；而输出有两个：&lt;span class=&#34;math inline&#34;&gt;\(h_t\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;；另外，LSTM引入了“门”或者“开关”这样的概念，用来控制不同阶段的数据输入和输出，分别是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;遗忘门（Forget gate）&lt;/strong&gt;：控制单元状态&lt;span class=&#34;math inline&#34;&gt;\(c_{t-1}\)&lt;/span&gt;保留多少到&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;；它的计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+f_t = \sigma(U^{(f)}x_t + V^{(f)}h_{t-1})
+\]&lt;/span&gt; 其中，&lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;是激活函数（一般sigmoid函数）。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN4.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 遗忘门示意图
+&lt;/div&gt;
+结合上一时刻单元状态&lt;span class=&#34;math inline&#34;&gt;\(c_{t-1}\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(f_t\)&lt;/span&gt;决定了保留多少上一时刻单元状态，所以用乘积计算，计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+c_t = f_t\circ c_{t-1}
+\]&lt;/span&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN5.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. 遗忘门结合上一时刻单元状态示意图
+&lt;/div&gt;
+&lt;p&gt;这里的&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;只是计算过程中一个值，还不是输出时的单元状态。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;输入门（Input gate）&lt;/strong&gt;：控制输入&lt;span class=&#34;math inline&#34;&gt;\(x_t\)&lt;/span&gt;保存多少到&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;；它的计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+i_t = \sigma(U^{(i)}x_t + V^{(i)}h_{t-1})\\
+\tilde{c}_t = \tanh (U^{(c)}x_t + V^{(c)}h_{t-1})
+\]&lt;/span&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN6.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. 输入门示意图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+其中，我们把&lt;span class=&#34;math inline&#34;&gt;\(\tilde{c}_t\)&lt;/span&gt;称为“候选状态”，结合从遗忘门出来的&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;，我们将三者结合，计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+c_t &amp;amp;= c_t + i_t\circ \tilde{c}_t\\
+\Rightarrow c_t &amp;amp;= f_t\circ c_{t-1} + i_t\circ \tilde{c}_t
+\end{align}
+\]&lt;/span&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN7.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. 输入门结合候选状态和单元状态示意图
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;输出门（Output gate）&lt;/strong&gt;：控制单元状态&lt;span class=&#34;math inline&#34;&gt;\(c_t\)&lt;/span&gt;输出多少到&lt;span class=&#34;math inline&#34;&gt;\(h_t\)&lt;/span&gt;；它的计算公式为： &lt;span class=&#34;math display&#34;&gt;\[
+e_t = \sigma(U^{(e)}x_t + V^{(e)}h_{t-1})\\
+h_t = \tanh (c_t)\circ e_t
+\]&lt;/span&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;RNN8.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure8&#34; /&gt;
+&lt;p&gt;
+图8. 输出门结合单元状态示意图
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面提及的参数在初始化设置为接近0的较小值，对于长短时间记忆网络的训练，让我们慢慢叙述~&lt;/p&gt;
+&lt;div id=&#34;lstm&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;LSTM的训练&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;残差值沿时间的反向传播计算&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在推导之前，我们先假定每个gate的激活函数为sigmoid函数，而其中我们还涉及到了tanh函数，它们的公式及导数分别为： &lt;span class=&#34;math display&#34;&gt;\[
+\sigma(x) = \frac{1}{1+e^{-x}}\\
+\sigma&amp;#39;(x) = \sigma(x)(1-\sigma(x))\\
+\tanh(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}\\
+\tanh&amp;#39;(x) = 1-\tanh(x)^2
+\]&lt;/span&gt; 显然，它们的导数均可以用它们本身进行表示，在计算过程中，我们只需要计算它们各自的值，就可以计算得到对应导数的值。&lt;/p&gt;
+&lt;p&gt;另外，对于符号&lt;span class=&#34;math inline&#34;&gt;\(\circ\)&lt;/span&gt;，当作用于向量时，它的运算时对应元素的相乘，即： &lt;span class=&#34;math display&#34;&gt;\[
+\text{a}\circ \text{b} = \begin{bmatrix}
+a_1\\ a_2\\ a_3\\ \cdots\\ a_n
+\end{bmatrix}
+\circ
+\begin{bmatrix}
+b_1\\ b_2\\ b_3\\ \cdots\\ b_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+a_1b_1\\ a_2b_2\\ a_3b_3\\ \cdots\\ a_nb_n
+\end{bmatrix}
+\]&lt;/span&gt; 当作用于向量和矩阵时，它的计算为： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\text{a}\ \circ \text{X} &amp;amp;= \begin{bmatrix}
+a_1\\ a_2\\ a_3\\ \cdots\\ a_n
+\end{bmatrix}
+\circ
+\begin{bmatrix}
+x_{11} &amp;amp; x_{12} &amp;amp; x_{13} &amp;amp; \cdots &amp;amp; x_{1n}\\
+x_{21} &amp;amp; x_{22} &amp;amp; x_{23} &amp;amp; \cdots &amp;amp; x_{2n}\\
+x_{31} &amp;amp; x_{32} &amp;amp; x_{33} &amp;amp; \cdots &amp;amp; x_{3n}\\
+ &amp;amp; &amp;amp; \cdots\\
+x_{n1} &amp;amp; x_{n2} &amp;amp; x_{n3} &amp;amp; \cdots &amp;amp; x_{nn}
+\end{bmatrix}\\
+&amp;amp;=
+\begin{bmatrix}
+a_1x_{11} &amp;amp; a_1x_{12} &amp;amp; a_1x_{13} &amp;amp; \cdots &amp;amp; a_1x_{1n}\\
+a_2x_{21} &amp;amp; a_2x_{22} &amp;amp; a_2x_{23} &amp;amp; \cdots &amp;amp; a_2x_{2n}\\
+a_3x_{31} &amp;amp; a_3x_{32} &amp;amp; a_3x_{33} &amp;amp; \cdots &amp;amp; a_3x_{3n}\\
+ &amp;amp; &amp;amp; \cdots\\
+a_nx_{n1} &amp;amp; a_nx_{n2} &amp;amp; a_nx_{n3} &amp;amp; \cdots &amp;amp; a_nx_{nn}
+\end{bmatrix}
+\end{align}
+\]&lt;/span&gt; 当作用于矩阵和矩阵时，两个矩阵的对应位置的元素相乘。&lt;/p&gt;
+&lt;p&gt;同时，我们定义在&lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;时刻，LSTM中的输出值为&lt;span class=&#34;math inline&#34;&gt;\(h_t\)&lt;/span&gt;，残差值&lt;span class=&#34;math inline&#34;&gt;\(\delta_t\)&lt;/span&gt;为&lt;span class=&#34;math inline&#34;&gt;\(\delta_t = \frac{\partial E}{\partial h_t}\)&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;利用反向传播算法，我们需要得到的是前面时刻的残差值，假定现在我们先求上一时刻&lt;span class=&#34;math inline&#34;&gt;\(t-1\)&lt;/span&gt;时刻的残差值&lt;span class=&#34;math inline&#34;&gt;\(\delta_{t-1}\)&lt;/span&gt;。 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_{t-1} &amp;amp;= \frac{\partial E}{\partial h_{t-1}}\\
+&amp;amp;= \frac{\partial E}{\partial h_t}\frac{\partial h_t}{\partial h_{t-1}}\\
+&amp;amp;= \delta_t\frac{\partial h_t}{\partial h_{t-1}}
+\end{align}
+\]&lt;/span&gt; 由前面的推导，我们知道 &lt;span class=&#34;math display&#34;&gt;\[
+h_t = \tanh(c_t)\circ e_t\\
+c_t = f_t\circ c_{t-1} + i_t\circ \tilde{c}_t\\
+f_t = \sigma(U^{(f)}x_t + V^{(f)}h_{t-1})\\
+i_t = \sigma(U^{(i)}x_t + V^{(i)}h_{t-1})\\
+\tilde{c}_t = \tanh (U^{(c)}x_t + V^{(c)}h_{t-1})\\
+e_t = \sigma(U^{(e)}x_t + V^{(e)}h_{t-1})
+\]&lt;/span&gt; 对于导数&lt;span class=&#34;math inline&#34;&gt;\(\frac{\partial h_t}{\partial h_{t-1}}\)&lt;/span&gt;，我们得到： &lt;span class=&#34;math display&#34;&gt;\[
+\frac{\partial h_t}{\partial h_{t-1}} = \frac{\partial h_t}{\partial e_t}\frac{\partial e_t}{\partial h_{t-1}} + \frac{\partial h_t}{\partial c_t}\frac{\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial h_{t-1}} + \frac{\partial h_t}{\partial c_t}\frac{\partial c_t}{\partial i_t}\frac{\partial i_t}{\partial h_{t-1}} + \frac{\partial h_t}{\partial c_t}\frac{\partial c_t}{\partial \tilde{c}_t}\frac{\partial \tilde{c}_t}{\partial h_{t-1}}
+\]&lt;/span&gt; 由于 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial h_t}{\partial e_t} &amp;amp;= diag[\tanh(c_t)]\\
+\frac{\partial e_t}{\partial h_{t-1}} &amp;amp;= diag[e_t\circ (1-e_t)]\ V^{(e)}\\
+\frac{\partial h_t}{\partial c_t} &amp;amp;= diag[e_t\circ (1-\tanh(c_t)^2)]\\
+\frac{\partial c_t}{\partial f_t} &amp;amp;= diag[c_{t-1}]\\
+\frac{\partial c_t}{\partial i_t} &amp;amp;= diag[\tilde{c}_t]\\
+\frac{\partial c_t}{\partial \tilde{c}_t} &amp;amp;= diag[i_t]\\
+\frac{\partial f_t}{\partial h_{t-1}} &amp;amp;= diag[f_t\circ (1-f_t)]\ V^{(f)}\\
+\frac{\partial i_t}{\partial h_{t-1}} &amp;amp;= diag[i_t\circ (1-i_t)]\ V^{(i)}\\
+\frac{\partial \tilde{c}_t}{\partial h_{t-1}} &amp;amp;= diag[1-\tilde{c}_t^2]\ V^{(c)}
+\end{align}
+\]&lt;/span&gt; 因此， &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\frac{\partial h_t}{\partial h_{t-1}} = &amp;amp;\ diag[\tanh(c_t)] diag[e_t\circ (1-e_t)] V^{(e)}\\
+&amp;amp;\ + diag[e_t\circ (1-\tanh(c_t)^2)] diag[c_{t-1}] diag[f_t\circ (1-f_t)] V^{(f)}\\
+&amp;amp;\ + diag[e_t\circ (1-\tanh(c_t)^2)] diag[\tilde{c}_t] diag[i_t\circ (1-i_t)] V^{(i)}\\
+&amp;amp;\ + diag[e_t\circ (1-\tanh(c_t)^2)] diag[i_t] diag[1-\tilde{c}_t^2] V^{(c)}\\
+= &amp;amp;\ \tanh(c_t)\circ e_t\circ (1-e_t) V^{(e)}\\
+&amp;amp;\ + e_t\circ (1-\tanh(c_t)^2)\circ c_{t-1}\circ f_t\circ (1-f_t) V^{(f)}\\
+&amp;amp;\ + e_t\circ (1-\tanh(c_t)^2)\circ \tilde{c}_t\circ i_t\circ (1-i_t)\\
+&amp;amp;\ + e_t\circ (1-\tanh(c_t)^2)\circ i_t\circ (1-\tilde{c}_t^2)
+\end{align}
+\]&lt;/span&gt; 可以求得&lt;span class=&#34;math inline&#34;&gt;\(t-1\)&lt;/span&gt;时刻的残差值： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_{t-1} &amp;amp;= \delta_t\frac{\partial h_t}{\partial h_{t-1}}\\
+&amp;amp;= \delta_t\circ \tanh(c_t)\circ e_t\circ (1-e_t) V^{(e)}\\
+&amp;amp;\ + \delta_t\circ e_t\circ (1-\tanh(c_t)^2)\circ c_{t-1}\circ f_t\circ (1-f_t) V^{(f)}\\
+&amp;amp;\ + \delta_t\circ e_t\circ (1-\tanh(c_t)^2)\circ \tilde{c}_t\circ i_t\circ (1-i_t)\\
+&amp;amp;\ + \delta_t\circ e_t\circ (1-\tanh(c_t)^2)\circ i_t\circ (1-\tilde{c}_t^2)
+\end{align}
+\]&lt;/span&gt; 同理，利用 &lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\delta_k &amp;amp;= \delta_t\frac{\partial h_t}{\partial h_k}\\
+&amp;amp;= \delta_t\frac{\partial h_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial h_k}\\
+&amp;amp;= \delta_t\frac{\partial h_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial h_{t-2}} \cdots \frac{\partial h_{k+1}}{\partial h_k}\\
+\end{align}
+\]&lt;/span&gt; 可以求得任意时刻&lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;的残差值。&lt;/p&gt;
+&lt;p&gt;对于残差值沿隐藏层的反向传播，其计算方法与之前提及的反向传播基本一致。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level2&#34;&gt;
+&lt;h2&gt;实践出真知&lt;/h2&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import tensorflow as tf
+import pandas as pd
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets(&amp;quot;mnist/&amp;quot;)
+# 训练参数
+n_epoches = 100
+batch_size = 150
+Learning_rate = 0.001
+# 网络参数，把28x28的图片数据拆成28行的时序数据喂进RNN
+n_inputs = 28
+n_steps = 28
+n_hiddens = 150
+n_outputs = 10  # 10分类
+# 输入tensors
+X = tf.placeholder(tf.float32, [None, n_steps, n_inputs])
+y = tf.placeholder(tf.int32, [None])
+# 构建RNN结构
+basic_cell = tf.contrib.rnn.BasicLSTMCell(num_units=n_hiddens, state_is_tuple=True)
+# basic_cell = tf.contrib.rnn.BasicRNNCell(num_units=n_hiddens)
+# basic_cell = tf.nn.rnn_cell.BasicRNNCell(num_units=n_hiddens)  # 另一种创建基本单元的方式
+outputs, states = tf.nn.dynamic_rnn(basic_cell, X, dtype=tf.float32)
+# 前向传播，定义损失函数、优化器
+logits = tf.layers.dense(states[-1], n_outputs)  # 与states tensor连接的全连接层，LSTM时为states[-1]，即h张量
+cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)
+loss = tf.reduce_mean(cross_entropy)
+optimizer = tf.train.AdamOptimizer(learning_rate=Learning_rate)
+train_op = optimizer.minimize(loss)
+prediction = tf.nn.in_top_k(logits, y, 1)
+accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))  # cast函数将tensor转换为指定类型
+# 从MNIST中读取数据
+X_test = mnist.test.images.reshape([-1, n_steps, n_inputs])
+y_test = mnist.test.labels
+# 训练阶段
+init = tf.global_variables_initializer()
+loss_list = []
+accuracy_list = []
+with tf.Session() as sess:
+    sess.run(init)
+    n_batches = mnist.train.num_examples // batch_size  # 整除返回整数部分
+    # print(&amp;quot;Batch_number: {}&amp;quot;.format(n_batches))
+    for epoch in range(n_epoches):
+        for iteration in range(n_batches):
+            X_batch, y_batch = mnist.train.next_batch(batch_size)
+            X_batch = X_batch.reshape([-1, n_steps, n_inputs])
+            sess.run(train_op, feed_dict={X: X_batch, y: y_batch})
+        loss_train = loss.eval(feed_dict={X: X_batch, y: y_batch})
+        loss_list.append(loss_train)
+        acc_train = accuracy.eval(feed_dict={X: X_batch, y: y_batch})
+        acc_test = accuracy.eval(feed_dict={X: X_test, y: y_test})
+        accuracy_list.append(acc_test)
+        print(epoch, &amp;quot;Train accuracy: {:.3f}&amp;quot;.format(acc_train), &amp;quot;Test accuracy: {:.3f}&amp;quot;.format(acc_test))
+# 导出损失和准确率，方便绘图
+loss_readout = pd.DataFrame(loss_list)
+loss_readout.to_csv(&amp;#39;csv/RNN_LSTM_loss.csv&amp;#39;)
+acc_readout = pd.DataFrame(accuracy_list)
+acc_readout.to_csv(&amp;#39;csv/RNN_LSTM_accuracy.csv&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;运行结果可以绘制出loss和accuracy两图： &lt;img src=&#34;./post/2019-02-01-recurrent-nerual-network-循环神经网络_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;p&gt;1.&lt;a href=&#34;https://zybuluo.com/hanbingtao/note/541458&#34;&gt;hanbingtao. 零基础入门深度学习(5) - 循环神经网络&lt;/a&gt;&lt;br /&gt;
+2.&lt;a href=&#34;https://zybuluo.com/hanbingtao/note/581764&#34;&gt;hanbingtao. 零基础入门深度学习(6) - 长短时记忆网络(LSTM)&lt;/a&gt;&lt;br /&gt;
+3.罗冬日. TensorFlow入门与实战&lt;br /&gt;
+4.&lt;a href=&#34;https://zhuanlan.zhihu.com/p/55025354&#34;&gt;郑思座. 循环神经网络（RNN）以及简单TensorFlow实例&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>入门TeXLive&#43;TeXStudio</title>
       <link>/post/%E5%85%A5%E9%97%A8texlive-texstudio/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
