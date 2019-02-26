@@ -28,7 +28,16 @@
 &lt;/div&gt;
 &lt;div id=&#34;pippython&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;用pip下Python库&lt;/h2&gt;
-&lt;p&gt;Github上作者qqwweee已经把代码都完成了，所以我们只需要确保所需的库也安装了，就万事俱备，只欠东风！ * TensorFlow * Keras * h5py * OpenCV&lt;/p&gt;
+&lt;p&gt;Github上作者qqwweee已经把代码都完成了，所以我们只需要确保所需的库也安装了，就万事俱备，只欠东风！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TensorFlow&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Keras&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;h5py&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;OpenCV&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;通常安装库的方法会选用pip来下载安装，打开Anaconda prompt之后输入命令：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;activate python35 # 激活python3.5环境
 pip install tensorflow
