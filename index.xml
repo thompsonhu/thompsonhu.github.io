@@ -979,7 +979,7 @@ Testing Accuracy: 0.9453125&lt;/p&gt;
 &lt;p&gt;
 图5. 通过Anaconda prompt打开TensorBoard
 &lt;/div&gt;
-&lt;p&gt;打开浏览器，地址栏输入**&lt;a href=&#34;http://localhost:6006**即可打开TensorBoard&#34; class=&#34;uri&#34;&gt;http://localhost:6006**即可打开TensorBoard&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;打开浏览器，地址栏输入 &lt;a href=&#34;http://localhost:6006&#34;&gt;&lt;strong&gt;http://localhost:6006&lt;/strong&gt;&lt;/a&gt; 即可打开TensorBoard。&lt;/p&gt;
 在TensorBoard中可以查看cost和accuracy的变化
 &lt;div align=&#34;center&#34;&gt;
 &lt;img src=&#34;CNN6.PNG&#34; width = &#34;700&#34; height = &#34;600&#34; alt=&#34;Figure6&#34; /&gt;

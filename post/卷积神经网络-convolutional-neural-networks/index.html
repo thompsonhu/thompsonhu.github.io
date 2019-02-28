@@ -15,11 +15,11 @@
   
     
   
-  <meta name="description" content="简介 Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
- Convolutional Neural Networks开始正文！ CNN的“卷积”介绍 我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
- 图1. \(4\times 4\times 3\)RGB图像  卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
- 首先，假设我们选取的卷积核为： \[ \begin{vmatrix} 1 &amp; 0 &amp; 1\\ 0 &amp; 1 &amp; 0\\ 1 &amp; 0 &amp; 1 \end{vmatrix} \]  我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
- 通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[ \begin{vmatrix} 4 &amp; 3 &amp; 4\\ 2 &amp; 4 &amp; 3\\ 2 &amp; 3 &amp; 4 \end{vmatrix} \]   图2.">
+  <meta name="description" content="简介Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
+Convolutional Neural Networks开始正文！CNN的“卷积”介绍我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
+图1. \(4\times 4\times 3\)RGB图像卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
+首先，假设我们选取的卷积核为： \[\begin{vmatrix}1 &amp; 0 &amp; 1\\0 &amp; 1 &amp; 0\\1 &amp; 0 &amp; 1\end{vmatrix}\]我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
+通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[\begin{vmatrix}4 &amp; 3 &amp; 4\\2 &amp; 4 &amp; 3\\2 &amp; 3 &amp; 4\end{vmatrix}\]图2.">
 
   
   <link rel="alternate" hreflang="en-us" href="../../post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/">
@@ -110,11 +110,11 @@
   <meta property="og:site_name" content="Bonbon Blog">
   <meta property="og:url" content="/post/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-networks/">
   <meta property="og:title" content="卷积神经网络 Convolutional Neural Networks | Bonbon Blog">
-  <meta property="og:description" content="简介 Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
- Convolutional Neural Networks开始正文！ CNN的“卷积”介绍 我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
- 图1. \(4\times 4\times 3\)RGB图像  卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
- 首先，假设我们选取的卷积核为： \[ \begin{vmatrix} 1 &amp; 0 &amp; 1\\ 0 &amp; 1 &amp; 0\\ 1 &amp; 0 &amp; 1 \end{vmatrix} \]  我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
- 通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[ \begin{vmatrix} 4 &amp; 3 &amp; 4\\ 2 &amp; 4 &amp; 3\\ 2 &amp; 3 &amp; 4 \end{vmatrix} \]   图2."><meta property="og:image" content="/img/portrait.jpg">
+  <meta property="og:description" content="简介Convolutional Neural Networks的中文名叫卷积神经网络，当然英文简称直接为CNN，它的创始人是著名的计算机科学家Yann LeCun，CNN和RNN（Recurrent Neural Networks）可以说是深度学习领域最常提及的两种网络模型。本篇博客参照知乎上问题“CNN(卷积神经网络)是什么？有入门简介或文章吗？”的回答来进行介绍~
+Convolutional Neural Networks开始正文！CNN的“卷积”介绍我们假设神经网络的输入是一张彩色的图像，那通常我们输入的是\(n\times m\times 3\)的RGB图像，下面图中是\(4\times 4\times 3\)RGB图像的示例；其中的数字代表着图片的原始像素值。
+图1. \(4\times 4\times 3\)RGB图像卷积核是CNN的一个重要部分，卷积则是CNN的一个重要步骤。
+首先，假设我们选取的卷积核为： \[\begin{vmatrix}1 &amp; 0 &amp; 1\\0 &amp; 1 &amp; 0\\1 &amp; 0 &amp; 1\end{vmatrix}\]我们会从原始图像的左上角开始，选取和卷积核大小相同的区域。
+通过水平和垂直移动不断获得新的区域，我们假设移动的步长为1，重复上面的步骤，我们可以一个新的矩阵 \[\begin{vmatrix}4 &amp; 3 &amp; 4\\2 &amp; 4 &amp; 3\\2 &amp; 3 &amp; 4\end{vmatrix}\]图2."><meta property="og:image" content="/img/portrait.jpg">
   <meta property="og:locale" content="en-us">
   
   <meta property="article:published_time" content="2019-01-21T00:00:00&#43;00:00">
@@ -850,7 +850,7 @@ Testing Accuracy: 0.9453125</p>
 <p>
 图5. 通过Anaconda prompt打开TensorBoard
 </div>
-<p>打开浏览器，地址栏输入**<a href="http://localhost:6006**即可打开TensorBoard" class="uri">http://localhost:6006**即可打开TensorBoard</a>。</p>
+<p>打开浏览器，地址栏输入 <a href="http://localhost:6006"><strong>http://localhost:6006</strong></a> 即可打开TensorBoard。</p>
 在TensorBoard中可以查看cost和accuracy的变化
 <div align="center">
 <img src="CNN6.PNG" width = "700" height = "600" alt="Figure6" />
