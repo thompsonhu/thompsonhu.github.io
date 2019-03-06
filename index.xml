@@ -11,6 +11,1040 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>TensorFlow实现YOLOv1目标检测</title>
+      <link>/post/tensorflow%E5%AE%9E%E7%8E%B0yolov1%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tensorflow%E5%AE%9E%E7%8E%B0yolov1%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/</guid>
+      <description>
+
+
+&lt;p&gt;目标检测是计算机视觉一个重要的领域，希望让计算机可以自己自动找出某张图片（某个视频的某一帧画面）中的物体，并认出它们是什么，这是一个具有挑战又有趣的任务。本文主要对YOLO(You Only Look Once)模型进行探讨并在TensorFlow上实现，YOLOv1是YOLO的第一个版本（YOLO version1），虽然它的目标检测效果不咋滴，但是现在YOLO进化到了第三个版本了，是一个极其强大的工具。为了更好的学习YOLOV3，那也需要领会它前辈YOLOv1的精髓所在。YOLOv1的作者有四个大佬，&lt;a href=&#34;https://github.com/pjreddie?tab=repositories&#34;&gt;Joseph Redmon&lt;/a&gt;大佬喜欢用C语言，他们也用C语言搭建Darknet并实现了YOLOv1，这也让众多YOLO信徒不知如何用TensorFlow来领悟其中的奥妙。github找到零零散散几个有关于YOLOv1的，但是大多数只有检测过程，而没有训练过程。几番周折，找到了既有训练又能检测的代码。本文参照&lt;a href=&#34;https://github.com/hizhangp/yolo_tensorflow&#34;&gt;hizhangp&lt;/a&gt;的Github仓库代码，对模型进行介绍和探讨，同时对代码进行解读并实际完成目标检测。&lt;/p&gt;
+&lt;div id=&#34;you-only-look-once-&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;You Only Look Once, 你不要看我第二次（//▽//）&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://pjreddie.com/darknet/yolov1/&#34;&gt;YOLOv1&lt;/a&gt;采用一个单独的CNN模型实现end-to-end的目标检测，它的思想正如它paper的标题一般，你只看一次，就能看出图片中有什么东西，达到跟人类基本一样的探索功能。就像你看到下面这只可爱的黄色电气鼠，一瞄就知道是皮卡丘！&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;1.PNG&#34; width = &#34;400&#34; height = &#34;400&#34; alt=&#34;Figure1&#34; /&gt;
+&lt;p&gt;
+图1. 我是谁？皮卡丘！
+&lt;/div&gt;
+&lt;p&gt;YOLO(本文指YOLO version1)的大体检测框架是：首先通过转换图像为&lt;span class=&#34;math inline&#34;&gt;\(448\times 448\)&lt;/span&gt;大小的输入，在图像输入之后YOLO会将其分为&lt;span class=&#34;math inline&#34;&gt;\(S\times S\)&lt;/span&gt;的grid cell（小格子）。每一个grid cell会产生B个边界框（Bounding Box），每个Bounding Box会附带一个置信度值。原文中设定了每张图像分为&lt;span class=&#34;math inline&#34;&gt;\(7\times 7\)&lt;/span&gt;的grid cell，每个grid cell产生2个Bounding Boxes，那所有的grid cell总共会生成98($772)个边界框；另外原文设定了检测物体的类别数为20。需要注意的是，在原文中多次出现exist和appear的词，表示grid cell中包含了object，但其实更准确的是表示object的中心点出现在这个grid cell中。在完成训练阶段之后，通过非极大值抑制来去除多余的边界框并完成检测（后面会补充介绍非极大值抑制的内容）~&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;2.PNG&#34; width = &#34;600&#34; height = &#34;600&#34; alt=&#34;Figure2&#34; /&gt;
+&lt;p&gt;
+图2. YOLO检测系统细节图
+&lt;/div&gt;
+&lt;div id=&#34;yolotraning&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;YOLO模型训练阶段（Traning）解析&lt;/h3&gt;
+&lt;p&gt;YOLO检测网络包含了24个卷积层和2个全连接层，其中也运用了最大池化层，如图3所示：&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;3.PNG&#34; width = &#34;1000&#34; height = &#34;900&#34; alt=&#34;Figure3&#34; /&gt;
+&lt;p&gt;
+图3. YOLO检测网络图
+&lt;/div&gt;
+&lt;p&gt;其中激活函数使用了leaky relu函数： &lt;span class=&#34;math display&#34;&gt;\[
+\phi(x) = \left\{ \begin{array}{l}
+x,\quad\ \ \text{if}\ \ x&amp;gt;0\\
+0.1x,\ \text{otherwise}
+\end{array} \right.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;最终模型网络输出的是一个&lt;span class=&#34;math inline&#34;&gt;\(7\times 7\times 30\)&lt;/span&gt;的张量（Tensor），这里我们可以看作49(&lt;span class=&#34;math inline&#34;&gt;\(7\times 7\)&lt;/span&gt;)个grid cells，其中每个grid cell中涉及30个通道（channel）。这30个channels中有2组对应2个Bounding Boxes的信息（总共占用10(&lt;span class=&#34;math inline&#34;&gt;\(2\times 5\)&lt;/span&gt;)个channels），剩下的20个channels对应的是20个检测类的概率。&lt;/p&gt;
+&lt;p&gt;前5个channels（张量的第1-5d的位置）中的参数分别是第一个Bounding Box（&lt;font color=#FFD700&gt;&lt;strong&gt;黄色边界框&lt;/strong&gt;&lt;/font&gt;）的四个坐标值以及相应的置信度。这四个坐标(&lt;span class=&#34;math inline&#34;&gt;\(x,y,w,h\)&lt;/span&gt;)中(&lt;span class=&#34;math inline&#34;&gt;\(x,y\)&lt;/span&gt;)是物体中心点相对于左上角的坐标值，(&lt;span class=&#34;math inline&#34;&gt;\(w,h\)&lt;/span&gt;)是Bounding Box的宽和高，以中心点坐标就可以确定Bounding Box的大小。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;4.PNG&#34; width = &#34;1000&#34; height = &#34;900&#34; alt=&#34;Figure4&#34; /&gt;
+&lt;p&gt;
+图4. 第一个Bounding Box对应的值
+&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;5.PNG&#34; width = &#34;400&#34; height = &#34;400&#34; alt=&#34;Figure5&#34; /&gt;
+&lt;p&gt;
+图5. (&lt;span class=&#34;math inline&#34;&gt;\(x,y,w,h\)&lt;/span&gt;)坐标值的含义
+&lt;/div&gt;
+&lt;p&gt;同理，第二个Bounding Box（&lt;font color=#FFD700&gt;&lt;strong&gt;黄色边界框&lt;/strong&gt;&lt;/font&gt;）的参数对应的是张量的第6-10的位置（如图6所示），同样是(&lt;span class=&#34;math inline&#34;&gt;\(x,y,w,h\)&lt;/span&gt;)这四个坐标值以置信度值。&lt;/p&gt;
+&lt;p&gt;说了好几次置信度(confidence)这个词，具体是如何定义的呢？如何计算的呢？其实它只是一个概率和交并比（IoU）的乘积： &lt;span class=&#34;math display&#34;&gt;\[
+\text{confidence} = Pr(\text{Object})\times \text{IOU}^{\text{truth}}_{\text{pred}}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;如果中心点存在的，那么&lt;span class=&#34;math inline&#34;&gt;\(Pr(\text{Object})=1\)&lt;/span&gt;，则置信度可以表示为：&lt;/p&gt;
+&lt;center&gt;
+&lt;p&gt;confidence = &lt;font color=   #9370DB&gt;&lt;strong&gt;紫色边界框(truth)&lt;/strong&gt;&lt;/font&gt;和&lt;font color=#FFD700&gt;&lt;strong&gt;黄色边界框(pred)&lt;/strong&gt;&lt;/font&gt;的IOU&lt;/p&gt;
+&lt;/center&gt;
+&lt;p&gt;如果物体不存在，即中心点不存在，那么&lt;span class=&#34;math inline&#34;&gt;\(Pr(\text{Object})=0\)&lt;/span&gt;，则置信度为0。&lt;/p&gt;
+&lt;p&gt;原文是这样描述的：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Formally we define confidence as &lt;span class=&#34;math inline&#34;&gt;\(Pr(\text{Object}) * \text{IOU}^{\text{truth}}_{\text{pred}}\)&lt;/span&gt;. If no object exists in that cell, the confidence scores should be zero. Otherwise we want the confidence score to equal the intersection over union (IOU) between the predicted box and the ground truth.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;6.PNG&#34; width = &#34;1000&#34; height = &#34;900&#34; alt=&#34;Figure6&#34; /&gt;
+&lt;p&gt;
+图6. 第二个Bounding Box对应的值
+&lt;/div&gt;
+&lt;div id=&#34;iou&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;IOU的定义&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;这里又多次提及了交并比IOU，下面就IOU定义进行介绍：&lt;/p&gt;
+&lt;p&gt;假设存在两个矩形框，它们的交集部分叫做Intersection，它们的并集部分叫做Union，那么它们的比就是交并比IOU。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;7.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure7&#34; /&gt;
+&lt;p&gt;
+图7. IOU的计算定义
+&lt;/div&gt;
+&lt;p&gt;最后的20个通道为20类物体的对应概率，如果第一个预测的是猫（cat）的概率的话，我们可以表示为&lt;span class=&#34;math inline&#34;&gt;\(Pr(\text{Cat|Object})\)&lt;/span&gt;，即存在Object情况下物体时Cat的条件概率。&lt;/p&gt;
+&lt;p&gt;原文中这样说到：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We only predict one set of class probabilities per grid cell, regardless of the number of boxes B.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The predictions are encoded as an &lt;span class=&#34;math inline&#34;&gt;\(S\times S\times(B*5+C)\)&lt;/span&gt; tensor.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;无论有多少个Bounding Boxes，都只会计算一次概率，最终预测结果会被编码为&lt;span class=&#34;math inline&#34;&gt;\(S\times S\times(B*5+C)\)&lt;/span&gt;的张量。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;8.PNG&#34; width = &#34;1000&#34; height = &#34;900&#34; alt=&#34;Figure8&#34; /&gt;
+&lt;p&gt;
+图8. 后20个通道对应20类物体概率
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;part---loss-function&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;最重要的Part - Loss function&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;整体Loss function可以分为三个部分：坐标误差，IOU误差和分类误差；误差均用平方和来衡量。整体上看，可以发现一些特殊的记号：&lt;span class=&#34;math inline&#34;&gt;\(\mathbb{1}_{ij}^{obj}\)&lt;/span&gt;，&lt;span class=&#34;math inline&#34;&gt;\(\mathbb{1}_{ij}^{noobj}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(\mathbb{1}_{i}^{obj}\)&lt;/span&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\mathbb{1}_{i}^{obj}\)&lt;/span&gt; denotes if object appears in cell &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{1}_{ij}^{obj}\)&lt;/span&gt; denotes that the &lt;span class=&#34;math inline&#34;&gt;\(j^{th}\)&lt;/span&gt; bounding box predictor in cell &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; is “responsible” for that prediction.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;它们的定义是这样的： &lt;span class=&#34;math display&#34;&gt;\[
+\begin{array}{l}
+\mathbb{1}_{ij}^{obj} = \left\{ \begin{array}{l}
+{1，}{\text{存在Object且若第j个BBox对第i个grid cell负责}}\\
+{0，}{\text{否则}}
+\end{array} \right.\\
+\mathbb{1}_{ij}^{noobj} = \left\{ \begin{array}{l}
+{1，}{\text{如果grid cell不包含Object}}\\
+{0，}{\text{否则}}
+\end{array} \right.\\
+\mathbb{1}_{i}^{obj} = \left\{ \begin{array}{l}
+{1，}{\text{如果grid cell存在Object}}\\
+{0，}{\text{否则}}
+\end{array} \right.
+\end{array}
+\]&lt;/span&gt; 这里的负责可以假设其拥有最高IOU。&lt;/p&gt;
+&lt;p&gt;首先，坐标误差很明显的就是Bounding Box的坐标(&lt;span class=&#34;math inline&#34;&gt;\(x,y,w,h\)&lt;/span&gt;)和真实的Bounding Box的坐标(&lt;span class=&#34;math inline&#34;&gt;\(\hat{x},\hat{y},\hat{w},\hat{h}\)&lt;/span&gt;)的误差，其中(&lt;span class=&#34;math inline&#34;&gt;\(w,h\)&lt;/span&gt;)用根号来表示的目的是为了缩小大的Object相比小的Object的坐标带来的误差影响；关于平方根原文是这么解释的：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Sum-squared error also equally weights errors in large boxes and small boxes. Our error metric should reflect that small deviations in large boxes matter less than in small boxes. To partially address this we predict the square root of the bounding box width and height instead of the width and height directly.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;第二部分的IOU误差其实也是前面提到的confidence的误差，这里计算了包含Object的Bounding Box的confidence误差，也计算量不包含Object的Bounding Box的confidence误差。由于一张图像中大部分grid cell是不包含Object的，它们的confidence也就趋于0，这就会变相放大包含Object的grid cell的损失函数在计算梯度时的影响，使得模型不稳定，训练时会趋于发散。因此，通过调节参数&lt;span class=&#34;math inline&#34;&gt;\(\lambda_{coord}\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(\lambda{noobj}\)&lt;/span&gt;来改善问题；作者设定&lt;span class=&#34;math inline&#34;&gt;\(\lambda_{coord}=5\)&lt;/span&gt;和&lt;span class=&#34;math inline&#34;&gt;\(\lambda{noobj}=0.5\)&lt;/span&gt;。原文这么阐述：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Also, in every image many grid cells do not contain any object. This pushes the “confidence” scores of those cells towards zero, often overpowering the gradient from cells that do contain objects. This can lead to model instability, causing training to diverge early on. To remedy this, we increase the loss from bounding box coordinate predictions and decrease the loss from confidence predictions for boxes that don’t contain objects. We use two parameters, &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{coord}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda{noobj}\)&lt;/span&gt; to accomplish this. We set &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{coord}=5\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda{noobj}=0.5\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;第三部分分类误差是衡量了各种检测物体类别的条件概率的误差。上笔记图！&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;9.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure9&#34; /&gt;
+&lt;p&gt;
+图9. Loss function各部分的含义
+&lt;/div&gt;
+&lt;p&gt;训练过程的思路就这么多了！开始Detection部分！&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;yolodetection&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;YOLO模型测试阶段（Detection）解析&lt;/h3&gt;
+&lt;p&gt;在Detection阶段主要用了条件概率公式： &lt;span class=&#34;math display&#34;&gt;\[
+Pr(\text{Class}_i|\text{Object})*Pr(Object)*\text{IOU}^{\text{truth}}_{\text{pred}}=Pr(\text{Class}_i)*\text{IOU}^{\text{truth}}_{\text{pred}}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;显然，第一部分&lt;span class=&#34;math inline&#34;&gt;\(Pr(\text{Class}_i|\text{Object})\)&lt;/span&gt;是后面20个channels中存储的条件概率，第二部分&lt;span class=&#34;math inline&#34;&gt;\(Pr(Object)*\text{IOU}^{\text{truth}}_{\text{pred}}\)&lt;/span&gt;则是每个Bounding Box对应的置信度，如图10所示。对于图像中某个grid cell，其中张量进行乘法运算（图10中蓝色部分相乘），可以得到一列类的得分向量，图中黄色矩形条表示第一个Bounding Box的类得分向量。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;10.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure10&#34; /&gt;
+&lt;p&gt;
+图10. 第一个Bounding Box中条件概率公式各部分对应张量的不同通道位置相乘
+&lt;/div&gt;
+&lt;p&gt;同理，第二个Bounding Box也执行相同的乘法操作。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;11.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure11&#34; /&gt;
+&lt;p&gt;
+图11. 第二个Bounding Box中条件概率公式各部分对应张量的不同通道位置相乘
+&lt;/div&gt;
+&lt;p&gt;对每个grid cell重复上述操作，每个grid cell若有两个Bounding Boxes，则得到两列类得分向量，如图12所示。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;12.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure12&#34; /&gt;
+&lt;p&gt;
+图12. 每个grid cell的两个Bounding Boxes中执行乘法操作
+&lt;/div&gt;
+&lt;p&gt;如果图像分为&lt;span class=&#34;math inline&#34;&gt;\(7\times 7\)&lt;/span&gt;个grid cell，每个grid cell产生2个Bounding Boxes，那总共会生成98列得分向量。我们设定一定的阈值，比如0.2；小于0.2的得分我们设置得分为0。再通过降序排列，进一步执行NMS（非极大值抑制，Non-Maximum Suppression）操作，去除多余的Bounding Boxes（如图13所示）。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;13.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure13&#34; /&gt;
+&lt;p&gt;
+图13. 得分矩阵的处理
+&lt;/div&gt;
+&lt;div id=&#34;non-max-suppression&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;非极大值抑制（Non-max suppression）&lt;/strong&gt;&lt;/h4&gt;
+我们以第一类dog为例，假设实际只有四个框（&lt;font color=  #ffa500&gt;&lt;strong&gt;橙色边界框&lt;/strong&gt;&lt;/font&gt;/&lt;font color= #adff2f&gt;&lt;strong&gt;青色边界框&lt;/strong&gt;&lt;/font&gt;/&lt;font color= #0000cd&gt;&lt;strong&gt;蓝色边界框&lt;/strong&gt;&lt;/font&gt;/&lt;font color=   #ff00ff&gt;&lt;strong&gt;紫色边界框&lt;/strong&gt;&lt;/font&gt;）圈到了图像中的物体狗，它们对应的得分为(0.8 / 0.5 / 0.3 / 0.2)。非极大值抑制实际上是通过设定一定IOU阈值，从第一个框开始遍历，如果两个框的IOU大于设定的阈值，那么我们可以认为这两个框相似度很大，检测的是同一个物体，但是得分较大的框更好的圈出了检测的物体；所以保留得分大的框，把另外一个去除。如果两个框的IOU小于设定的阈值，则保留继续后面的判断。对于得分为0的框则不判断。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;14.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure14&#34; /&gt;
+&lt;p&gt;
+图14. NMS过程（一）
+&lt;/div&gt;
+由于排序后排后的边界框对应的得分都为0，所以不再拿第一个边界框与其他比较；下一步取第二个不为零的框作为最大得分框，与后面的边界框进行IOU判断，与上面的步骤一致。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;15.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure15&#34; /&gt;
+&lt;p&gt;
+图15. NMS过程（二）
+&lt;/div&gt;
+我们假定只有四个边界框的得分非零，现在只剩下两个边界框得分不为零了，这样第一类的边界框得分判定结束；同理，对其他类进行NMS操作。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;16.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure16&#34; /&gt;
+&lt;p&gt;
+图16. NMS过程（三）
+&lt;/div&gt;
+完成上述的NMS操作后，取出边界框得分向量中的最大得分以及其对应的类别，如果这个得分是大于0的，就在图像上画下边界框以及标出对应的类别；否则丢弃当前边界框。对所有的得分向量重复上述操作。
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;17.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure17&#34; /&gt;
+&lt;p&gt;
+图17. 提取边界框（Bounding Box）
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;yolo&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;YOLO代码解析与实践&lt;/h2&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;训练&lt;/h3&gt;
+&lt;p&gt;首先，从&lt;a href=&#34;https://github.com/hizhangp/yolo_tensorflow&#34;&gt;hizhangp&lt;/a&gt;的Github上下载YOLO version1在TensorFlow复现的代码。由于我们用Pascal VOC数据集进行训练，所以我们需要先对数据集的图像进行处理。&lt;/p&gt;
+&lt;div id=&#34;pascal_voc.py&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;pascal_voc.py文件&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;import os
+import xml.etree.ElementTree as ET
+import numpy as np
+import cv2
+import pickle
+import copy
+import yolo.config as cfg
+
+class pascal_voc(object):
+  def _init_(self, phase, rebuild=False):
+      # config.py中参数已经设置完毕并通过cfg.调用
+      # devkil_path存放VOCdevkit的路径
+      self.devkil_path = os.path.join(cfg.PASCAL_PATH, &amp;#39;VOCdevkit&amp;#39;)
+      # data_path是数据存放在VOC2007中的路径
+      self.data_path = os.path.join(self.devkil_path, &amp;#39;VOC2007&amp;#39;)
+      # 缓存路径
+      self.cache_path = cfg.CACHE_PATH
+      # 批量大小
+      self.batch_size = cfg.BATCH_SIZE
+      # 图像大小
+      self.image_size = cfg.IMAGE_SIZE
+      # 图像分割为Grid Cell的数量，图像分割为多少块
+      self.cell_size = cfg.CELL_SIZE
+      # 识别object中可能出现的类
+      self.classes = cfg.CLASSES
+      # 将可能出现的类转换为字典(dictionary)
+      # range()产生从0到self.classes的长度减1的序列;
+      # 若len(self.classes)=20,
+      # 则产生[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+      # zip()打包为元组的列表
+      # dict()构造字典
+      self.class_to_ind = dict(zip(self.classes, range(len(self.classes))))
+      # config中FLIPPED设置为True
+      self.flipped = cfg.FLIPPED
+      # _init_函数的输入变量
+      self.phase = phase
+      self.rebuild = rebuild
+      # 其他参数
+      self.cursor = 0
+      self.epoch = 1
+      self.gt_labels = None
+      self.prepare()
+
+  def image_read(self, imname, flipped=False):
+      # 读取图像
+      image = cv2.imread(imname)
+      # resize图像为image_size大小
+      image = cv2.resize(image, (self.image_size, self.image_size))
+      # opencv读取的是bgr格式,转换为rgb格式,并字段类型转换为float32
+      image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
+      # 归一化到[-1,1]
+      image = (image / 255.0) * 2.0 - 1.0
+      # flipped为翻转
+      # ::n代表序列中每第n项; -1指从倒数开始截取
+      # ::-1会将序列从头到尾颠倒
+      if flipped:
+        image = image[:, ::-1, :]
+      return image
+
+  def load_pascal_annotation(self, index):
+      # 加载图片数据
+      # Load image and bounding boxes info from XML file in the PASCAL VOC format
+      imname = os.path.join(self.data_path, &amp;#39;JPEGImages&amp;#39;, index + &amp;#39;.jpg&amp;#39;)
+      im = cv2.imread(imname)
+      # im = cv2.resize(im, [self.image_size, self.image_size])
+      h_ratio = 1.0 * self.image_size / im.shape[0]
+      w_ratio = 1.0 * self.image_size / im.shape[1]
+      # 置信度(1) + Bounding Box坐标(2-5) + 20类class(6-25)
+      label = np.zeros((self.cell_size, self.cell_size, 25))
+      filename = os.path.join(self.data_path, &amp;#39;Annotations&amp;#39;, index + &amp;#39;.xml&amp;#39;)
+      tree = ET.parse(filename)
+      objs = tree.findall(&amp;#39;object&amp;#39;)
+      for obj in objs:
+        bbox = obj.find(&amp;#39;bndbox&amp;#39;)
+        # Make pixel indexes 0-based
+        x1 = max(min((float(bbox.find(&amp;#39;xmin&amp;#39;).text) - 1) * w_ratio, self.image_size - 1), 0)
+        y1 = max(min((float(bbox.find(&amp;#39;ymin&amp;#39;).text) - 1) * h_ratio, self.image_size - 1), 0)
+        x2 = max(min((float(bbox.find(&amp;#39;xmax&amp;#39;).text) - 1) * w_ratio, self.image_size - 1), 0)
+        y2 = max(min((float(bbox.find(&amp;#39;ymax&amp;#39;).text) - 1) * h_ratio, self.image_size - 1), 0)
+        cls_ind = self.class_to_ind[obj.find(&amp;#39;name&amp;#39;).text.lower().strip()]
+        boxes = [(x2 + x1) / 2.0, (y2 + y1) / 2.0, x2 - x1, y2 - y1]
+        x_ind = int(boxes[0] * self.cell_size / self.image_size)
+        y_ind = int(boxes[1] * self.cell_size / self.image_size)
+        if label[y_ind, x_ind, 0] == 1:
+          continue
+        label[y_ind, x_ind, 0] = 1
+        label[y_ind, x_ind, 1:5] = boxes
+        label[y_ind, x_ind, 5 + cls_ind] = 1
+      return label, len(objs)
+
+  def load_labels(self):
+      cache_file = os.path.join(self.cache_path, &amp;#39;pascal_&amp;#39; + self.phase + &amp;#39;_gt_labels.pkl&amp;#39;)
+      if os.path.isfile(cache_file) and not self.rebuild:
+        print(&amp;#39;Loading gt_labels from: &amp;#39; + cache_file)
+        with open(cache_file, &amp;#39;rb&amp;#39;) as f:
+          gt_labels = pickle.load(f)
+        return gt_labels
+      print(&amp;#39;Processing gt_labels from: &amp;#39; + self.data_path)
+      if not os.path.exists(self.cache_path):
+        os.makedirs(self.cache_path)
+      if self.phase == &amp;#39;train&amp;#39;:
+        txtname = os.path.join(self.data_path, &amp;#39;ImageSets&amp;#39;, &amp;#39;Main&amp;#39;, &amp;#39;trainval.txt&amp;#39;)
+      else:
+        txtname = os.path.join(self.data_path, &amp;#39;ImageSets&amp;#39;, &amp;#39;Main&amp;#39;, &amp;#39;test.txt&amp;#39;)
+      with open(txtname, &amp;#39;r&amp;#39;) as f:
+        self.image_index = [x.strip() for x in f.readlines()]
+      gt_labels = []
+      # 通过load_pascal_annotation()函数将所有图像读取出来
+      # 一个一个做成label并存放在gt_labels里面,同时保存在pickle里面
+      for index in self.image_index:
+        label, num = self.load_pascal_annotation(index)
+        if num == 0:
+          continue
+        imname = os.path.join(self.data_path, &amp;#39;JPEGImages&amp;#39;, index + &amp;#39;.jpg&amp;#39;)
+        gt_labels.append({&amp;#39;imname&amp;#39;: imname, &amp;#39;label&amp;#39;: label, &amp;#39;flipped&amp;#39;: False})
+      print(&amp;#39;Saving gt_labels to: &amp;#39; + cache_file)
+      with open(cache_file, &amp;#39;wb&amp;#39;) as f:
+        pickle.dump(gt_labels, f)
+      return gt_labels
+
+  def prepare(self):
+      gt_labels = self.load_labels()
+      if self.flipped:
+        print(&amp;#39;Appending horizontally-flipped training examples ...&amp;#39;)
+        gt_labels_cp = copy.deepcopy(gt_labels)
+        for idx in range(len(gt_labels_cp)):
+          gt_labels_cp[idx][&amp;#39;flipped&amp;#39;] = True
+          gt_labels_cp[idx][&amp;#39;label&amp;#39;] = gt_labels_cp[idx][&amp;#39;label&amp;#39;][:, ::-1, :]
+          for i in range(self.cell_size):
+            for j in range(self.cell_size):
+              if gt_labels_cp[idx][&amp;#39;label&amp;#39;][i, j, 0] == 1:
+                gt_labels_cp[idx][&amp;#39;label&amp;#39;][i, j, 1] = self.image_size - 1 - gt_labels_cp[idx][&amp;#39;label&amp;#39;][i, j, 1]
+        gt_labels += gt_labels_cp
+      np.random.shuffle(gt_labels)
+      self.gt_labels = gt_labels
+      return gt_labels
+
+  def get(self):
+      # np.zeros()创建指定大小的数组，数组元素以 0 来填充
+      images = np.zeros((self.batch_size, self.image_size, self.image_size, 3))
+      labels = np.zeros((self.batch_size, self.cell_size, self.cell_size, 25))
+      count = 0
+      while count &amp;lt; self.batch_size:
+        # 调用self类中gt_labels,cursor和函数image_read()
+        imname = self.gt_labels[self.cursor][&amp;#39;imname&amp;#39;]
+        flipped = self.gt_labels[self.cursor][&amp;#39;flipped&amp;#39;]
+        images[count, :, :, :] = self.image_read(imname, flipped)
+        labels[count, :, :, :] = self.gt_labels[self.cursor][&amp;#39;label&amp;#39;]
+        count += 1
+        self.cursor += 1
+        if self.cursor &amp;gt;= len(self.gt_labels):
+          np.random.shuffle(self.gt_labels)
+          self.cursor = 0
+          self.epoch += 1
+      return images, labels&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;yolo_net.py&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;再看看网络搭建的yolo_net.py文件&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;import numpy as np
+import tensorflow as tf
+import yolo.config as cfg
+import tensorflow.contrib.slim as slim
+# slim = tf.contrib.slim
+
+class YOLONet(object):
+  def __init__(self, is_training=True):
+    # 从config中获取预测的类
+    self.classes = cfg.CLASSES
+    # 预测的类的数量(类别数)
+    self.num_class = len(self.classes)
+    # 图像尺寸
+    self.image_size = cfg.IMAGE_SIZE
+    # Grid cell的数量
+    self.cell_size = cfg.CELL_SIZE
+    # 每个Grid cell生成Bounding Box的数量
+    self.boxes_per_cell = cfg.BOXES_PER_CELL
+    # 输出尺寸: S * S * (C + B * 5)
+    self.output_size = (self.cell_size * self.cell_size) * (self.num_class + self.boxes_per_cell * 5)
+    self.scale = 1.0 * self.image_size / self.cell_size
+    self.boundary1 = self.cell_size * self.cell_size * self.num_class
+    self.boundary2 = self.boundary1 + self.cell_size * self.cell_size * self.boxes_per_cell
+    self.object_scale = cfg.OBJECT_SCALE
+    self.noobject_scale = cfg.NOOBJECT_SCALE
+    self.class_scale = cfg.CLASS_SCALE
+    self.coord_scale = cfg.COORD_SCALE
+    # 学习率
+    self.learning_rate = cfg.LEARNING_RATE
+    # 批量尺寸
+    self.batch_size = cfg.BATCH_SIZE
+    # 激活函数leaky_relu的参数alpha(取0.1)
+    self.alpha = cfg.ALPHA
+    # Bounding Box的中心点(center point)坐标 -- x, y -- 相对于左上角点的偏移量
+    # (self.B, self.S, self.S)为三维数组的维度，有self.B个array，每个array的维度为(self.S, self.S)
+    # (1,2,0)改变了数组的构造，将会有self.S个array，每个array的维度为(self.S, self.B)
+    self.offset = np.transpose(np.reshape(np.array([np.arange(self.cell_size)] * self.cell_size * self.boxes_per_cell), (self.boxes_per_cell, self.cell_size, self.cell_size)), (1, 2, 0))
+    self.images = tf.placeholder(tf.float32, [None, self.image_size, self.image_size, 3], name=&amp;#39;images&amp;#39;)
+    # 调用函数build_network()
+    self.logits = self.build_network(self.images, num_outputs=self.output_size, alpha=self.alpha, is_training=is_training)
+
+    if is_training:
+        self.labels = tf.placeholder(tf.float32, [None, self.cell_size, self.cell_size, 5 + self.num_class])
+        self.loss_layer(self.logits, self.labels)
+        self.total_loss = tf.losses.get_total_loss()
+        tf.summary.scalar(&amp;#39;total_loss&amp;#39;, self.total_loss)
+  
+  def build_network(self, images, num_outputs, alpha, keep_prob=0.5, is_training=True, scope=&amp;#39;yolo&amp;#39;):
+    # 网络结构可对照paper的Figure 3: The Architecture验证
+    # 
+    # 导入tf.contrib.slim为slim (import tf.contrib.slim as slim)
+    # 
+    # slim.conv2d(inputs, num_outputs, kernel_size, stride, padding, ..., scope)
+    # inputs指需要做卷积的输入图像
+    # num_outputs指定卷积核的个数
+    # kernel_size指定卷积核的维度
+    # stride为卷积时在图像每一维的步长
+    # padding可选VALID或SAME
+    # scope为共享变量所指的variable_scope
+    # 
+    # slim.max_pool2d(inputs, kernel_size)函数表示最大池化层, 第二个参数表示池化层核的维度
+    # 
+    # slim.flatten(tensor)表示将tensor扁平化
+    # 假设tensor为四维张量, flatten函数会转化tensor为三维, 三维数组中有多个二维数组, 二维数组均为1*k的数组
+    # 
+    # slim.fully_connected()表示全连接层, 前两个参数分别为网络输入、输出的神经元数量
+    # slim.fully_connected(net, 512, scope=&amp;#39;fc_33&amp;#39;)中输出的神经元数量为512
+    # 
+    # slim.dropout(inputs, keep_prob, is_training, ...)
+    # inputs: The tensor to pass to the nn.dropout op.
+    # keep_prob: A scalar `Tensor` with the same type as x. The probability that each element is kept.
+    # is_training: A bool `Tensor` indicating whether or not the model is in training mode. 
+    #              If so, dropout is applied and values scaled. Otherwise, inputs is returned.
+    # dropout函数的使用目的是防止或减轻过拟合, 它一般用在全连接层
+    # 在不同的训练过程中随机扔掉一部分神经元, 让某个神经元的激活值以一定的概率p, 让其停止工作
+    # 这次训练过程中不更新权值, 也不参加神经网络的计算
+    # 但它的权重得保留下来(只是暂时不更新而已), 因为下次样本输入时它可能又得工作了
+    # 
+    # tf.pad(tensor, paddings, mode=&amp;#39;CONSTANT&amp;#39;, name=None)函数:
+    # 第二个参数paddings也是一个张量(tensor)
+    # 代表每一维填充多少行/列，但是有一个要求它的rank一定要和tensor的rank是一样的
+    # tf.pad(tensor, [[1,2],[3,4]])会将二维数组左边加1个0, 右边加2个0, 上边加3个0, 下边加4个0
+    # 第三个参数中&amp;#39;CONSTANT&amp;#39;表示填充的元素为0
+    # 本例中, 对于四维张量中四个维度的不同两个方向进行添加0元素
+    # pad目的是填充补数,保证最后卷积层输出特征图大小为7*7
+    # 
+    # tf.transpose(inputs, perm, name=None)函数:
+    # 第二个参数perm=[0,1,2]中
+    # 0代表三维数组的高(即为二维数组的个数), 1代表二维数组的行, 2代表二维数组的列
+    # 若在四维空间中, 0代表四维空间的高(即为三维数组的个数)
+    # 1代表三维数组的高(即为二维数组的个数), 2代表二维数组的行, 3代表二维数组的列
+    # tf.transpose(net, [0, 3, 1, 2], name=&amp;#39;trans_31&amp;#39;)
+    # [0,3,1,2]表示每个三维数组中, 三维数组的高变为每个二维数组的行
+    # 二维数组的行变为二维数组的列, 二维数组的列变为三维数组的高
+    with tf.variable_scope(scope):
+      with slim.arg_scope([slim.conv2d, slim.fully_connected], activation_fn=leaky_relu(alpha), weights_regularizer=slim.l2_regularizer(0.0005), weights_initializer=tf.truncated_normal_initializer(0.0, 0.01)):
+        net = tf.pad(images, np.array([[0, 0], [3, 3], [3, 3], [0, 0]]), name=&amp;#39;pad_1&amp;#39;)
+        net = slim.conv2d(net, 64, 7, 2, padding=&amp;#39;VALID&amp;#39;, scope=&amp;#39;conv_2&amp;#39;)
+        net = slim.max_pool2d(net, 2, padding=&amp;#39;SAME&amp;#39;, scope=&amp;#39;pool_3&amp;#39;)
+        net = slim.conv2d(net, 192, 3, scope=&amp;#39;conv_4&amp;#39;)
+        net = slim.max_pool2d(net, 2, padding=&amp;#39;SAME&amp;#39;, scope=&amp;#39;pool_5&amp;#39;)
+        net = slim.conv2d(net, 128, 1, scope=&amp;#39;conv_6&amp;#39;)
+        net = slim.conv2d(net, 256, 3, scope=&amp;#39;conv_7&amp;#39;)
+        net = slim.conv2d(net, 256, 1, scope=&amp;#39;conv_8&amp;#39;)
+        net = slim.conv2d(net, 512, 3, scope=&amp;#39;conv_9&amp;#39;)
+        net = slim.max_pool2d(net, 2, padding=&amp;#39;SAME&amp;#39;, scope=&amp;#39;pool_10&amp;#39;)
+        net = slim.conv2d(net, 256, 1, scope=&amp;#39;conv_11&amp;#39;)
+        net = slim.conv2d(net, 512, 3, scope=&amp;#39;conv_12&amp;#39;)
+        net = slim.conv2d(net, 256, 1, scope=&amp;#39;conv_13&amp;#39;)
+        net = slim.conv2d(net, 512, 3, scope=&amp;#39;conv_14&amp;#39;)
+        net = slim.conv2d(net, 256, 1, scope=&amp;#39;conv_15&amp;#39;)
+        net = slim.conv2d(net, 512, 3, scope=&amp;#39;conv_16&amp;#39;)
+        net = slim.conv2d(net, 256, 1, scope=&amp;#39;conv_17&amp;#39;)
+        net = slim.conv2d(net, 512, 3, scope=&amp;#39;conv_18&amp;#39;)
+        net = slim.conv2d(net, 512, 1, scope=&amp;#39;conv_19&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_20&amp;#39;)
+        net = slim.max_pool2d(net, 2, padding=&amp;#39;SAME&amp;#39;, scope=&amp;#39;pool_21&amp;#39;)
+        net = slim.conv2d(net, 512, 1, scope=&amp;#39;conv_22&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_23&amp;#39;)
+        net = slim.conv2d(net, 512, 1, scope=&amp;#39;conv_24&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_25&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_26&amp;#39;)
+        net = tf.pad(net, np.array([[0, 0], [1, 1], [1, 1], [0, 0]]), name=&amp;#39;pad_27&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, 2, padding=&amp;#39;VALID&amp;#39;, scope=&amp;#39;conv_28&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_29&amp;#39;)
+        net = slim.conv2d(net, 1024, 3, scope=&amp;#39;conv_30&amp;#39;)
+        net = tf.transpose(net, [0, 3, 1, 2], name=&amp;#39;trans_31&amp;#39;)
+        net = slim.flatten(net, scope=&amp;#39;flat_32&amp;#39;)
+        # First fully connected layer
+        net = slim.fully_connected(net, 512, scope=&amp;#39;fc_33&amp;#39;)
+        net = slim.fully_connected(net, 4096, scope=&amp;#39;fc_34&amp;#39;)
+        # From section 2.2 in paper, &amp;quot;After first fully connected layer
+        # A dropout layer with rate = .5 after the first connected layer prevents co-adaptation between layers&amp;quot;
+        net = slim.dropout(net, keep_prob=keep_prob, is_training=is_training, scope=&amp;#39;dropout_35&amp;#39;)
+        net = slim.fully_connected(net, num_outputs, activation_fn=None, scope=&amp;#39;fc_36&amp;#39;)
+    return net
+
+  def calc_iou(self, boxes1, boxes2, scope=&amp;#39;iou&amp;#39;):
+    # Calculate IOUs
+    # Args:
+    # boxes1: 5-D tensor [BATCH_SIZE, CELL_SIZE, CELL_SIZE, BOXES_PER_CELL, 4]  ====&amp;gt; (x_center, y_center, w, h)
+    # boxes2: 5-D tensor [BATCH_SIZE, CELL_SIZE, CELL_SIZE, BOXES_PER_CELL, 4] ===&amp;gt; (x_center, y_center, w, h)
+    # Return:
+    # iou: 4-D tensor [BATCH_SIZE, CELL_SIZE, CELL_SIZE, BOXES_PER_CELL]
+    with tf.variable_scope(scope):
+      # Transform (x_center, y_center, w, h) to (x1, y1, x2, y2)
+      # 将(x_center, y_center, w, h)转换为Bounding Box的左上角和右下角坐标(x1, y1, x2, y2)
+      # Bounding Box左上角坐标: (x_center - w / 2, y_center - h / 2)
+      # Bounding Box右下角坐标: (x_center + w / 2, y_center + h / 2)
+      boxes1_t = tf.stack([boxes1[..., 0] - boxes1[..., 2] / 2.0, boxes1[..., 1] - boxes1[..., 3] / 2.0, boxes1[..., 0] + boxes1[..., 2] / 2.0, boxes1[..., 1] + boxes1[..., 3] / 2.0], axis=-1)
+      boxes2_t = tf.stack([boxes2[..., 0] - boxes2[..., 2] / 2.0, boxes2[..., 1] - boxes2[..., 3] / 2.0, boxes2[..., 0] + boxes2[..., 2] / 2.0, boxes2[..., 1] + boxes2[..., 3] / 2.0], axis=-1)
+      # 计算两个Bounding Boxes的相交点坐标
+      # Calculate the left up point &amp;amp; right down point
+      # 相交框(intersection)左上角坐标(lu)为两个Bounding Boxes的左上角较大点坐标
+      # 相交框(intersection)右下角坐标(rd)为两个Bounding Boxes的右下角较小点坐标
+      lu = tf.maximum(boxes1_t[..., :2], boxes2_t[..., :2])
+      rd = tf.minimum(boxes1_t[..., 2:], boxes2_t[..., 2:])
+      # Intersection
+      # rd-lu可以得到相交部分框的长和宽
+      # 与0取最大是为了删除不合理的框，比如两个框无交集
+      # inter_square为面积(长*宽)
+      intersection = tf.maximum(0.0, rd - lu)
+      inter_square = intersection[..., 0] * intersection[..., 1]
+      # 计算两个Bounding Boxes的面积
+      # Calculate the boxs1 square and boxs2 square
+      square1 = boxes1[..., 2] * boxes1[..., 3]
+      square2 = boxes2[..., 2] * boxes2[..., 3]
+      # union_square为两个Bounding Boxes的总面积减去相交面积
+      # tf.maximum保证相交面积不为0,由于下一步计算作为分母
+      union_square = tf.maximum(square1 + square2 - inter_square, 1e-10)
+      # tf.clip_by_value()函数: 若交并比大于1则为1; 若交并比小于0则为0
+    return tf.clip_by_value(inter_square / union_square, 0.0, 1.0)
+
+  def loss_layer(self, predicts, labels, scope=&amp;#39;loss_layer&amp;#39;):
+    # tf.reshape(tensor, shape)函数:
+    # 将张量tensor重塑为shape设定的维度下的张量
+    # 
+    # tf.tile(inputs, multiples, name=None)函数: 
+    # tf.tile(boxes, [1, 1, 1, self.boxes_per_cell, 1])
+    # 第二个参数表示每个维度复制的次数，这个地方只是对轴3复制两次，因为我们知道一个cell_size负责两个框的预测
+    # 
+    # tf.stack(tensor, axis)函数:
+    # 在新的维度上拼接, 拼接后维度加1; 若axis=0, 指第一个维度; 若axis=-1, 指最后一个维度
+    # t1 = [[1, 2, 3], [4, 5, 6]]
+    # t2 = [[7, 8, 9], [10, 11, 12]]
+    # t3 = tf.stack([t1,t2],axis=0)
+    # t4 = tf.stack([t1,t2],axis=1)
+    # t5 = tf.stack([t1,t2],axis=-1)
+    # with tf.Session() as sess: print(sess.run(t3))
+    # [[[ 1  2  3]
+    #   [ 4  5  6]]
+    # 
+    #  [[ 7  8  9]
+    #   [10 11 12]]]
+    # with tf.Session() as sess: print(sess.run(t4))
+    # [[[ 1  2  3]
+    #   [ 7  8  9]]
+    # 
+    #  [[ 4  5  6]
+    #   [10 11 12]]]
+    # with tf.Session() as sess: print(sess.run(t5))
+    # [[[ 1  7]
+    #   [ 2  8]
+    #   [ 3  9]]
+    # 
+    #  [[ 4 10]
+    #   [ 5 11]
+    #   [ 6 12]]]
+    #
+    # tf.ones_like(tensor, dtype, ...)函数：生成一个和tensor相同形状的, 数据类型为dtype, 所有元素都被设置为1
+    # 
+    # tf.cast(x, dtype, name=None)函数: 将x转换为dtype
+    # tensor a is [1.8, 2.2], dtype = tf.float
+    # tf.cast(a, tf.int32) ==&amp;gt; [1, 2], where dtype = tf.int32
+    # 
+    # tf.reduce_mean(tensor, axis=None, keep_dims=False, name=None)函数: 求tensor中平均值, axis参数指定轴方向
+    # 
+    # tf.reduce_max(tensor, axis=None, keep_dims=False, name=None)函数: 求tensor中最大值, axis参数指定轴方向
+    # 
+    # tf.reduce_sum(tensor, axis=None, keep_dims=False, name=None)函数:求tensor中元素和, axis参数指定轴方向
+    # 
+    # tf.square(x, name=None)函数: 计算平方x^2
+    #
+    # tf.sqrt(x, name=None)函数: 计算开根号x^{1/2}
+    # 
+    # tf.expand_dims(tensor, dim, name=None)函数: tensor维度加1; 第二个参数dim表示维度扩增的方向
+    # t6 = tf.expand_dims(t1,0)
+    # t7 = tf.expand_dims(t1,1)
+    # t8 = tf.expand_dims(t1,2) 和 tf.expand_dims(t1,-1) 相同; -1指最后一个维度
+    #
+    # with tf.Session() as sess: print(sess.run(t6))
+    # [[[1 2 3]
+    #   [4 5 6]]]
+    # with tf.Session() as sess: print(sess.run(t7))
+    # [[[1 2 3]]
+    # 
+    #  [[4 5 6]]]
+    # with tf.Session() as sess: print(sess.run(t8))
+    # [[[1]
+    #   [2]
+    #   [3]]
+    # 
+    #  [[4]
+    #   [5]
+    #   [6]]] 
+    #
+    # tf.losses.add_loss()函数: 将外部定义的loss添加到losses的集合中
+    # 
+    # tf.summary.scalar()函数: 查看learning rate和目标函数如何变化
+    # 
+    # tf.summary.histogram()函数: 查看activations, gradients或者weights的分布
+    # 
+    with tf.variable_scope(scope):
+      # 预测类别
+      predict_classes = tf.reshape(predicts[:, :self.boundary1], [self.batch_size, self.cell_size, self.cell_size, self.num_class])
+      # 预测置信度
+      predict_scales = tf.reshape(predicts[:, self.boundary1:self.boundary2], [self.batch_size, self.cell_size, self.cell_size, self.boxes_per_cell])
+      # 预测Bounding Box
+      predict_boxes = tf.reshape(predicts[:, self.boundary2:], [self.batch_size, self.cell_size, self.cell_size, self.boxes_per_cell, 4])
+      # response是提取label中的置信度，表示这个地方是否有框
+      response = tf.reshape(labels[..., 0], [self.batch_size, self.cell_size, self.cell_size, 1])
+      # 提取框
+      boxes = tf.reshape(labels[..., 1:5],[self.batch_size, self.cell_size, self.cell_size, 1, 4])
+      boxes = tf.tile(boxes, [1, 1, 1, self.boxes_per_cell, 1]) / self.image_size
+      # 提取类(one-hot编码)
+      classes = labels[..., 5:]
+      offset = tf.reshape(tf.constant(self.offset, dtype=tf.float32), [1, self.cell_size, self.cell_size, self.boxes_per_cell])
+      offset = tf.tile(offset, [self.batch_size, 1, 1, 1])
+      offset_tran = tf.transpose(offset, (0, 2, 1, 3))
+      predict_boxes_tran = tf.stack([(predict_boxes[..., 0] + offset) / self.cell_size, (predict_boxes[..., 1] + offset_tran) / self.cell_size, tf.square(predict_boxes[..., 2]), tf.square(predict_boxes[..., 3])], axis=-1)
+      iou_predict_truth = self.calc_iou(predict_boxes_tran, boxes)
+      # Calculate I tensor [BATCH_SIZE, CELL_SIZE, CELL_SIZE, BOXES_PER_CELL]
+      object_mask = tf.reduce_max(iou_predict_truth, 3, keep_dims=True)
+      object_mask = tf.cast((iou_predict_truth &amp;gt;= object_mask), tf.float32) * response
+      # Calculate no_I tensor [CELL_SIZE, CELL_SIZE, BOXES_PER_CELL]
+      noobject_mask = tf.ones_like(object_mask, dtype=tf.float32) - object_mask
+      boxes_tran = tf.stack([boxes[..., 0] * self.cell_size - offset, boxes[..., 1] * self.cell_size - offset_tran, tf.sqrt(boxes[..., 2]), tf.sqrt(boxes[..., 3])], axis=-1)
+      # Calculate each part in loss function
+      # class_loss
+      class_delta = response * (predict_classes - classes)
+      class_loss = tf.reduce_mean(tf.reduce_sum(tf.square(class_delta), axis=[1, 2, 3]), name=&amp;#39;class_loss&amp;#39;) * self.class_scale
+      # object_loss
+      object_delta = object_mask * (predict_scales - iou_predict_truth)
+      object_loss = tf.reduce_mean(tf.reduce_sum(tf.square(object_delta), axis=[1, 2, 3]), name=&amp;#39;object_loss&amp;#39;) * self.object_scale
+      # noobject_loss
+      noobject_delta = noobject_mask * predict_scales
+      noobject_loss = tf.reduce_mean(tf.reduce_sum(tf.square(noobject_delta), axis=[1, 2, 3]), name=&amp;#39;noobject_loss&amp;#39;) * self.noobject_scale
+      # coord_loss
+      coord_mask = tf.expand_dims(object_mask, 4)
+      boxes_delta = coord_mask * (predict_boxes - boxes_tran)
+      coord_loss = tf.reduce_mean(tf.reduce_sum(tf.square(boxes_delta), axis=[1, 2, 3, 4]), name=&amp;#39;coord_loss&amp;#39;) * self.coord_scale
+      # Add each part of loss function together
+      tf.losses.add_loss(class_loss)
+      tf.losses.add_loss(object_loss)
+      tf.losses.add_loss(noobject_loss)
+      tf.losses.add_loss(coord_loss)
+      tf.summary.scalar(&amp;#39;class_loss&amp;#39;, class_loss)
+      tf.summary.scalar(&amp;#39;object_loss&amp;#39;, object_loss)
+      tf.summary.scalar(&amp;#39;noobject_loss&amp;#39;, noobject_loss)
+      tf.summary.scalar(&amp;#39;coord_loss&amp;#39;, coord_loss)
+      tf.summary.histogram(&amp;#39;boxes_delta_x&amp;#39;, boxes_delta[..., 0])
+      tf.summary.histogram(&amp;#39;boxes_delta_y&amp;#39;, boxes_delta[..., 1])
+      tf.summary.histogram(&amp;#39;boxes_delta_w&amp;#39;, boxes_delta[..., 2])
+      tf.summary.histogram(&amp;#39;boxes_delta_h&amp;#39;, boxes_delta[..., 3])
+      tf.summary.histogram(&amp;#39;iou&amp;#39;, iou_predict_truth)
+
+  def leaky_relu(alpha):
+    # 激活函数leaky_relu
+    # if(x&amp;gt;0) then \phi(x)=x
+    # otherwise \phi(x)=alpha*x
+    # In this case,alpha=0.1
+    def op(inputs):
+      return tf.nn.leaky_relu(inputs, alpha=alpha, name=&amp;#39;leaky_relu&amp;#39;)
+  return op&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;train.py&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;网络搭建后用train.py文件进行训练&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;import os
+import argparse
+import datetime
+import tensorflow as tf
+import yolo.config as cfg
+from yolo.yolo_net import YOLONet
+from utils.timer import Timer
+from utils.pascal_voc import pascal_voc
+os.environ[&amp;#39;TF_CPP_MIN_LOG_LEVEL&amp;#39;] = &amp;#39;2&amp;#39;
+import tensorflow.contrib.slim as slim
+# slim = tf.contrib.slim
+
+class Solver(object):
+    def __init__(self, net, data):
+      # tf.train.exponential_decay(initial_learning_rate, global_step, decay_steps, decay_rate, staircase)函数:
+      # initial_learning_rate表示初始设定学习率; global_step表示当前的学习步数; decay_rate表示衰减速率;
+      # staircase若为True表明每decay_steps次计算学习率变化并更新原始学习率; False则每一步都更新
+      # learning_rate = initial_learning_rate * (decay_rate) ^ (global_step / decay_steps)
+      # 
+      # tf.train.GradientDescentOptimizer(learning_rate)函数: 梯度下降优化器
+      # 
+      # slim.learning.create_train_op(loss, optimizer, ...)通过loss, optimizer等创建train_op, 用于训练
+      # 
+      # tf.GPUOptions(per_process_gpu_memory_fraction)作为可选配置参数的一部分来显示地指定需要分配的显存比例
+      # per_process_gpu_memory_fraction指定了每个GPU进程中使用显存的上限, 但它只能均匀地作用于所有GPU, 无法对不同GPU设置不同的上限
+      # 
+      # sess.run(a)函数: 找到与a有数据依赖的节点, 然后顺序执行
+      # 
+      # 参数初始化
+      self.net = net
+      self.data = data
+      self.weights_file = cfg.WEIGHTS_FILE
+      self.max_iter = cfg.MAX_ITER
+      self.initial_learning_rate = cfg.LEARNING_RATE
+      self.decay_steps = cfg.DECAY_STEPS
+      self.decay_rate = cfg.DECAY_RATE
+      self.staircase = cfg.STAIRCASE
+      self.summary_iter = cfg.SUMMARY_ITER
+      self.save_iter = cfg.SAVE_ITER
+      self.output_dir = os.path.join(cfg.OUTPUT_DIR, datetime.datetime.now().strftime(&amp;#39;%Y_%m_%d_%H_%M&amp;#39;))
+      if not os.path.exists(self.output_dir):
+        os.makedirs(self.output_dir)
+      self.save_cfg()
+      # tf.global_variables表示获取程序中的变量, 返回的值是变量的一个列表
+      self.variable_to_restore = tf.global_variables()
+      # tf.train.Saver表示Save and restore all the variables
+      self.saver = tf.train.Saver(self.variable_to_restore, max_to_keep=None)
+      self.ckpt_file = os.path.join(self.output_dir, &amp;#39;yolo&amp;#39;)
+      # merge_all可以将所有summary全部保存到磁盘, 以便tensorboard显示
+      self.summary_op = tf.summary.merge_all()
+      # 定义一个写入summary的目标文件，dir为写入文件地址
+      self.writer = tf.summary.FileWriter(self.output_dir, flush_secs=60)
+      # tf.train.create_global_step()表示在图中创建全局步长张量
+      self.global_step = tf.train.create_global_step()
+      # 学习率的设定: 一开始使用较大学习率以快速得到较优解; 再通过较小学习率使模型训练后期更稳定
+      self.learning_rate = tf.train.exponential_decay(self.initial_learning_rate, self.global_step, self.decay_steps, self.decay_rate, self.staircase, name=&amp;#39;learning_rate&amp;#39;)
+      # 梯度下降
+      self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate)
+      # 创建训练
+      self.train_op = slim.learning.create_train_op(self.net.total_loss, self.optimizer, global_step=self.global_step)
+      # 显存GPU设置
+      gpu_options = tf.GPUOptions()
+      config = tf.ConfigProto(gpu_options=gpu_options)
+      # tf.Session()创建一个会话
+      self.sess = tf.Session(config=config)
+      self.sess.run(tf.global_variables_initializer())
+      # 导入weights文件
+      if self.weights_file is not None:
+        print(&amp;#39;Restoring weights from: &amp;#39; + self.weights_file)
+        # saver.restore(sess, ckpt.model_checkpoint_path)恢复变量
+        self.saver.restore(self.sess, self.weights_file)
+      self.writer.add_graph(self.sess.graph)
+
+  def train(self):
+    train_timer = Timer()
+    load_timer = Timer()
+    for step in range(1, self.max_iter + 1):
+      # 记录加载数据时间 &amp;amp; 加载数据
+      load_timer.tic()
+      images, labels = self.data.get()
+      load_timer.toc()
+      feed_dict = {self.net.images: images, self.net.labels: labels}
+      if step % self.summary_iter == 0:
+        if step % (self.summary_iter * 10) == 0:
+          # 记录训练时间
+          train_timer.tic()
+          summary_str, loss, _ = self.sess.run([self.summary_op, self.net.total_loss, self.train_op], feed_dict=feed_dict)
+          train_timer.toc()
+          # 打印输出相关数据
+          log_str = &amp;quot;{} Epoch: {}, Step: {}, Learning rate: {}, Loss: {:5.3f}\nSpeed: {:.3f}s/iter, Load: {:.3f}s/iter, Remain: {}&amp;quot;.format(
+            datetime.datetime.now().strftime(&amp;#39;%m-%d %H:%M:%S&amp;#39;),
+            self.data.epoch,
+            int(step),
+            round(self.learning_rate.eval(session=self.sess), 6),
+            loss,
+            train_timer.average_time,
+            load_timer.average_time,
+            train_timer.remain(step, self.max_iter))
+          print(log_str)
+        else:
+          train_timer.tic()
+          summary_str, _ = self.sess.run([self.summary_op, self.train_op], feed_dict=feed_dict)
+          train_timer.toc()
+        self.writer.add_summary(summary_str, step)
+      else:
+        train_timer.tic()
+        self.sess.run(self.train_op, feed_dict=feed_dict)
+        train_timer.toc()
+      if step % self.save_iter == 0:
+        print(&amp;#39;{} Saving checkpoint file to: {}&amp;#39;.format(datetime.datetime.now().strftime(&amp;#39;%m-%d %H:%M:%S&amp;#39;), self.output_dir))
+        # 保存ckpt模型文件
+        self.saver.save(self.sess, self.ckpt_file, global_step=self.global_step)
+
+  def save_cfg(self):
+    with open(os.path.join(self.output_dir, &amp;#39;config.txt&amp;#39;), &amp;#39;w&amp;#39;) as f:
+      cfg_dict = cfg.__dict__
+      for key in sorted(cfg_dict.keys()):
+        if key[0].isupper():
+          cfg_str = &amp;#39;{}: {}\n&amp;#39;.format(key, cfg_dict[key])
+          f.write(cfg_str)
+
+  def update_config_paths(data_dir, weights_file):
+    cfg.DATA_PATH = data_dir
+    cfg.PASCAL_PATH = os.path.join(data_dir, &amp;#39;pascal_voc&amp;#39;)
+    cfg.CACHE_PATH = os.path.join(cfg.PASCAL_PATH, &amp;#39;cache&amp;#39;)
+    cfg.OUTPUT_DIR = os.path.join(cfg.PASCAL_PATH, &amp;#39;output&amp;#39;)
+    cfg.WEIGHTS_DIR = os.path.join(cfg.PASCAL_PATH, &amp;#39;weights&amp;#39;)
+    cfg.WEIGHTS_FILE = os.path.join(cfg.WEIGHTS_DIR, weights_file)
+
+  def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(&amp;#39;--weights&amp;#39;, default=&amp;quot;YOLO_small.ckpt&amp;quot;, type=str)
+    parser.add_argument(&amp;#39;--data_dir&amp;#39;, default=&amp;quot;data&amp;quot;, type=str)
+    parser.add_argument(&amp;#39;--threshold&amp;#39;, default=0.2, type=float)
+    parser.add_argument(&amp;#39;--iou_threshold&amp;#39;, default=0.5, type=float)
+    parser.add_argument(&amp;#39;--gpu&amp;#39;, default=&amp;#39;&amp;#39;, type=str)
+    args = parser.parse_args()
+    if args.gpu is not None:
+      cfg.GPU = args.gpu
+    if args.data_dir != cfg.DATA_PATH:
+        update_config_paths(args.data_dir, args.weights)
+    os.environ[&amp;#39;CUDA_VISIBLE_DEVICES&amp;#39;] = cfg.GPU
+
+    yolo = YOLONet()
+    pascal = pascal_voc(&amp;#39;train&amp;#39;)
+
+    solver = Solver(yolo, pascal)
+
+    print(&amp;#39;Start training ...&amp;#39;)
+    solver.train()
+    print(&amp;#39;Done training.&amp;#39;)
+
+if __name__ == &amp;#39;__main__&amp;#39;:
+    # python train.py --weights YOLO_small.ckpt --gpu 0
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参照&lt;a href=&#34;https://github.com/hizhangp/yolo_tensorflow&#34;&gt;hizhangp&lt;/a&gt;的指引就可以完成训练操作~&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section level3&#34;&gt;
+&lt;h3&gt;检测&lt;/h3&gt;
+&lt;p&gt;通过cmd或Anaconda Prompt运行&lt;code&gt;python test.py&lt;/code&gt;可以检测test文件夹里面的图片，这里我们直接用到了&lt;a href=&#34;https://github.com/hizhangp/yolo_tensorflow&#34;&gt;hizhangp&lt;/a&gt;训练完成的模型文件ckpt。假设我们对test文件中的cat进行检测，检测结果如图18所示。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;img src=&#34;18.PNG&#34; width = &#34;800&#34; height = &#34;800&#34; alt=&#34;Figure18&#34; /&gt;
+&lt;p&gt;
+图18. cat图像检测结果
+&lt;/div&gt;
+&lt;div id=&#34;test.py&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;检测阶段的test.py文件&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;import os
+import cv2
+import argparse
+import numpy as np
+import tensorflow as tf
+import yolo.config as cfg
+from yolo.yolo_net import YOLONet
+from utils.timer import Timer
+os.environ[&amp;#39;TF_CPP_MIN_LOG_LEVEL&amp;#39;] = &amp;#39;2&amp;#39;
+
+class Detector(object):
+  def __init__(self, net, weight_file):
+    # 参数初始化
+    self.net = net
+    self.weights_file = weight_file
+    self.classes = cfg.CLASSES
+    self.num_class = len(self.classes)
+    self.image_size = cfg.IMAGE_SIZE
+    self.cell_size = cfg.CELL_SIZE
+    self.boxes_per_cell = cfg.BOXES_PER_CELL
+    self.threshold = cfg.THRESHOLD
+    self.iou_threshold = cfg.IOU_THRESHOLD
+    self.boundary1 = self.cell_size * self.cell_size * self.num_class
+    self.boundary2 = self.boundary1 + self.cell_size * self.cell_size * self.boxes_per_cell
+    # 创建一个会话
+    self.sess = tf.Session()
+    self.sess.run(tf.global_variables_initializer())
+    print(&amp;#39;Restoring weights from: &amp;#39; + self.weights_file)
+    self.saver = tf.train.Saver()
+    self.saver.restore(self.sess, self.weights_file)
+
+  def draw_result(self, img, result):
+    # 将框和原图放在一起并绘制出来
+    for i in range(len(result)):
+      x = int(result[i][1])
+      y = int(result[i][2])
+      w = int(result[i][3] / 2)
+      h = int(result[i][4] / 2)
+      # cv2.rectangle是矩形框左上角和右下角的坐标
+      # cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)绘制矩形
+      # img表示原图; 第二个参数(x,y)表示矩形左上点坐标; 第三个参数(x+w,y+h)表示矩形右下点坐标;
+      # (0,255,0)表示画线对应的rgb颜色(0 255 0 为青色); 2表示画线的宽度
+      # (125,125,125)为灰色; -1表示填充图形
+      cv2.rectangle(img, (x - w, y - h), (x + w, y + h), (0, 255, 0), 2)
+      cv2.rectangle(img, (x - w, y - h - 20), (x + w, y - h), (125, 125, 125), -1)
+      lineType = cv2.LINE_AA if cv2.__version__ &amp;gt; &amp;#39;3&amp;#39; else cv2.CV_AA
+      cv2.putText(img, result[i][0] + &amp;#39; : %.2f&amp;#39; % result[i][5], (x - w + 5, y - h - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, lineType)
+
+  def detect(self, img):
+    img_h, img_w, _ = img.shape
+    inputs = cv2.resize(img, (self.image_size, self.image_size))
+    inputs = cv2.cvtColor(inputs, cv2.COLOR_BGR2RGB).astype(np.float32)
+    inputs = (inputs / 255.0) * 2.0 - 1.0
+    inputs = np.reshape(inputs, (1, self.image_size, self.image_size, 3))
+    # 预测测试集
+    result = self.detect_from_cvmat(inputs)[0]
+    # 预测结果转换变换回原始图像中
+    for i in range(len(result)):
+      result[i][1] *= (1.0 * img_w / self.image_size)
+      result[i][2] *= (1.0 * img_h / self.image_size)
+      result[i][3] *= (1.0 * img_w / self.image_size)
+      result[i][4] *= (1.0 * img_h / self.image_size)
+    return result
+
+  def detect_from_cvmat(self, inputs):
+    # 预测测试集的结果
+    net_output = self.sess.run(self.net.logits, feed_dict={self.net.images: inputs})
+    results = []
+    for i in range(net_output.shape[0]):
+      results.append(self.interpret_output(net_output[i]))
+    return results
+
+  def interpret_output(self, output):
+    probs = np.zeros((self.cell_size, self.cell_size, self.boxes_per_cell, self.num_class))
+    class_probs = np.reshape(output[0:self.boundary1], (self.cell_size, self.cell_size, self.num_class))
+    scales = np.reshape(output[self.boundary1:self.boundary2], (self.cell_size, self.cell_size, self.boxes_per_cell))
+    boxes = np.reshape(output[self.boundary2:], (self.cell_size, self.cell_size, self.boxes_per_cell, 4))
+    offset = np.array([np.arange(self.cell_size)] * self.cell_size * self.boxes_per_cell)
+    offset = np.transpose(np.reshape(offset, [self.boxes_per_cell, self.cell_size, self.cell_size]), (1, 2, 0))
+
+    boxes[:, :, :, 0] += offset
+    boxes[:, :, :, 1] += np.transpose(offset, (1, 0, 2))
+    boxes[:, :, :, :2] = 1.0 * boxes[:, :, :, 0:2] / self.cell_size
+    boxes[:, :, :, 2:] = np.square(boxes[:, :, :, 2:])
+
+    boxes *= self.image_size
+
+    for i in range(self.boxes_per_cell):
+      for j in range(self.num_class):
+        probs[:, :, i, j] = np.multiply(class_probs[:, :, j], scales[:, :, i])
+
+    filter_mat_probs = np.array(probs &amp;gt;= self.threshold, dtype=&amp;#39;bool&amp;#39;)
+    filter_mat_boxes = np.nonzero(filter_mat_probs)
+    boxes_filtered = boxes[filter_mat_boxes[0], filter_mat_boxes[1], filter_mat_boxes[2]]
+    probs_filtered = probs[filter_mat_probs]
+    classes_num_filtered = np.argmax(filter_mat_probs, axis=3)[filter_mat_boxes[0], filter_mat_boxes[1], filter_mat_boxes[2]]
+
+    argsort = np.array(np.argsort(probs_filtered))[::-1]
+    boxes_filtered = boxes_filtered[argsort]
+    probs_filtered = probs_filtered[argsort]
+    classes_num_filtered = classes_num_filtered[argsort]
+
+    for i in range(len(boxes_filtered)):
+      if probs_filtered[i] == 0:
+        continue
+      # 通过iou阈值去除多余Bounding Boxes
+      for j in range(i + 1, len(boxes_filtered)):
+        if self.iou(boxes_filtered[i], boxes_filtered[j]) &amp;gt; self.iou_threshold:
+          probs_filtered[j] = 0.0
+
+    filter_iou = np.array(probs_filtered &amp;gt; 0.0, dtype=&amp;#39;bool&amp;#39;)
+    boxes_filtered = boxes_filtered[filter_iou]
+    probs_filtered = probs_filtered[filter_iou]
+    classes_num_filtered = classes_num_filtered[filter_iou]
+
+    result = []
+    for i in range(len(boxes_filtered)):
+      result.append([self.classes[classes_num_filtered[i]], boxes_filtered[i][0], boxes_filtered[i][1], boxes_filtered[i][2], boxes_filtered[i][3], probs_filtered[i]])
+
+    return result
+
+  def iou(self, box1, box2):
+    tb = min(box1[0] + 0.5 * box1[2], box2[0] + 0.5 * box2[2]) - max(box1[0] - 0.5 * box1[2], box2[0] - 0.5 * box2[2])
+    lr = min(box1[1] + 0.5 * box1[3], box2[1] + 0.5 * box2[3]) - max(box1[1] - 0.5 * box1[3], box2[1] - 0.5 * box2[3])
+    inter = 0 if tb &amp;lt; 0 or lr &amp;lt; 0 else tb * lr
+    return inter / (box1[2] * box1[3] + box2[2] * box2[3] - inter)
+
+  def camera_detector(self, cap, wait=10):
+    # 摄像机检测器
+    detect_timer = Timer()
+    ret, _ = cap.read()
+
+    while ret:
+      ret, frame = cap.read()
+      detect_timer.tic()
+      result = self.detect(frame)
+      detect_timer.toc()
+      print(&amp;#39;Average detecting time: {:.3f}s&amp;#39;.format(detect_timer.average_time))
+
+      self.draw_result(frame, result)
+      cv2.imshow(&amp;#39;Camera&amp;#39;, frame)
+      cv2.waitKey(wait)
+
+      ret, frame = cap.read()
+
+  def image_detector(self, imname, wait=0):
+    # test文件夹中图像检测
+    detect_timer = Timer()
+    image = cv2.imread(imname)
+
+    detect_timer.tic()
+    result = self.detect(image)
+    detect_timer.toc()
+    print(&amp;#39;Average detecting time: {:.3f}s&amp;#39;.format(detect_timer.average_time))
+
+    self.draw_result(image, result)
+    cv2.imshow(&amp;#39;Image&amp;#39;, image)
+    cv2.waitKey(wait)
+
+  def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(&amp;#39;--weights&amp;#39;, default=&amp;quot;YOLO_small.ckpt&amp;quot;, type=str)
+    parser.add_argument(&amp;#39;--weight_dir&amp;#39;, default=&amp;#39;weights&amp;#39;, type=str)
+    parser.add_argument(&amp;#39;--data_dir&amp;#39;, default=&amp;quot;data&amp;quot;, type=str)
+    parser.add_argument(&amp;#39;--gpu&amp;#39;, default=&amp;#39;&amp;#39;, type=str)
+    args = parser.parse_args()
+    os.environ[&amp;#39;CUDA_VISIBLE_DEVICES&amp;#39;] = args.gpu
+    # Detection
+    yolo = YOLONet(False)
+    weight_file = os.path.join(args.data_dir, args.weight_dir, args.weights)
+    detector = Detector(yolo, weight_file)
+    # Detect from camera
+    # cap = cv2.VideoCapture(-1)
+    # detector.camera_detector(cap)
+    # 
+    # Detect from image file
+    imname = &amp;#39;test/person.jpg&amp;#39;
+    detector.image_detector(imname)
+
+if __name__ == &amp;#39;__main__&amp;#39;:
+    main()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reference&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;J. Redmon, S. Divvala, R. Girshick, A. Farhadi, “You Only Look Once: Unified Real-Time Object Detection”, IEEE Conference on Computer Vision and Pattern Recognition, pp. 779-788, 2016.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/av23354360?from=search&amp;amp;seid=13332955749650173893&#34;&gt;尤鱼哥. Yolo v1全面深度解读 目标检测论文&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/hizhangp/yolo_tensorflow&#34;&gt;hizhangp. Github yolo_tensorflow&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>TensorFlow&#43;Keras实现YOLOv3目标检测</title>
       <link>/post/tensorflow-keras%E5%AE%9E%E7%8E%B0yolov3%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/</link>
       <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>

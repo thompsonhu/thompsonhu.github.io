@@ -24,7 +24,7 @@
     <item>
       <title>Deep Learning</title>
       <link>/tags/deep-learning/</link>
-      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/deep-learning/</guid>
       <description></description>
@@ -36,6 +36,15 @@
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/latex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ObjectDetection</title>
+      <link>/tags/objectdetection/</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/objectdetection/</guid>
       <description></description>
     </item>
     
@@ -60,7 +69,7 @@
     <item>
       <title>TensorFlow</title>
       <link>/tags/tensorflow/</link>
-      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/tensorflow/</guid>
       <description></description>

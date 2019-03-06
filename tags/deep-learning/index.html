@@ -111,7 +111,7 @@
   <meta property="og:description" content=""><meta property="og:image" content="/img/portrait.jpg">
   <meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2019-02-20T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2019-03-06T00:00:00&#43;00:00">
   
 
   
@@ -271,6 +271,21 @@
   
 
   
+  
+  <div>
+    <h2><a href="../../post/tensorflow%E5%AE%9E%E7%8E%B0yolov1%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">TensorFlow实现YOLOv1目标检测</a></h2>
+    <div class="article-style">
+      
+      目标检测是计算机视觉一个重要的领域，希望让计算机可以自己自动找出某张图片（某个视频的某一帧画面）中的物体，并认出它们是什么，这是一个具有挑战又有趣的任务。本文主要对YOLO(You Only Look Once)模型进行探讨并在TensorFlow上实现，YOLOv1是YOLO的第一个版本（YOLO version1），虽然它的目标检测效果不咋滴，但是现在YOLO进化到了第三个版本了，是一个极其强大的工具。为了更好的学习YOLOV3，那也需要领会它前辈YOLOv1的精髓所在。YOLOv1的作者有四个大佬，Joseph Redmon大佬喜欢用C语言，他们也用C语言搭建Darknet并实现了YOLOv1，这也让众多YOLO信徒不知如何用TensorFlow来领悟其中的奥妙。github找到零零散散几个有关于YOLOv1的，但是大多数只有检测过程，而没有训练过程。几番周折，找到了既有训练又能检测的代码。本文参照hizhangp的Github仓库代码，对模型进行介绍和探讨，同时对代码进行解读并实际完成目标检测。
+You Only Look Once, 你不要看我第二次（//▽//） YOLOv1采用一个单独的CNN模型实现end-to-end的目标检测，它的思想正如它paper的标题一般，你只看一次，就能看出图片中有什么东西，达到跟人类基本一样的探索功能。就像你看到下面这只可爱的黄色电气鼠，一瞄就知道是皮卡丘！
+ 图1. 我是谁？皮卡丘！  YOLO(本文指YOLO version1)的大体检测框架是：首先通过转换图像为\(448\times 448\)大小的输入，在图像输入之后YOLO会将其分为\(S\times S\)的grid cell（小格子）。每一个grid cell会产生B个边界框（Bounding Box），每个Bounding Box会附带一个置信度值。原文中设定了每张图像分为\(7\times 7\)的grid cell，每个grid cell产生2个Bounding Boxes，那所有的grid cell总共会生成98($772)个边界框；另外原文设定了检测物体的类别数为20。需要注意的是，在原文中多次出现exist和appear的词，表示grid cell中包含了object，但其实更准确的是表示object的中心点出现在这个grid cell中。在完成训练阶段之后，通过非极大值抑制来去除多余的边界框并完成检测（后面会补充介绍非极大值抑制的内容）~
+ 图2. YOLO检测系统细节图  YOLO模型训练阶段（Traning）解析 YOLO检测网络包含了24个卷积层和2个全连接层，其中也运用了最大池化层，如图3所示：
+ 图3. YOLO检测网络图  其中激活函数使用了leaky relu函数： \[ \phi(x) = \left\{ \begin{array}{l} x,\quad\ \ \text{if}\ \ x&gt;0\\ 0.1x,\ \text{otherwise} \end{array} \right. \]
+最终模型网络输出的是一个\(7\times 7\times 30\)的张量（Tensor），这里我们可以看作49(\(7\times 7\))个grid cells，其中每个grid cell中涉及30个通道（channel）。这30个channels中有2组对应2个Bounding Boxes的信息（总共占用10(\(2\times 5\))个channels），剩下的20个channels对应的是20个检测类的概率。
+前5个channels（张量的第1-5d的位置）中的参数分别是第一个Bounding Box（黄色边界框）的四个坐标值以及相应的置信度。这四个坐标(\(x,y,w,h\))中(\(x,y\))是物体中心点相对于左上角的坐标值，(\(w,h\))是Bounding Box的宽和高，以中心点坐标就可以确定Bounding Box的大小。
+      
+    </div>
+  </div>
   
   <div>
     <h2><a href="../../post/tensorflow-keras%E5%AE%9E%E7%8E%B0yolov3%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">TensorFlow&#43;Keras实现YOLOv3目标检测</a></h2>
